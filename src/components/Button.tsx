@@ -11,6 +11,7 @@ interface Props {
 class Button extends React.Component<Props> {
   render() {
     const { disabled, label, onPress } = this.props;
+    // If the button is disabled we lower its opacity
     const containerStyle = [
       styles.container,
       disabled
@@ -19,7 +20,7 @@ class Button extends React.Component<Props> {
     ];
     return (
       <TouchableOpacity
-        style={styles.container}
+        style={containerStyle}
         onPress={onPress}
         disabled={disabled}
         >

@@ -6,15 +6,24 @@ import imageLogo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
 
+
 interface State {
   email: string;
   password: string;
+  // We add a field that tracks if the user has already
+  // touched the input...
+  emailTouched: boolean;
+  passwordTouched: boolean;
 }
 
 class LoginScreen extends React.Component<{}, State> {
+  passwordInputRef = React.createRef<FormTextInput>();
+
   readonly state: State = {
     email: "",
-    password: ""
+    password: "",
+    emailTouched: false,
+    passwordTouched: false
   };
 
   handleEmailChange = (email: string) => {
