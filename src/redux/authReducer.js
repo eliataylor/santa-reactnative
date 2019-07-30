@@ -1,5 +1,0 @@
-// oauth
-
-// my location
-
-// notifications
