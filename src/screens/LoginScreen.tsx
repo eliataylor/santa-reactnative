@@ -50,6 +50,7 @@ class LoginScreen extends React.Component<{}, State> {
   };
 
   handleLoginPress = () => {
+    //this.props.
     console.log("Login button pressed");
   };
 
