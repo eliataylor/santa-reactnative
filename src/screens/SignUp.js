@@ -13,7 +13,7 @@ import {
 
 import { connect } from 'react-redux'
 
-import { fonts, colors } from '../theme'
+import { colors } from '../theme'
 import { createUser, confirmUserSignUp } from '../actions'
 
 import Input from '../components/FormTextInput'
@@ -166,11 +166,11 @@ const styles = StyleSheet.create({
   },
   greeting: {
     marginTop: 20,
-    fontFamily: fonts.light,
+    // fontFamily: fonts.light,
     fontSize: 24
   },
   greeting2: {
-    fontFamily: fonts.light,
+    //fontFamily: fonts.light,
     color: '#666',
     fontSize: 24,
     marginTop: 5
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     height: 38
   },
   errorMessage: {
-    fontFamily: fonts.base,
+    // fontFamily: fonts.base,
     fontSize: 12,
     marginTop: 10,
     color: 'transparent'
