@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
-import { colors, fonts } from '../theme';
+import { colors } from '../theme';
 import LoginScreen from './LoginScreen';
 import SignUp from './SignUp';
 
@@ -48,7 +48,6 @@ const routeConfig = {
     inactiveTintColor: colors.secondary,
     indicatorStyle: { backgroundColor: colors.secondary },
     labelStyle: {
-      fontFamily: fonts.base,
       fontSize: 12
     },
     style: {

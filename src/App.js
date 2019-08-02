@@ -43,7 +43,6 @@ class App extends React.Component {
         <Text>Show nearby wishes</Text>
       )
     }
-    console.warn('RENDERING LOGIN/REGISTER', this.state.me);
     return (<LoginOrRegister />);
   }
 }

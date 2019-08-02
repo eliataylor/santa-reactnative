@@ -14,7 +14,7 @@ import {
 import { connect } from 'react-redux'
 
 import { authenticate, confirmUserLogin } from '../actions'
-import { fonts, colors } from '../theme'
+import { colors } from '../theme'
 
 import Input from '../components/Input'
 import Button from '../components/Button'
@@ -43,7 +43,6 @@ class SignIn extends Component<{}> {
   }
 
   render() {
-    const { fontsLoaded } = this.state
     const { auth: {
       signInErrorMessage,
       isAuthenticating,
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 10,
     color: 'transparent',
-    fontFamily: fonts.base
+    // fontFamily: fonts.base
   },
   inputContainer: {
     marginTop: 20
@@ -155,12 +154,12 @@ const styles = StyleSheet.create({
   greeting: {
     marginTop: 20,
     fontSize: 24,
-    fontFamily: fonts.light
+    // fontFamily: fonts.light
   },
   greeting2: {
     color: '#666',
     fontSize: 24,
     marginTop: 5,
-    fontFamily: fonts.light
+  //  fontFamily: fonts.light
   }
 });

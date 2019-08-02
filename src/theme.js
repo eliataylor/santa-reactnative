@@ -11,6 +11,6 @@ const fonts = {
 }
 
 export {
-  colors,
-  fonts
+  colors
+  // , fonts
 }
