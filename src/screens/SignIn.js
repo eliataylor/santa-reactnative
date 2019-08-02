@@ -11,7 +11,6 @@ import {
   Modal
 } from 'react-native';
 
-import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
 
 import { authenticate, confirmUserLogin } from '../actions'

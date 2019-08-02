@@ -1,8 +1,9 @@
 import axios from 'axios';
 import Config from '../Config';
+import {AsyncStorage} from 'react-native';
+
 
 class API {
-
 
     constructor() {
       this.callqueue = [];
@@ -95,10 +96,10 @@ class API {
         return axInstance;
     }
 
-    refreshToken(err) {
+    async refreshToken(err) {
       // @TODO if not a secured page >  return Promise.resolve();
 
-      let tokens = localStorage.getItem(Config.api.tokName);
+      let tokens = await AsyncStorage.getItem(Config.api.tokName);
       try {
         tokens = JSON.parse(tokens);
         if (tokens === null || typeof tokens.access_token !== 'string') tokens = false;
@@ -136,32 +137,35 @@ class API {
            tokens.expires_in = res.data.expires_in;
            tokens.created_time = new Date().getTime();
 
-           localStorage.setItem(Config.api.tokName, JSON.stringify(tokens));
+           AsyncStorage.setItem(Config.api.tokName, JSON.stringify(tokens),  storage => {
+             if (that.callqueue.length > 0) {
+                var config = that.callqueue.shift(); // remove last
+                config.headers.Authorization = 'Bearer ' + tokens.access_token;
+                console.log("RESOLVE ORIGINAL REQUEST", config);
+                //return that.requester.request(config); // this complete doesn't fire the onSucess callback for this request
+                return Promise.resolve(config);
+             }
+             console.log("RESOLVING REFRESH POST");
+             return Promise.resolve(config);
+           })
 
-           if (that.callqueue.length > 0) {
-              var config = that.callqueue.shift(); // remove last
-              config.headers.Authorization = 'Bearer ' + tokens.access_token;
-              console.log("RESOLVE ORIGINAL REQUEST", config);
-              //return that.requester.request(config); // this complete doesn't fire the onSucess callback for this request
-              return Promise.resolve(config);
-           }
-           console.log("RESOLVING REFRESH POST");
-           return Promise.resolve(config);
+
        }).catch(err2 => {
           var msg = err2.response.data.message;
           console.log(msg);
           tokens.refresh_error = msg;
-          localStorage.setItem(Config.api.tokName, JSON.stringify(tokens));
-          if (document.location.pathname !== '/login') {
-            document.location.href = '/login?reload=' + new Date().getTime();
-          }
-          console.log("REJECTING REFRESH POST");
-          return Promise.reject(err2);
+          AsyncStorage.setItem(Config.api.tokName, JSON.stringify(tokens), storage => {
+            if (document.location.pathname !== '/login') {
+              document.location.href = '/login?reload=' + new Date().getTime();
+            }
+            console.log("REJECTING REFRESH POST");
+            return Promise.reject(err2);
+          });
        });
     }
 
-    getLocalTokens() {
-      let tokens = localStorage.getItem(Config.api.tokName);
+    async getLocalTokens() {
+      let tokens = await AsyncStorage.getItem(Config.api.tokName);
       try {
         tokens = JSON.parse(tokens);
         if (tokens === null || typeof tokens.access_token !== 'string') tokens = false;
@@ -172,16 +176,12 @@ class API {
     }
 
     Get (path, config) {
-
         const call = this.requester.get(path, config);
         call.then((res) => {
-          /*
-            console.log('API', 'Response from "' + path + '":');
-            console.log(res);
-
-            */
+          return res;
         }).catch((err) => {
-            console.log('API', 'Response from "' + path + '": "' + err + '"');
+          console.log('API', 'Response from "' + path + '": "' + err + '"');
+          return Promise.reject(err);
         });
         return call;
     }
@@ -193,9 +193,10 @@ class API {
 
             console.log('API', 'Response from "' + path + '":');
             console.log(res);
-
+            return res;
         }).catch((err) => {
             console.log('API', 'Response from "' + path + '": "' + err + '"');
+            return Promise.reject(err);
         });
         return call;
     }
@@ -204,12 +205,10 @@ class API {
         console.log('API', 'POST to "' + path + '"');
         const call = this.requester.post(path, data);
         call.then((res) => {
-
-            console.log('API', 'Response from "' + path + '":');
-            console.log(res);
-
+            return res;
         }).catch((err) => {
             console.log('API', 'Response from "' + path + '": "' + err + '"');
+            return Promise.reject(err);
         });
         return call;
     }
@@ -219,12 +218,10 @@ class API {
         console.log('API', 'REQUEST to "' + path + '"');
         const call = this.requester.request(req);
         call.then((res) => {
-          /*
-            console.log('API', 'Response from "' + path + '":');
-            console.log(res);
-             */
+          return res;
         }).catch((err) => {
-            console.log('API', 'Response from "' + path + '": "' + err + '"');
+          console.log('API', 'Response from "' + path + '": "' + err + '"');
+          return Promise.reject(err);
         });
         return call;
     }

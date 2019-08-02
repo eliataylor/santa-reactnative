@@ -1,48 +1,50 @@
-import React from 'react'
-import { StatusBar } from 'react-native'
+import React from 'react';
+import { StatusBar } from 'react-native';
 
-import { connect } from 'react-redux'
-import { Auth } from './utils/UserAuth';
+import { connect } from 'react-redux';
+import API from './utils/API';
 
-import LoginOrRegister from './screens/LoginOrRegister'
-import Nav from './nav/Nav'
+import LoginOrRegister from './screens/LoginOrRegister';
+import { Text } from 'react-native';
 
 class App extends React.Component {
   state = {
-    user: {},
+    me: false,
     isLoading: true
   }
   async componentDidMount() {
-    StatusBar.setHidden(true)
-    try {
-      const user = await Auth.currentAuthenticatedUser()
+    StatusBar.setHidden(true);
+    var tokens = API.getLocalTokens();
+    //console.warn('APP componentDidMount', tokens);
+    if (!tokens) {
+        return this.setState({ isLoading: false });
+    }
+    API.Get('/api/users/me')
+    .then(res => {
       this.setState({ user, isLoading: false })
-    } catch (err) {
+      return user;
+    })
+    .catch (err => {
       this.setState({ isLoading: false })
-    }
+      return Promise.reject(err);
+    })
   }
-  async componentWillReceiveProps(nextProps) {
-    try {
-      const user = await Auth.currentAuthenticatedUser()
-      this.setState({ user })
-    } catch (err) {
-      this.setState({ user: {} })
-    }
-  }
+
   render() {
+    //console.warn('RENDERING LOGIN/REGISTER', this.state);
     if (this.state.isLoading) return null
-    let loggedIn = false
-    if (this.state.user.username) {
-      loggedIn = true
-    }
-    if (loggedIn) {
+    if (this.state.me) {
+      if (this.state.me.offers && this.state.me.offers.length > 0) {
+        return (
+          <Text>Show my pending offer to cancel or fullfil</Text>
+        );
+      }
       return (
-        <Nav />
+        <Text>Show nearby wishes</Text>
       )
     }
-    return (
-      <LoginOrRegister />
-    )
+    console.warn('RENDERING LOGIN/REGISTER', this.state.me);
+    return (<LoginOrRegister />);
   }
 }
 
