@@ -3,6 +3,7 @@ import {
   Platform,
   Text,
   View,
+  KeyboardAvoidingView,
   TextInput,
   StyleSheet,
   TouchableOpacity,
@@ -20,10 +21,10 @@ import Input from '../components/FormTextInput'
 import Button from '../components/Button'
 
 const initialState = {
-  username: '',
+  firstname: '',
   password: '',
   email: '',
-  phone_number: '',
+  phone: '',
   authCode: ''
 }
 
@@ -37,15 +38,16 @@ class SignUp extends Component<{}> {
   }
 
   signUp() {
-    const { username, password, email, phone_number } = this.state
-    this.props.dispatchCreateUser(username, password, email, phone_number)
+    const { firstname, password, email, phone } = this.state
+    this.props.dispatchCreateUser(firstname, password, email, phone)
   }
 
   confirm() {
-    const { authCode, username } = this.state
-    this.props.dispatchConfirmUser(username, authCode)
+    const { authCode, firstname } = this.state
+    this.props.dispatchConfirmUser(firstname, authCode)
   }
 
+//  getDerivedStateFromProps(nextProps) {
   componentWillReceiveProps(nextProps) {
     const { auth: { showSignUpConfirmationModal }} = nextProps
     if (!showSignUpConfirmationModal && this.props.auth.showSignUpConfirmationModal) {
@@ -61,25 +63,17 @@ class SignUp extends Component<{}> {
       signUpErrorMessage
     }} = this.props
     return (
-      <View style={styles.container}>
-        <View style={styles.heading}>
-          <Image
-            source={require('../assets/shape.png')}
-            style={styles.headingImage}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={styles.greeting}>
-          Welcome,
-        </Text>
-        <Text style={styles.greeting2}>
-          sign up to continue
-        </Text>
-        <View style={styles.inputContainer}>
+      <KeyboardAvoidingView style={styles.container}>
+        <Image
+          source={require('../assets/images/logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <View style={styles.form}>
           <Input
-            value={this.state.username}
-            placeholder="User Name"
-            type='username'
+            value={this.state.firstname}
+            placeholder="First Name"
+            type='firstname'
             onChangeText={this.onChangeText}
           />
           <Input
@@ -88,15 +82,12 @@ class SignUp extends Component<{}> {
             type='email'
             onChangeText={this.onChangeText}
           />
-
-          <Text style={styles.greeting2}>OR</Text>
-
           <Input
             placeholder="Phone Number"
             type='phone_number'
             keyboardType='numeric'
             onChangeText={this.onChangeText}
-            value={this.state.phone_number}
+            value={this.state.phone}
           />
           <Input
             value={this.state.password}
@@ -134,7 +125,7 @@ class SignUp extends Component<{}> {
             </Modal>
           )
         }
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -144,8 +135,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  dispatchConfirmUser: (username, authCode) => confirmUserSignUp(username, authCode),
-  dispatchCreateUser: (username, password, email, phone_number) => createUser(username, password, email, phone_number)
+  dispatchConfirmUser: (firstname, authCode) => confirmUserSignUp(firstname, authCode),
+  dispatchCreateUser: (firstname, password, email, phone) => createUser(firstname, password, email, phone)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
@@ -156,8 +147,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  inputContainer: {
-    marginTop: 20
+  form: {
+    flex: 1,
+    justifyContent: "center",
+    width: "80%"
   },
   container: {
     flex: 1,
@@ -178,9 +171,11 @@ const styles = StyleSheet.create({
   heading: {
     flexDirection: 'row'
   },
-  headingImage: {
-    width: 38,
-    height: 38
+  logo: {
+    flex: 1,
+    width: "100%",
+    resizeMode: "contain",
+    alignSelf: "center"
   },
   errorMessage: {
     // fontFamily: fonts.base,

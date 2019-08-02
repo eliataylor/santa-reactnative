@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Config from '../Config';
+//import AsyncStorage from '@react-native-community/async-storage';
 import {AsyncStorage} from 'react-native';
-
 
 class API {
 
