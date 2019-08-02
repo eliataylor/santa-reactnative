@@ -5,7 +5,7 @@ import FormTextInput from "../components/FormTextInput";
 import imageLogo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
-
+import API from './utils/API';
 
 interface State {
   email: string;
@@ -34,8 +34,7 @@ class LoginScreen extends React.Component<{}, State> {
     this.setState({ password: password });
   };
 
-  // When the "next" button is pressed, focus the password
-  // input
+  // When the "next" button is pressed, focus the password input
   handleEmailSubmitPress = () => {
     if (this.passwordInputRef.current) {
       this.passwordInputRef.current.focus();
@@ -50,7 +49,19 @@ class LoginScreen extends React.Component<{}, State> {
   };
 
   handleLoginPress = () => {
-    //this.props.
+    var data = {grant_type:'password', password:this.state.password};
+    //if (this.state.phone) data.phone = this.state.phone;
+    data.email = this.state.email;
+    API.Post('/oauth/token', data)
+    .then(res => {
+      // AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res),  storage => {});
+      this.setState({ user, isLoading: false })
+      return user;
+    })
+    .catch (err => {
+      this.setState({ isLoading: false })
+      return Promise.reject(err);
+    })
     console.log("Login button pressed");
   };
 

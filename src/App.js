@@ -14,11 +14,11 @@ class App extends React.Component {
   }
   async componentDidMount() {
     StatusBar.setHidden(true);
-    var tokens = API.getLocalTokens();
-    //console.warn('APP componentDidMount', tokens);
+    var tokens = await API.getLocalTokens();
     if (!tokens) {
         return this.setState({ isLoading: false });
     }
+    console.warn(tokens);
     API.Get('/api/users/me')
     .then(res => {
       this.setState({ user, isLoading: false })
@@ -31,7 +31,6 @@ class App extends React.Component {
   }
 
   render() {
-    //console.warn('RENDERING LOGIN/REGISTER', this.state);
     if (this.state.isLoading) return null
     if (this.state.me) {
       if (this.state.me.offers && this.state.me.offers.length > 0) {
