@@ -1,10 +1,10 @@
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
-import { TabNavigator } from 'react-navigation'
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
-import { colors, fonts } from '../theme'
-import LoginScreen from './LoginScreen'
-import SignUp from './SignUp'
+import { colors, fonts } from '../theme';
+import LoginScreen from './LoginScreen';
+import SignUp from './SignUp';
 
 const styles = StyleSheet.create({
   icon: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 })
 
 const routes = {
-  LoginScreen: {
+  SignIn: {
     screen: LoginScreen,
     navigationOptions: {
       title: 'Sign In',
@@ -59,4 +59,6 @@ const routeConfig = {
   }
 }
 
-export default TabNavigator(routes, routeConfig)
+const LoginOrRegister = createBottomTabNavigator(routes, routeConfig);
+//export default LoginOrRegister;
+export default createAppContainer(LoginOrRegister);

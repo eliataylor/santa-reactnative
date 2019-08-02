@@ -14,10 +14,10 @@ import {
   CONFIRM_LOGIN,
   CONFIRM_LOGIN_SUCCESS,
   CONFIRM_LOGIN_FAILURE
-} from './reducers/auth'
+} from './redux/auth'
 
 import { Alert } from 'react-native'
-import { Auth } from 'aws-amplify'
+import { Auth } from './utils/UserAuth';
 
 function signUp() {
   return {
@@ -39,24 +39,17 @@ function signUpFailure(err) {
   }
 }
 
-export function createUser(username, password, email, phone_number) {
+export function createUser(username, password, email, phone) {
   return (dispatch) => {
     dispatch(signUp())
-    let phone
-    const firstTwoDigits = phone_number.substring(0, 2)
-    if (firstTwoDigits === '+1') {
-      phone = phone_number
-    } else {
-      phone = '+1' + phone_number
-    }
-    Auth.signUp({
-      username,
-      password,
-      attributes: {
-        email,
-        phone_number: phone
-      }
-    })
+    var me = {};
+
+    if (username) me['name.first'] = username;
+    if (password) me.password = password;
+    if (phone) me.phone = phone;
+    if (email) me.email = email;
+
+    API.Post('/api/users/register', me)
     .then(data => {
       console.log('data from signUp: ', data)
       dispatch(signUpSuccess(data))

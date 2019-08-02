@@ -1,13 +1,21 @@
-import axios from 'axios';
 import API from './API';
 
-class UserAuth {
+const UserAuth = {
 
-  async currentAuthenticatedUser : function() {
-    return null;
-    API.Get('/api/users/5d34e1aebba83628da3b0aa1').then(res => {
+  initApp : function() {
+    return API.Get('/api/users/me');
+  },
 
-    })
+  signIn : function(username, password) {
+    console.log(username, password);
+  },
+
+  confirmSignUp : function(username, authCode) {
+    console.log(username, authCode);
+  },
+
+  confirmSignIn : function(username, authCode) {
+    console.log(username, authCode);
   }
 
 }

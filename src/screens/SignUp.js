@@ -11,13 +11,12 @@ import {
   Modal
 } from 'react-native';
 
-import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
 
 import { fonts, colors } from '../theme'
 import { createUser, confirmUserSignUp } from '../actions'
 
-import Input from '../components/Input'
+import Input from '../components/FormTextInput'
 import Button from '../components/Button'
 
 const initialState = {
@@ -89,19 +88,22 @@ class SignUp extends Component<{}> {
             type='email'
             onChangeText={this.onChangeText}
           />
-          <Input
-            value={this.state.password}
-            placeholder="Password"
-            secureTextEntry
-            type='password'
-            onChangeText={this.onChangeText}
-          />
+
+          <Text style={styles.greeting2}>OR</Text>
+
           <Input
             placeholder="Phone Number"
             type='phone_number'
             keyboardType='numeric'
             onChangeText={this.onChangeText}
             value={this.state.phone_number}
+          />
+          <Input
+            value={this.state.password}
+            placeholder="Password"
+            secureTextEntry
+            type='password'
+            onChangeText={this.onChangeText}
           />
         </View>
         <Button
