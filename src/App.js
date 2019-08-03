@@ -1,39 +1,25 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
-
 import { connect } from 'react-redux';
-import API from './utils/API';
-
+import { StatusBar, Text } from 'react-native';
 import LoginOrRegister from './screens/LoginOrRegister';
-import { Text } from 'react-native';
 
 class App extends React.Component {
-  state = {
-    me: false,
-    isLoading: true
-  }
+
   async componentDidMount() {
     StatusBar.setHidden(true);
     var tokens = await API.getLocalTokens();
-    if (!tokens) {
-        return this.setState({ isLoading: false });
+    if (tokens) {
+        this.props.checkToken();
     }
-    console.warn(tokens);
-    API.Get('/api/users/me')
-    .then(res => {
-      this.setState({ user, isLoading: false })
-      return user;
-    })
-    .catch (err => {
-      this.setState({ isLoading: false })
-      return Promise.reject(err);
-    })
+
   }
 
   render() {
-    if (this.state.isLoading) return null
-    if (this.state.me) {
-      if (this.state.me.offers && this.state.me.offers.length > 0) {
+    if (this.props.auth.me) {
+      if (this.props.auth.me.isValid === false) {
+        return (<LoginOrRegister />);
+      }
+      if (this.props.auth.me.offers && this.props.auth.me.offers.length > 0) {
         return (
           <Text>Show my pending offer to cancel or fullfil</Text>
         );
@@ -46,8 +32,12 @@ class App extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  checkToken: () => checkToken()
+}
+
 const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

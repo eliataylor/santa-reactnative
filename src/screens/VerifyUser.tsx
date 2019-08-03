@@ -1,50 +1,32 @@
 import * as React from "react";
-import { connect } from 'react-redux';
 import { Image, StyleSheet, KeyboardAvoidingView, View } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import imageLogo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
+import { connect } from 'react-redux';
 import { authenticate } from '../actions'
 
 interface State {
-  email: string;
-  password: string;
-  emailHelp: string;
-  passwordHelp: string;
+  verificationCode: string;
+  verificationHelp: string;
 }
 
 class LoginScreen extends React.Component<{}, State> {
-  passwordInputRef = React.createRef<FormTextInput>();
 
   readonly state: State = {
-    email: '',
-    password: '',
-    emailHelp:'',
-    passwordHelp:''
+    verificationCode: '',
+    verificationHelp: ''
   };
 
-  handleEmailChange = (email: string) => {
-    this.setState({ email: email });
-  };
-
-  handlePasswordChange = (password: string) => {
-    this.setState({ password: password });
-  };
-
-  // When the "next" button is pressed, focus the password input
-  handleEmailSubmitPress = () => {
-    if (this.passwordInputRef.current) {
-      this.passwordInputRef.current.focus();
-    }
+  handleVerificationCode = (code: string) => {
+    this.setState({ verificationCode: code });
   };
 
   handleLoginPress = () => {
-    if (this.state.email.length < 6 || this.state.email.indexOf("@") < 1) {
-        this.setState({emailHelp:strings.EMAIL_REQUIRED});
-    } else if (this.state.password.length < 4) {
-        this.setState({passwordHelp:strings.PASSWORD_REQUIRED});
+    if (this.state.verificationCode.length < 8) {
+        this.setState({verificationHelp:strings.VERIFICATION_REQUIRED});
     } else {
       var data = {grant_type:'password', password:this.state.password};
       if (this.state.phone) data.phone = this.state.phone;
@@ -54,7 +36,7 @@ class LoginScreen extends React.Component<{}, State> {
   };
 
   render() {
-    const {email, password, emailHelp, passwordHelp} = this.state;
+    const {verificationCode, verificationHelp} = this.state;
 
     return (
       <KeyboardAvoidingView
@@ -67,19 +49,9 @@ class LoginScreen extends React.Component<{}, State> {
             autoCorrect={false}
             keyboardType='email-address'
             returnKeyType='next'
-            onChangeText={this.handleEmailChange}
-            onSubmitEditing={this.handleEmailSubmitPress}
+            onChangeText={this.handleVerificationCode}
             placeholder={strings.EMAIL_PLACEHOLDER}
-            error={emailHelp}
-          />
-          <FormTextInput
-            ref={this.passwordInputRef}
-            value={password}
-            onChangeText={this.handlePasswordChange}
-            placeholder={strings.PASSWORD_PLACEHOLDER}
-            secureTextEntry={true}
-            returnKeyType="done"
-            error={passwordHelp}
+            error={verificationHelp}
           />
           <Button
             label={strings.LOGIN}
@@ -118,7 +90,7 @@ const styles = StyleSheet.create({
 
 
 const mapDispatchToProps = {
-  authenticate: (username, password) => authenticate(username, password)
+  verifyUser: (username, password) => verifyUser(username, password)
 }
 
 const mapStateToProps = state => ({

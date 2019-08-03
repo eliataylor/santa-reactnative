@@ -52,6 +52,9 @@ export default (state = initialState, action) => {
       newState.signUpError = false;
       newState.me = action.me;
       newState.token = action.token;
+      if (newState.me.isValid === false) {
+        newState.nextSteps.push(VERIFY_STARTED);
+      }
       return newState;
     case SIGNUP_FAILURE:
       newState.signUpError = action.error;
