@@ -140,20 +140,42 @@ export function createUser(username, password, email, phone) {
 
 export function authenticate(credentials) {
   return (dispatch) => {
-    dispatch(loginStart())
+    dispatch(logInStart())
 
     API.Post('/oauth/token', credentials)
     .then(res => {
       let me = res.user;
       let token = res.token;
-      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.token),  storage => {
-          dispatch(loginSuccess(user))
+      return AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.token),  storage => {
+          dispatch(logInSuccess(res));
+          // load wishes
           return res;
       });
     })
     .catch (err => {
       console.log('error logging in: ', err)
-      dispatch(loginFailure(err))
+      dispatch(logInFailure(err))
+      return Promise.reject(err);
+    })
+  }
+}
+
+
+export function checkToken() {
+  return (dispatch) => {
+    API.Get('/api/users/me')
+    .then(res => {
+      let me = res.user;
+      let token = res.token;
+      return AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.token),  storage => {
+          dispatch(logInSuccess(res));
+          // load wishes
+          return res;
+      });
+    })
+    .catch (err => {
+      console.log('error logging in: ', err)
+      dispatch(logInFailure(err))
       return Promise.reject(err);
     })
   }

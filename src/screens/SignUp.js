@@ -15,7 +15,7 @@ import {
 import { connect } from 'react-redux'
 
 import { colors } from '../theme'
-import { createUser, confirmUserSignUp } from '../actions'
+import { createUser, verifyUser } from '../actions'
 
 import Input from '../components/FormTextInput'
 import Button from '../components/Button'
@@ -39,19 +39,19 @@ class SignUp extends Component<{}> {
 
   signUp() {
     const { firstname, password, email, phone } = this.state
-    this.props.dispatchCreateUser(firstname, password, email, phone)
+    this.props.createUser(firstname, password, email, phone)
   }
 
   confirm() {
     const { authCode, firstname } = this.state
-    this.props.dispatchConfirmUser(firstname, authCode)
+    this.props.verifyUser(firstname, authCode)
   }
 
 //  getDerivedStateFromProps(nextProps) {
   componentWillReceiveProps(nextProps) {
-    const { auth: { showSignUpConfirmationModal }} = nextProps
-    if (!showSignUpConfirmationModal && this.props.auth.showSignUpConfirmationModal) {
-      this.setState(initialState)
+    const {nexSteps} = nextProps.auth;
+    if (nexSteps && this.props.auth.nexSteps != nexSteps) { // test deep
+      // this.setState(initialState)
     }
   }
 
@@ -98,7 +98,6 @@ class SignUp extends Component<{}> {
         <Button
           title='Sign Up'
           onPress={this.signUp.bind(this)}
-          isLoading={isAuthenticating}
         />
       </KeyboardAvoidingView>
     );
@@ -110,7 +109,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  dispatchConfirmUser: (firstname, authCode) => confirmUserSignUp(firstname, authCode),
+  verifyUser: (firstname, authCode) => verifyUser(firstname, authCode),
   createUser: (firstname, password, email, phone) => createUser(firstname, password, email, phone)
 }
 
