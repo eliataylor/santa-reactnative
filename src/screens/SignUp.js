@@ -56,14 +56,12 @@ class SignUp extends Component<{}> {
   }
 
   render() {
-    const { auth: {
-      showSignUpConfirmationModal,
-      isAuthenticating,
-      signUpError,
-      signUpErrorMessage
-    }} = this.props
+    const { signUpError, nextSteps } = this.props
     return (
-      <KeyboardAvoidingView style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+      >
         <Image
           source={require('../assets/images/logo.png')}
           style={styles.logo}
@@ -102,41 +100,18 @@ class SignUp extends Component<{}> {
           onPress={this.signUp.bind(this)}
           isLoading={isAuthenticating}
         />
-        <Text style={[styles.errorMessage, signUpError && { color: 'black' }]}>Error logging in. Please try again.</Text>
-        <Text style={[styles.errorMessage, signUpError && { color: 'black' }]}>{signUpErrorMessage}</Text>
-        {
-          showSignUpConfirmationModal && (
-            <Modal>
-              <View style={styles.modal}>
-                <Input
-                  placeholder="Authorization Code"
-                  type='authCode'
-                  keyboardType='numeric'
-                  onChangeText={this.onChangeText}
-                  value={this.state.authCode}
-                  keyboardType='numeric'
-                />
-                <Button
-                  title='Confirm'
-                  onPress={this.confirm.bind(this)}
-                  isLoading={isAuthenticating}
-                />
-              </View>
-            </Modal>
-          )
-        }
       </KeyboardAvoidingView>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: {...state.auth}
 })
 
 const mapDispatchToProps = {
   dispatchConfirmUser: (firstname, authCode) => confirmUserSignUp(firstname, authCode),
-  dispatchCreateUser: (firstname, password, email, phone) => createUser(firstname, password, email, phone)
+  createUser: (firstname, password, email, phone) => createUser(firstname, password, email, phone)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

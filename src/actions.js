@@ -1,47 +1,121 @@
+import API from './utils/API';
+//import AsyncStorage from '@react-native-community/async-storage';
+import {AsyncStorage} from 'react-native';
+
 import {
-  LOG_IN,
-  LOG_IN_SUCCESS,
-  LOG_IN_FAILURE,
+  // events
+  LOGIN_STARTED,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+
+  SIGNUP_STARTED,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE,
+
+  VERIFY_STARTED,
+  VERIFY_SUCCESS,
+  VERIFY_FAILURE,
+
+  NEXT_STEP_STARTED, // will hold verification
+  NEXT_STEP_SUCCESS,
+  NEXT_STEP_FAILURE,
+
   LOG_OUT,
-  SIGN_UP,
-  SIGN_UP_SUCCESS,
-  SIGN_UP_FAILURE,
-  SHOW_SIGN_IN_CONFIRMATION_MODAL,
-  SHOW_SIGN_UP_CONFIRMATION_MODAL,
-  CONFIRM_SIGNUP,
-  CONFIRM_SIGNUP_SUCCESS,
-  CONFIRM_SIGNUP_FAILURE,
-  CONFIRM_LOGIN,
-  CONFIRM_LOGIN_SUCCESS,
-  CONFIRM_LOGIN_FAILURE
+
 } from './redux/auth'
 
-import { Alert } from 'react-native'
-import { Auth } from './utils/UserAuth';
-
-function signUp() {
+export function logOut() {
   return {
-    type: SIGN_UP
+    type: LOG_OUT
+  }
+}
+
+function logInStart() {
+  return {
+    type: LOGIN_STARTED
+  }
+}
+
+function logInSuccess(user) {
+  return {
+    type: LOGIN_SUCCESS,
+    user
+  }
+}
+
+function logInFailure(err) {
+  return {
+    type: LOGIN_FAILURE,
+    error: err
+  }
+}
+
+function signUpStart() {
+  return {
+    type: SIGNUP_STARTED
   }
 }
 
 function signUpSuccess(user) {
   return {
-    type: SIGN_UP_SUCCESS,
+    type: SIGNUP_SUCCESS,
     user
   }
 }
 
 function signUpFailure(err) {
   return {
-    type: SIGN_UP_FAILURE,
+    type: SIGNUP_FAILURE,
     error: err
   }
 }
 
+
+function verifyStart() {
+  return {
+    type: VERIFY_STARTED
+  }
+}
+
+function verifySuccess(user) {
+  return {
+    type: VERIFY_SUCCESS,
+    user
+  }
+}
+
+function verifyFailure(err) {
+  return {
+    type: VERIFY_FAILURE,
+    error: err
+  }
+}
+
+function nextStepStart() {
+  return {
+    type: NEXT_STEP_STARTED
+  }
+}
+
+function nextStepSuccess(action) {
+  return {
+    type: NEXT_STEP_SUCCESS,
+    action
+  }
+}
+
+function nextStepFailure(err) {
+  return {
+    type: NEXT_STEP_FAILURE,
+    error: err
+  }
+}
+
+
+/** Actual functions **/
 export function createUser(username, password, email, phone) {
   return (dispatch) => {
-    dispatch(signUp())
+    dispatch(signUpStarted())
     var me = {};
 
     if (username) me['name.first'] = username;
@@ -50,141 +124,58 @@ export function createUser(username, password, email, phone) {
     if (email) me.email = email;
 
     API.Post('/api/users/register', me)
-    .then(data => {
-      console.log('data from signUp: ', data)
-      dispatch(signUpSuccess(data))
-      dispatch(showSignUpConfirmationModal())
+    .then(user => {
+      console.log('signUp succeeded: ', user)
+      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(user.token),  storage => {
+          dispatch(signUpSuccess(res.user));
+          return res.user;
+      });
     })
     .catch(err => {
-      console.log('error signing up: ', err)
+      console.log('error creating User: ', err);
       dispatch(signUpFailure(err))
     });
   }
 }
 
-function logIn() {
-  return {
-    type: LOG_IN
-  }
-}
-
-export function logOut() {
-  return {
-    type: LOG_OUT
-  }
-}
-
-function logInSuccess(user) {
-  return {
-    type: LOG_IN_SUCCESS,
-    user: user
-  }
-}
-
-function logInFailure(err) {
-  return {
-    type: LOG_IN_FAILURE,
-    error: err
-  }
-}
-
-export function authenticate(username, password) {
+export function authenticate(credentials) {
   return (dispatch) => {
-    dispatch(logIn())
-    Auth.signIn(username, password)
+    dispatch(loginStart())
+
+    API.Post('/oauth/token', credentials)
+    .then(res => {
+      let me = res.user;
+      let token = res.token;
+      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.token),  storage => {
+          dispatch(loginSuccess(user))
+          return res;
+      });
+    })
+    .catch (err => {
+      console.log('error logging in: ', err)
+      dispatch(loginFailure(err))
+      return Promise.reject(err);
+    })
+  }
+}
+
+// updates isValid
+export function verifyUser(credentials) {
+  return (dispatch) => {
+    dispatch(verifyStart())
+    API.Put('/api/users/:id/verify/:code', credentials)
       .then(user => {
-        dispatch(logInSuccess(user))
-        dispatch(showSignInConfirmationModal())
+        let me = res.user;
+        let token = res.token;
+        AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.token),  storage => {
+            dispatch(verifySuccess(user))
+            return res;
+        });
       })
       .catch(err => {
-        console.log('errror from signIn: ', err)
-        dispatch(logInFailure(err))
+        console.log('error verifying user: ', err)
+        dispatch(verifyFailure(err));
+        return Promise.reject(err);
       });
-  }
-}
-
-export function showSignInConfirmationModal() {
-  return {
-    type: SHOW_SIGN_IN_CONFIRMATION_MODAL
-  }
-}
-
-export function showSignUpConfirmationModal() {
-  return {
-    type: SHOW_SIGN_UP_CONFIRMATION_MODAL
-  }
-}
-
-export function confirmUserLogin(authCode) {
-  return (dispatch, getState) => {
-    dispatch(confirmLogIn())
-    const { auth: { user }} = getState()
-    console.log('state: ', getState())
-    Auth.confirmSignIn(user, authCode)
-      .then(data => {
-        console.log('data from confirmLogin: ', data)
-        dispatch(confirmLoginSuccess(data))
-      })
-      .catch(err => {
-        console.log('error signing in: ', err)
-        dispatch(confirmSignUpFailure(err))
-      })
-  }
-}
-
-function confirmLogIn() {
-  return {
-    type: CONFIRM_LOGIN
-  }
-}
-
-function confirmLoginSuccess(user) {
-  return {
-    type: CONFIRM_LOGIN_SUCCESS,
-    user
-  }
-}
-
-function confirmLoginFailure() {
-  return {
-    type: CONFIRM_LOGIN_FAILURE,
-    user
-  }
-}
-
-export function confirmUserSignUp(username, authCode) {
-  return (dispatch) => {
-    dispatch(confirmSignUp())
-    Auth.confirmSignUp(username, authCode)
-      .then(data => {
-        console.log('data from confirmSignUp: ', data)
-        dispatch(confirmSignUpSuccess())
-        setTimeout(() => {
-          Alert.alert('Successfully Signed Up!', 'Please Sign')
-        }, 0)
-      })
-      .catch(err => {
-        console.log('error signing up: ', err)
-        dispatch(confirmSignUpFailure(err))
-      });
-  }
-}
-
-function confirmSignUp() {
-  return {
-    type: CONFIRM_SIGNUP
-  }
-}
-
-function confirmSignUpSuccess() {
-  return {
-    type: CONFIRM_SIGNUP_SUCCESS
-  }
-}
-
-function confirmSignUpFailure(error) {
-  return {
-    type: CONFIRM_SIGNUP_FAILURE,
-    error
   }
 }

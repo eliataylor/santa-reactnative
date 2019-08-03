@@ -6,6 +6,8 @@ import imageLogo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import API from './utils/API';
+import { connect } from 'react-redux';
+import { authenticate, confirmUserLogin } from '../actions'
 
 interface State {
   email: string;
@@ -50,19 +52,11 @@ class LoginScreen extends React.Component<{}, State> {
 
   handleLoginPress = () => {
     var data = {grant_type:'password', password:this.state.password};
-    //if (this.state.phone) data.phone = this.state.phone;
-    data.email = this.state.email;
-    API.Post('/oauth/token', data)
-    .then(res => {
-      // AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res),  storage => {});
-      this.setState({ user, isLoading: false })
-      return user;
-    })
-    .catch (err => {
-      this.setState({ isLoading: false })
-      return Promise.reject(err);
-    })
-    console.log("Login button pressed");
+    if (this.state.phone) data.phone = this.state.phone;
+    else data.email = this.state.email;  // either work on front end (backend still doesn't send sms verification codes though)
+    this.props.authenticate(data);
+    //this.setState({ user, isLoading: false });
+    //console.log("Login button pressed");
   };
 
   render() {
@@ -82,6 +76,12 @@ class LoginScreen extends React.Component<{}, State> {
       !password && passwordTouched
         ? strings.PASSWORD_REQUIRED
         : undefined;
+
+
+    const {
+      signInErrorMessage,
+      signInError
+    } = this.props.auth;
 
     return (
       <KeyboardAvoidingView
@@ -137,7 +137,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     width: "80%"
-  }
+  },
+  errorMessage: {
+    fontSize: 12,
+    color: 'red',
+  },
 });
 
-export default LoginScreen;
+
+const mapDispatchToProps = {
+  confirmUserLogin: authCode => confirmUserLogin(authCode),
+  authenticate: (username, password) => authenticate(username, password)
+}
+
+const mapStateToProps = state => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
