@@ -1,6 +1,6 @@
 import API from './utils/API';
-//import AsyncStorage from '@react-native-community/async-storage';
-import {AsyncStorage} from 'react-native';
+import Config from './Config';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {
   // events
@@ -123,7 +123,7 @@ export function createUser(username, password, email, phone) {
     if (phone) me.phone = phone;
     if (email) me.email = email;
 
-    API.Post('/api/users/register', me)
+    return API.Post('/api/users/register', me)
     .then(user => {
       console.log('signUp succeeded: ', user)
       AsyncStorage.setItem(Config.api.tokName, JSON.stringify(user.token),  storage => {
@@ -144,18 +144,21 @@ export function authenticate(credentials) {
 
     API.Post('/oauth/token', credentials)
     .then(res => {
-      let me = res.user;
-      let token = res.token;
-      return AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.token),  storage => {
-          dispatch(logInSuccess(res));
-          // load wishes
+      if (typeof res.data.token === 'undefined') {
+        console.log('server login failed');
+        return res.data;
+      }
+      let me = res.data.user;
+      let token = res.data.token;
+      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.data.token),  storage => {
+          dispatch(logInSuccess(res.data))
           return res;
       });
     })
     .catch (err => {
-      console.log('error logging in: ', err)
-      dispatch(logInFailure(err))
-      return Promise.reject(err);
+      console.log('error logging in: ', err);
+      dispatch(logInFailure(err.message));
+      return err;
     })
   }
 }
@@ -163,20 +166,24 @@ export function authenticate(credentials) {
 
 export function checkToken() {
   return (dispatch) => {
-    API.Get('/api/users/me')
+    return API.Get('/api/users/me')
     .then(res => {
-      let me = res.user;
-      let token = res.token;
-      return AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.token),  storage => {
-          dispatch(logInSuccess(res));
-          // load wishes
+      if (typeof res.data.token == 'undefined') {
+        console.log('server login failed');
+      }
+      let me = res.data.user;
+      let token = res.data.token;
+      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.data.token),  storage => {
+          dispatch(logInSuccess(res.data))
           return res;
       });
     })
     .catch (err => {
       console.log('error logging in: ', err)
-      dispatch(logInFailure(err))
-      return Promise.reject(err);
+      dispatch(logInFailure(err.message))
+      return err;
+      dispatch(logInFailure(err.message))
+      return err;
     })
   }
 }
@@ -186,18 +193,21 @@ export function verifyUser(credentials) {
   return (dispatch) => {
     dispatch(verifyStart())
     API.Put('/api/users/:id/verify/:code', credentials)
-      .then(user => {
-        let me = res.user;
-        let token = res.token;
-        AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.token),  storage => {
-            dispatch(verifySuccess(user))
+      .then(res => {
+        if (typeof res.data.token == 'undefined') {
+          console.log('server login failed')
+        }
+        let me = res.data.user;
+        let token = res.data.token;
+        AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.data.token),  storage => {
+            dispatch(verifySuccess(res.data))
             return res;
         });
       })
       .catch(err => {
         console.log('error verifying user: ', err)
-        dispatch(verifyFailure(err));
-        return Promise.reject(err);
+        dispatch(verifyFailure(err.message));
+        return err;
       });
   }
 }

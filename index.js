@@ -4,10 +4,12 @@ import App from './src/App';
 
 // redux
 const appName = require('./app.json');
-import { createStore, applyMiddleware } from 'redux'
-import rootReducer from './src/redux/index'
-import thunk from 'redux-thunk'
-const store = createStore(rootReducer, applyMiddleware(thunk))
+import { compose, createStore, applyMiddleware } from 'redux'
+import rootReducer from './src/redux/index';
+import thunk from 'redux-thunk';
+const middleware = [thunk];
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(...middleware)));
 
 import { Provider } from 'react-redux'
 

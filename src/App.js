@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { StatusBar, Text } from 'react-native';
 import LoginOrRegister from './screens/LoginOrRegister';
+import API from './utils/API';
 
 class App extends React.Component {
 
@@ -11,7 +12,6 @@ class App extends React.Component {
     if (tokens) {
         this.props.checkToken();
     }
-
   }
 
   render() {
