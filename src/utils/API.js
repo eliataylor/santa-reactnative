@@ -1,36 +1,44 @@
 import axios from 'axios';
 import Config from '../Config';
-//import AsyncStorage from '@react-native-community/async-storage';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class API {
 
     constructor() {
       this.callqueue = [];
-
       axios.defaults.headers.common['crossDomain'] = true;
       axios.defaults.headers.common['async'] = true;
       axios.defaults.headers.common['timeout'] = 0; // for debugging with php breakpoints
+      axios.defaults.headers.common['Accept'] = 'application/json';
       //axios.defaults.headers.common['Access-Control-Max-Age'] = 6000;
       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
       this.requester = axios.create({
           baseURL: Config.api.base,
           timeout: Config.api.timeout,
-          params: {
-              '_format': 'json'
-          }
+          transformRequest: [
+              (data, headers) => {
+                if (!data) data = {};
+                return Object.entries(data)
+                  .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+                  .join('&');
+              },
+          ],
+          //, params: {'_format': 'json'}
       });
-      var that = this;
 
+      var that = this;
       this.requester.interceptors.request.use(function (config) {
         that.callqueue.push(config);
-        var tokens = that.getLocalTokens();
-        if (tokens.access_token && config.url.indexOf('/oauth/token') !== 0) {
+        var tokens =  that.getLocalTokens();
+        if (config.url.indexOf('/oauth/token') === 0) {
+          config.headers.common['Authorization'] = 'Basic ' + Config.api.base64d;
+        } else if (tokens && tokens.access_token) {
+          console.warn('ADDING BEARER TOKEN');
           config.headers.common['Authorization'] = 'Bearer ' + tokens.access_token;
         }
         return config;
       }, function(error) {
-        console.log('ERROR ON INTERCEPTOR REQUEST', error);
+        console.warn('ERROR ON INTERCEPTOR REQUEST', error);
         return Promise.reject(error);
       });
 
@@ -42,9 +50,9 @@ class API {
         if (error.response && typeof statusCodes[error.response.status] !== 'undefined') {
           if (error.response.config.url === Config.api.base + '/oauth/token') {
             that.callqueue.shift(); // remove and reject
-            console.log("Remove the interceptor to prevent a loop  in case token refresh also causes the 401");
+            console.warn("Remove the interceptor to prevent a loop  in case token refresh also causes the 401");
           } else {
-            console.log("REFRESH!");
+            console.warn("REFRESH!");
             that.refreshToken.call(that);
           }
           return Promise.reject(error);
@@ -67,7 +75,7 @@ class API {
             }
 
             if (error.response.config.url === Config.api.base + '/oauth/token') {
-              console.log("Remove the interceptor to prevent a loop  in case token refresh also causes the 401");
+              console.log("Remove the interceptor to prevent a loop in case token refresh also causes the 401");
             }
             axInstance.interceptors.response.eject(id);
 
@@ -98,9 +106,9 @@ class API {
 
     async refreshToken(err) {
       // @TODO if not a secured page >  return Promise.resolve();
-
-      let tokens = await AsyncStorage.getItem(Config.api.tokName);
+      let tokens = false;
       try {
+        token = await AsyncStorage.getItem(Config.api.tokName);
         tokens = JSON.parse(tokens);
         if (tokens === null || typeof tokens.access_token !== 'string') tokens = false;
       } catch(e) {
@@ -177,7 +185,10 @@ class API {
 
     Get (path, config) {
         const call = this.requester.get(path, config);
+        console.warn('CALLING ' + path);
         call.then((res) => {
+          //return res;
+          console.warn('RETUREND ' + path);
           return res;
         }).catch((err) => {
           console.log('API', 'Response from "' + path + '": "' + err + '"');
@@ -190,13 +201,12 @@ class API {
         console.log('API', 'Put to "' + path + '"');
         const call = this.requester.put(path, data);
         call.then((res) => {
-
-            console.log('API', 'Response from "' + path + '":');
-            console.log(res);
-            return res;
+          console.log('API', 'Response from "' + path + '":');
+          console.log(res);
+          return res;
         }).catch((err) => {
-            console.log('API', 'Response from "' + path + '": "' + err + '"');
-            return Promise.reject(err);
+          console.log('API', 'Response from "' + path + '": "' + err + '"');
+          return Promise.reject(err);
         });
         return call;
     }
@@ -208,7 +218,7 @@ class API {
             return res;
         }).catch((err) => {
             console.log('API', 'Response from "' + path + '": "' + err + '"');
-            return Promise.reject(err);
+            return err;
         });
         return call;
     }
@@ -227,4 +237,4 @@ class API {
     }
 }
 
-export default (new API()); // singleton
+export default new API(); // singleton
