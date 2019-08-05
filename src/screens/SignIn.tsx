@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Image, StyleSheet, KeyboardAvoidingView, View } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
+import VerifyUser from "./VerifyUser";
 import imageLogo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
@@ -15,7 +16,7 @@ interface State {
   passwordHelp: string;
 }
 
-class LoginScreen extends React.Component<{}, State> {
+class SignIn extends React.Component<{}, State> {
   passwordInputRef = React.createRef<FormTextInput>();
 
   readonly state: State = {
@@ -26,10 +27,12 @@ class LoginScreen extends React.Component<{}, State> {
   };
 
   handleEmailChange = (email: string) => {
+    email = email.toLowerCase().trim();
     this.setState({ email: email });
   };
 
   handlePasswordChange = (password: string) => {
+    password = password.trim();
     this.setState({ password: password });
   };
 
@@ -54,6 +57,12 @@ class LoginScreen extends React.Component<{}, State> {
   };
 
   render() {
+    if (this.props.auth.me) {
+      if (this.props.auth.me.isValid === false) {
+        return <VerifyUser />;
+      }
+    }
+
     const {email, password, emailHelp, passwordHelp} = this.state;
 
     return (
@@ -82,7 +91,7 @@ class LoginScreen extends React.Component<{}, State> {
             error={passwordHelp}
           />
           <Button
-            label={strings.LOGIN}
+            label={strings.SIGNIN}
             onPress={this.handleLoginPress}
             disabled={!email || !password}
           />
@@ -125,4 +134,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

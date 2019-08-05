@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { StatusBar, Text } from 'react-native';
 import LoginOrRegister from './screens/LoginOrRegister';
 import API from './utils/API';
+import Snackbar from 'react-native-snackbar';
+import Wishes from './screens/Wishes';
+import {checkToken} from './actions';
 
 class App extends React.Component {
 
@@ -15,20 +18,29 @@ class App extends React.Component {
   }
 
   render() {
+
     if (this.props.auth.me) {
       if (this.props.auth.me.isValid === false) {
-        return (<LoginOrRegister />);
+        return <LoginOrRegister />;
       }
       if (this.props.auth.me.offers && this.props.auth.me.offers.length > 0) {
-        return (
-          <Text>Show my pending offer to cancel or fullfil</Text>
-        );
+        return <Text>Show my pending offer to cancel or fulfill</Text>;
       }
-      return (
-        <Text>Show nearby wishes</Text>
-      )
+      return <Wishes />;
     }
-    return (<LoginOrRegister />);
+
+    var errors = [this.props.auth.logInError, this.props.auth.signUpError, this.props.auth.verifyError];
+    for(var e in errors) {
+      if (errors[e]) {
+        Snackbar.show({
+          title : errors[e],
+          duration : Snackbar.LENGTH_LONG,
+          backgroundColor	: 'red',
+          color : 'white'
+        });
+      }
+    }
+    return <LoginOrRegister />;
   }
 }
 

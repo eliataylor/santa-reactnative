@@ -20,7 +20,7 @@ import {
   NEXT_STEP_SUCCESS,
   NEXT_STEP_FAILURE,
 
-  LOG_OUT,
+  LOG_OUT
 
 } from './redux/auth'
 
@@ -36,10 +36,10 @@ function logInStart() {
   }
 }
 
-function logInSuccess(user) {
+function logInSuccess(payload) {
   return {
     type: LOGIN_SUCCESS,
-    user
+    payload
   }
 }
 
@@ -144,20 +144,18 @@ export function authenticate(credentials) {
 
     API.Post('/oauth/token', credentials)
     .then(res => {
-      if (typeof res.data.token === 'undefined') {
-        console.log('server login failed');
-        return res.data;
-      }
       let me = res.data.user;
-      let token = res.data.token;
-      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.data.token),  storage => {
+      let token = {...res.data};
+      delete token.user;
+      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
           dispatch(logInSuccess(res.data))
           return res;
       });
     })
     .catch (err => {
-      console.log('error logging in: ', err);
-      dispatch(logInFailure(err.message));
+      var msg = API.getErrorMsg(err);
+      console.log('error logging in: ', msg)
+      dispatch(logInFailure(msg))
       return err;
     })
   }
@@ -166,23 +164,20 @@ export function authenticate(credentials) {
 
 export function checkToken() {
   return (dispatch) => {
-    return API.Get('/api/users/me')
+    API.Get('/api/users/me')
     .then(res => {
-      if (typeof res.data.token == 'undefined') {
-        console.log('server login failed');
-      }
       let me = res.data.user;
-      let token = res.data.token;
-      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.data.token),  storage => {
+      let token = {...res.data};
+      delete token.user;
+      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
           dispatch(logInSuccess(res.data))
           return res;
       });
     })
     .catch (err => {
-      console.log('error logging in: ', err)
-      dispatch(logInFailure(err.message))
-      return err;
-      dispatch(logInFailure(err.message))
+      var msg = API.getErrorMsg(err);
+      console.log('error logging in: ', msg)
+      dispatch(logInFailure(msg))
       return err;
     })
   }
@@ -194,19 +189,18 @@ export function verifyUser(credentials) {
     dispatch(verifyStart())
     API.Put('/api/users/:id/verify/:code', credentials)
       .then(res => {
-        if (typeof res.data.token == 'undefined') {
-          console.log('server login failed')
-        }
         let me = res.data.user;
-        let token = res.data.token;
-        AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.data.token),  storage => {
+        let token = {...res.data};
+        delete token.user;
+        AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
             dispatch(verifySuccess(res.data))
             return res;
         });
       })
       .catch(err => {
-        console.log('error verifying user: ', err)
-        dispatch(verifyFailure(err.message));
+        var msg = API.getErrorMsg(err);
+        console.log('error logging in: ', msg)
+        dispatch(verifyFailure(msg))
         return err;
       });
   }

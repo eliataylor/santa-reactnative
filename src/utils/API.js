@@ -14,27 +14,19 @@ class API {
       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
       this.requester = axios.create({
           baseURL: Config.api.base,
-          timeout: Config.api.timeout,
-          transformRequest: [
-              (data, headers) => {
-                if (!data) data = {};
-                return Object.entries(data)
-                  .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
-                  .join('&');
-              },
-          ],
+          timeout: Config.api.timeout
           //, params: {'_format': 'json'}
       });
 
       var that = this;
-      this.requester.interceptors.request.use(function (config) {
-        that.callqueue.push(config);
-        var tokens =  that.getLocalTokens();
+      this.requester.interceptors.request.use(async function (config) {
+        that.callqueue.push(config); // TODO: key be config.url
+        var tokens = await that.getLocalTokens();
         if (config.url.indexOf('/oauth/token') === 0) {
           config.headers.common['Authorization'] = 'Basic ' + Config.api.base64d;
-        } else if (tokens && tokens.access_token) {
-          console.warn('ADDING BEARER TOKEN');
-          config.headers.common['Authorization'] = 'Bearer ' + tokens.access_token;
+        } else if (tokens && tokens.accessToken) {
+          //console.log('ADDING BEARER TOKEN');
+          config.headers.common['Authorization'] = 'Bearer ' + tokens.accessToken;
         }
         return config;
       }, function(error) {
@@ -43,9 +35,9 @@ class API {
       });
 
       this.requester.interceptors.response.use(res => {
-        that.callqueue.shift();
+        that.callqueue.shift(); // WARN: this could be removed out of order (we probably should)
         return res;
-      }, error => {
+      }, error => { // errors might be old accessToken
         const statusCodes = {401:false,403:false};
         if (error.response && typeof statusCodes[error.response.status] !== 'undefined') {
           if (error.response.config.url === Config.api.base + '/oauth/token') {
@@ -58,16 +50,13 @@ class API {
           return Promise.reject(error);
         }
         var next = that.callqueue.shift();
-        return Promise.reject(next); // remove and run next
+        return Promise.reject(error); // remove and run next
       });
-
-      //this.requester = this.createAuthRefreshInterceptor.call(this, this.requester, this.refreshToken, {statusCodes: [401,403]});
-      //this.requester = this.createAuthRefreshInterceptor(this.requester, this.refreshToken, {statusCodes: [401,403]});
     }
 
     createAuthRefreshInterceptor (axInstance, refreshTokenCall, options = {}) {
         const id = axInstance.interceptors.response.use(res => res, error => {
-
+            console.warn("createAuthRefreshInterceptor");
             // Reject promise if the error status is not in options.ports or defaults.ports
             const statusCodes = options.statusCodes;
             if (!error.response || (error.response.status && statusCodes.indexOf(+error.response.status) === -1)) {
@@ -110,7 +99,7 @@ class API {
       try {
         token = await AsyncStorage.getItem(Config.api.tokName);
         tokens = JSON.parse(tokens);
-        if (tokens === null || typeof tokens.access_token !== 'string') tokens = false;
+        if (tokens === null || typeof tokens.accessToken !== 'string') tokens = false;
       } catch(e) {
         tokens = false;
       }
@@ -141,14 +130,14 @@ class API {
 
            console.log("REFRESHED TOKENS", res.data);
            tokens.refresh_token = res.data.refresh_token;
-           tokens.access_token = res.data.access_token;
+           tokens.accessToken = res.data.accessToken;
            tokens.expires_in = res.data.expires_in;
            tokens.created_time = new Date().getTime();
 
            AsyncStorage.setItem(Config.api.tokName, JSON.stringify(tokens),  storage => {
              if (that.callqueue.length > 0) {
                 var config = that.callqueue.shift(); // remove last
-                config.headers.Authorization = 'Bearer ' + tokens.access_token;
+                config.headers.Authorization = 'Bearer ' + tokens.accessToken;
                 console.log("RESOLVE ORIGINAL REQUEST", config);
                 //return that.requester.request(config); // this complete doesn't fire the onSucess callback for this request
                 return Promise.resolve(config);
@@ -174,9 +163,10 @@ class API {
 
     async getLocalTokens() {
       let tokens = await AsyncStorage.getItem(Config.api.tokName);
+      if (!tokens || tokens === '') return false;
       try {
         tokens = JSON.parse(tokens);
-        if (tokens === null || typeof tokens.access_token !== 'string') tokens = false;
+        if (tokens === null || typeof tokens.accessToken !== 'string') tokens = false;
       } catch(e) {
         tokens = false;
       }
@@ -185,15 +175,14 @@ class API {
 
     Get (path, config) {
         const call = this.requester.get(path, config);
-        console.warn('CALLING ' + path);
+        /*
         call.then((res) => {
-          //return res;
-          console.warn('RETUREND ' + path);
           return res;
         }).catch((err) => {
           console.log('API', 'Response from "' + path + '": "' + err + '"');
           return Promise.reject(err);
         });
+        */
         return call;
     }
 
@@ -213,13 +202,18 @@ class API {
 
     Post (path, data) {
         console.log('API', 'POST to "' + path + '"');
+
+        data = Object.entries(data)
+          .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+          .join('&');
+
         const call = this.requester.post(path, data);
-        call.then((res) => {
+        /* call.then((res) => {
             return res;
         }).catch((err) => {
             console.log('API', 'Response from "' + path + '": "' + err + '"');
             return err;
-        });
+        }); */
         return call;
     }
 
@@ -235,6 +229,30 @@ class API {
         });
         return call;
     }
+
+    getErrorMsg(err) {
+      if (err.response && err.response.data) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(err.response.data);
+          console.log(err.response.status);
+          if (err.response.data.error) {
+            return err.response.data.error;
+          }
+          return err.response.data;
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+          return 'no server response received';
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', err.message);
+          return err.message;
+        }
+    }
+
 }
 
 export default new API(); // singleton

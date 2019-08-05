@@ -14,22 +14,29 @@ import {
 
 import { connect } from 'react-redux'
 
+import strings from "../config/strings";
 import { colors } from '../theme'
 import { createUser, verifyUser } from '../actions'
 
 import Input from '../components/FormTextInput'
 import Button from '../components/Button'
 
-const initialState = {
-  firstname: '',
-  password: '',
-  email: '',
-  phone: '',
-  authCode: ''
+interface State {
+  firstname: string;
+  password: string;
+  email: string;
+  phone: string;
+  authCode: string;
 }
 
-class SignUp extends Component<{}> {
-  state = initialState
+class SignUp extends React.Component<{}, State> {
+  readonly state: State = {
+    firstname: '',
+    password: '',
+    email: '',
+    phone: '',
+    authCode: ''
+  };
 
   onChangeText = (key, value) => {
     this.setState({
@@ -48,12 +55,12 @@ class SignUp extends Component<{}> {
   }
 
 //  getDerivedStateFromProps(nextProps) {
-  componentWillReceiveProps(nextProps) {
+/*  componentWillReceiveProps(nextProps) {
     const {nexSteps} = nextProps.auth;
     if (nexSteps && this.props.auth.nexSteps != nexSteps) { // test deep
       // this.setState(initialState)
     }
-  }
+  } */
 
   render() {
     const { signUpError, nextSteps } = this.props
@@ -96,7 +103,7 @@ class SignUp extends Component<{}> {
           />
         </View>
         <Button
-          title='Sign Up'
+          label={strings.SIGNUP}
           onPress={this.signUp.bind(this)}
         />
       </KeyboardAvoidingView>
