@@ -37,21 +37,22 @@ export default (state = initialState, action) => {
       newState.logInError = false;
       return newState;
     case LOGIN_SUCCESS:
-      newState.logInError = false;
-      newState.me = action.me;
-      newState.token = action.token;
+      newState.me = action.payload.user;
+      let token = {...action.payload};
+      delete token.user;
+      newState.token = token;
       return newState;
     case LOGIN_FAILURE:
       newState.logInError = action.error;
       return newState;
-
     case SIGNUP_STARTED:
       newState.signUpError = false;
       return newState;
     case SIGNUP_SUCCESS:
       newState.signUpError = false;
-      newState.me = action.me;
-      newState.token = action.token;
+      newState.me = action.user;
+      delete action.user;
+      newState.token = action;
       if (newState.me.isValid === false) {
         newState.nextSteps.push(VERIFY_STARTED);
       }
@@ -59,26 +60,26 @@ export default (state = initialState, action) => {
     case SIGNUP_FAILURE:
       newState.signUpError = action.error;
       return newState;
-
     case VERIFY_STARTED:
       newState.verifyError = false;
       return newState;
     case VERIFY_SUCCESS:
       newState.verifyError = false;
-      newState.me = action.me;
-      newState.token = action.token;
+      newState.me = action.user;
+      delete action.user;
+      newState.token = action;
       return newState;
     case VERIFY_FAILURE:
       newState.verifyError = action.error;
       return newState;
-
     case NEXT_STEP_STARTED:
       newState.logInError = false;
       return newState;
     case NEXT_STEP_SUCCESS:
       newState.logInError = false;
-      newState.me = action.me;
-      newState.token = action.token;
+      newState.me = action.user;
+      delete action.user;
+      newState.token = action;
       return newState;
     case NEXT_STEP_FAILURE:
       newState.logInError = action.error;

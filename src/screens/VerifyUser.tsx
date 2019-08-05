@@ -13,7 +13,7 @@ interface State {
   verificationHelp: string;
 }
 
-class LoginScreen extends React.Component<{}, State> {
+class VerifyUser extends React.Component<{}, State> {
 
   readonly state: State = {
     verificationCode: '',
@@ -97,4 +97,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyUser)

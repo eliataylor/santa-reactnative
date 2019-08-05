@@ -1,5 +1,6 @@
 const strings = {
-  LOGIN: "Log In",
+  SIGNUP: "Sign Up",
+  SIGNIN: "Sign In",
   PASSWORD_PLACEHOLDER : "Password",
   EMAIL_PLACEHOLDER : "Email",
   EMAIL_REQUIRED : 'You valid email address is required',

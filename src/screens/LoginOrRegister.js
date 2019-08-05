@@ -3,8 +3,9 @@ import { Image, StyleSheet } from 'react-native'
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 import { colors } from '../theme';
-import LoginScreen from './LoginScreen';
+import SignIn from './SignIn';
 import SignUp from './SignUp';
+import strings from "../config/strings";
 
 const styles = StyleSheet.create({
   icon: {
@@ -15,9 +16,9 @@ const styles = StyleSheet.create({
 
 const routes = {
   SignIn: {
-    screen: LoginScreen,
+    screen: SignIn,
     navigationOptions: {
-      title: 'Sign In',
+      title: strings.SIGNIN,
       tabBarIcon: ({ tintColor }) => (
         <Image
           source={require('../assets/signInButton.png')}
@@ -29,7 +30,7 @@ const routes = {
   SignUp: {
     screen: SignUp,
     navigationOptions: {
-      title: 'Sign Up',
+      title: strings.SIGNUP,
       tabBarIcon: ({ tintColor }) => (
         <Image
           source={require('../assets/signUpButton.png')}
@@ -59,5 +60,4 @@ const routeConfig = {
 }
 
 const LoginOrRegister = createBottomTabNavigator(routes, routeConfig);
-//export default LoginOrRegister;
 export default createAppContainer(LoginOrRegister);
