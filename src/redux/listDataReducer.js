@@ -27,7 +27,6 @@ export const listData = (url) => {
     dispatch(listDataStarted());
 
     API.Get(url).then(res => {
-      console.log("LIST RETURNED", res);
       dispatch(listDataSuccess(res.data));
     }).catch(err => {
       var msg = API.getErrorMsg(err);

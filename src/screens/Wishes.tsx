@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { FlatList, Text } from "react-native";
+import { StyleSheet, FlatList, Text, KeyboardAvoidingView } from "react-native";
 import Button from "../components/Button"
 import colors from "../config/colors";
 import strings from "../config/strings";
@@ -13,6 +13,14 @@ Geolocation.setRNConfiguration({
   authorizationLevel:"whenInUse"
 });
 
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop:20,
+    paddingLeft:5,
+    paddingRight:5
+  }
+});
 
 interface State {
   selected: boolean;
@@ -59,7 +67,7 @@ class Wishes extends React.Component<{}, State> {
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
   }
 
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => item._id;
 
   _onPressItem = (id: string) => {
     // updater functions are preferred for transactional updates
@@ -74,25 +82,27 @@ class Wishes extends React.Component<{}, State> {
 
   _renderItem = ({item}) => (
     <WishItem
-      onPressItem={this._onPressItem}
+      // onPressItem={this._onPressItem}
       {...item}
     />
   );
 
   render() {
-    if (!this.state.latlon) {
+    if (this.state.latlon === '') {
       return <Button label={strings.LOCATION_PROMPT} onPress={this.getCurrentPosition()} />;
     }
     if (!this.props.lists.apiData || typeof this.props.lists.apiData.results !== 'object')
       return <Text>No wishes with your filters</Text>;
 
     return (
+      <KeyboardAvoidingView style={styles.container}>
       <FlatList
         data={this.props.lists.apiData.results}
         extraData={this.state}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
       />
+      </KeyboardAvoidingView>
     );
   }
 }

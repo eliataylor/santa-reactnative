@@ -19,7 +19,7 @@ class CategoryIcon extends React.Component<Props> {
         style={styles.container}
         onPress={onPress}
         >
-        <Image title={name} alt={name} source={iconEl} />
+        <Image style={styles.icon} title={name} alt={name} source={iconEl} />
       </TouchableOpacity>
     );
   }
@@ -35,7 +35,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: "rgba(255,255,255,0.7)"
-  }
+  },
+  icon: {
+    flex: 1,
+    width: "100%",
+    resizeMode: "contain",
+    alignSelf: "center"
+  },
 });
 
 export default CategoryIcon;
