@@ -11,7 +11,7 @@ class App extends React.Component {
 
   async componentDidMount() {
     StatusBar.setHidden(true);
-    console.warn('APP DID MOUNT');
+    console.log('APP DID MOUNT');
     var tokens = await API.getLocalTokens();
     console.log(tokens);
     if (tokens) {
