@@ -97,6 +97,7 @@ class API {
       // @TODO if not a secured page >  return Promise.resolve();
       let tokens = false;
       try {
+        console.warn('getting token ' + Config.api.tokName);
         token = await AsyncStorage.getItem(Config.api.tokName);
         tokens = JSON.parse(tokens);
         if (tokens === null || typeof tokens.accessToken !== 'string') tokens = false;
@@ -148,7 +149,7 @@ class API {
 
 
        }).catch(err2 => {
-          var msg = err2.response.data.message;
+          var msg = that.getErrorMsg(err2);
           console.log(msg);
           tokens.refresh_error = msg;
           AsyncStorage.setItem(Config.api.tokName, JSON.stringify(tokens), storage => {

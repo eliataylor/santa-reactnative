@@ -6,7 +6,7 @@ import imageLogo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import { connect } from 'react-redux';
-import { authenticate } from '../actions'
+import { verifyUser } from '../actions';
 
 interface State {
   verificationCode: string;
@@ -21,18 +21,16 @@ class VerifyUser extends React.Component<{}, State> {
   };
 
   handleVerificationCode = (code: string) => {
+    code = code.trim();
     this.setState({ verificationCode: code });
   };
 
   handleLoginPress = () => {
     if (this.state.verificationCode.length < 8) {
         this.setState({verificationHelp:strings.VERIFICATION_REQUIRED});
-    } else {
-      var data = {grant_type:'password', password:this.state.password};
-      if (this.state.phone) data.phone = this.state.phone;
-      else data.email = this.state.email;  // either work on front end (backend still doesn't send sms verification codes though)
-      this.props.authenticate(data);
+        return false;
     }
+    this.props.verifyUser(this.state.verificationCode);
   };
 
   render() {
@@ -45,18 +43,17 @@ class VerifyUser extends React.Component<{}, State> {
         <Image source={imageLogo} style={styles.logo} />
         <View style={styles.form}>
           <FormTextInput
-            value={email}
+            value={verificationCode}
             autoCorrect={false}
-            keyboardType='email-address'
             returnKeyType='next'
             onChangeText={this.handleVerificationCode}
-            placeholder={strings.EMAIL_PLACEHOLDER}
+            placeholder={strings.VERIFICATION_HELP}
             error={verificationHelp}
           />
           <Button
-            label={strings.LOGIN}
+            label={strings.SUBMIT}
             onPress={this.handleLoginPress}
-            disabled={!email || !password}
+            disabled={!verificationCode}
           />
         </View>
       </KeyboardAvoidingView>
@@ -90,7 +87,7 @@ const styles = StyleSheet.create({
 
 
 const mapDispatchToProps = {
-  verifyUser: (username, password) => verifyUser(username, password)
+  verifyUser: (code) => verifyUser(code)
 }
 
 const mapStateToProps = state => ({

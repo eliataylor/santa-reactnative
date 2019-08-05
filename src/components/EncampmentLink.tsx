@@ -22,7 +22,7 @@ class EncampmentLink extends React.Component<Props> {
 
     return (
       <TouchableOpacity
-        style={containerStyle}
+        style={styles.container}
         >
         <Text>{address.join(' ')}</Text>
       </TouchableOpacity>
