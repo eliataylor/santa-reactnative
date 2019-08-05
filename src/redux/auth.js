@@ -20,7 +20,6 @@ export const LOG_OUT = 'LOG_OUT' // generally async anyway (client kills token, 
 // default authentication object
 const initialState = {
   me: false,
-  token:false,
 
   signUpError: false,
   verifyError: false,
@@ -37,10 +36,11 @@ export default (state = initialState, action) => {
       newState.logInError = false;
       return newState;
     case LOGIN_SUCCESS:
-      newState.me = action.payload.user;
-      let token = {...action.payload};
-      delete token.user;
-      newState.token = token;
+      if (action.payload.me) {
+        newState.me = action.payload.me; // from checkToken
+      } else {
+        newState.me = action.payload.user;
+      }
       return newState;
     case LOGIN_FAILURE:
       newState.logInError = action.error;
@@ -51,9 +51,7 @@ export default (state = initialState, action) => {
     case SIGNUP_SUCCESS:
       newState.signUpError = false;
       newState.me = action.user;
-      delete action.user;
-      newState.token = action;
-      if (newState.me.isValid === false) {
+      if (newState.me.isVerified === false) {
         newState.nextSteps.push(VERIFY_STARTED);
       }
       return newState;
@@ -66,8 +64,6 @@ export default (state = initialState, action) => {
     case VERIFY_SUCCESS:
       newState.verifyError = false;
       newState.me = action.user;
-      delete action.user;
-      newState.token = action;
       return newState;
     case VERIFY_FAILURE:
       newState.verifyError = action.error;
@@ -78,8 +74,6 @@ export default (state = initialState, action) => {
     case NEXT_STEP_SUCCESS:
       newState.logInError = false;
       newState.me = action.user;
-      delete action.user;
-      newState.token = action;
       return newState;
     case NEXT_STEP_FAILURE:
       newState.logInError = action.error;

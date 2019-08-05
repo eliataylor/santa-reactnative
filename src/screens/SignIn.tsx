@@ -58,7 +58,7 @@ class SignIn extends React.Component<{}, State> {
 
   render() {
     if (this.props.auth.me) {
-      if (this.props.auth.me.isValid === false) {
+      if (this.props.auth.me.isVerified === false) {
         return <VerifyUser />;
       }
     }

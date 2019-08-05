@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, Image } from "react-native";
 import colors from "../config/colors";
 
 import iconEl from "../assets/boomboxcropped.png";
@@ -16,7 +16,7 @@ class CategoryIcon extends React.Component<Props> {
 
     return (
       <TouchableOpacity
-        style={containerStyle}
+        style={styles.container}
         onPress={onPress}
         >
         <Image title={name} alt={name} source={iconEl} />

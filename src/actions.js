@@ -147,6 +147,7 @@ export function authenticate(credentials) {
       let me = res.data.user;
       let token = {...res.data};
       delete token.user;
+      console.warn('setting token ' + Config.api.tokName);
       AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
           dispatch(logInSuccess(res.data))
           return res;
@@ -166,13 +167,7 @@ export function checkToken() {
   return (dispatch) => {
     API.Get('/api/users/me')
     .then(res => {
-      let me = res.data.user;
-      let token = {...res.data};
-      delete token.user;
-      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
-          dispatch(logInSuccess(res.data))
-          return res;
-      });
+      return dispatch(logInSuccess(res.data))
     })
     .catch (err => {
       var msg = API.getErrorMsg(err);
@@ -183,11 +178,18 @@ export function checkToken() {
   }
 }
 
-// updates isValid
-export function verifyUser(credentials) {
-  return (dispatch) => {
+// updates isVerified
+export function verifyUser(code) {
+  return (dispatch, getState) => {
     dispatch(verifyStart())
-    API.Put('/api/users/:id/verify/:code', credentials)
+
+    var state = getState();
+    var fakeIt = {...state.auth.me};
+    fakeIt.isVerified = true;
+    return dispatch(verifySuccess(fakeIt));
+
+    //server verification is not complete yet
+    API.Put('/api/users/:id/verify/:code', code)
       .then(res => {
         let me = res.data.user;
         let token = {...res.data};

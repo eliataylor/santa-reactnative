@@ -14,9 +14,9 @@ const listDataStarted = () => ({
   type: API_DATA_STARTED
 });
 
-const listDataFailure = errors => ({
+const listDataFailure = error => ({
   type: API_DATA_FAILURE,
-  errors: errors
+  error: error
 });
 
 export const listData = (url) => {
@@ -27,9 +27,11 @@ export const listData = (url) => {
     dispatch(listDataStarted());
 
     API.Get(url).then(res => {
+      console.log("LIST RETURNED", res);
       dispatch(listDataSuccess(res.data));
     }).catch(err => {
-      dispatch(listDataFailure(err));
+      var msg = API.getErrorMsg(err);
+      dispatch(listDataFailure(msg));
     });
   };
 };
@@ -37,7 +39,7 @@ export const listData = (url) => {
 const initialState = {
   loading: false,
   apiData: [],
-  errors: null
+  error: null
 };
 
 export default function listDataReducer(state = initialState, action) {
@@ -51,14 +53,14 @@ export default function listDataReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        errors: null,
+        error: null,
         apiData: action.payload
       };
     case API_DATA_FAILURE:
       return {
         ...state,
         loading: false,
-        errors: action.errors
+        error: action.error
       };
     default:
       return state;

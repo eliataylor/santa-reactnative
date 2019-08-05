@@ -85,12 +85,13 @@ class SignUp extends React.Component<{}, State> {
             value={this.state.email}
             placeholder="Email"
             type='email'
+            keyboardType='email-address'
             onChangeText={this.onChangeText}
           />
           <Input
             placeholder="Phone Number"
             type='phone_number'
-            keyboardType='numeric'
+            keyboardType='phone-pad'
             onChangeText={this.onChangeText}
             value={this.state.phone}
           />

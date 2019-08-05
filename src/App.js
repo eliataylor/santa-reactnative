@@ -11,7 +11,9 @@ class App extends React.Component {
 
   async componentDidMount() {
     StatusBar.setHidden(true);
+    console.warn('APP DID MOUNT');
     var tokens = await API.getLocalTokens();
+    console.log(tokens);
     if (tokens) {
         this.props.checkToken();
     }
@@ -20,12 +22,21 @@ class App extends React.Component {
   render() {
 
     if (this.props.auth.me) {
-      if (this.props.auth.me.isValid === false) {
+      if (this.props.auth.me.isVerified === false) {
         return <LoginOrRegister />;
       }
       if (this.props.auth.me.offers && this.props.auth.me.offers.length > 0) {
         return <Text>Show my pending offer to cancel or fulfill</Text>;
       }
+      if (this.props.lists.error) {
+        Snackbar.show({
+          title : this.props.lists.error,
+          duration : Snackbar.LENGTH_LONG,
+          backgroundColor	: 'red',
+          color : 'white'
+        });
+      }
+
       return <Wishes />;
     }
 
@@ -49,7 +60,8 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  lists:state.lists
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
