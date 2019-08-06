@@ -36,17 +36,17 @@ class LocationLink extends React.Component<Props> {
   }
 
   buildImg = () => {
-    var url = "https://maps.googleapis.com/maps/api/streetview?size=300x200&fov=120&key="+ Config.api.gMapKey;
+    var url = "https://maps.googleapis.com/maps/api/streetview?size=170x100&fov=120&key="+ Config.api.gMapKey;
     var address = this.buildAddress();
-    if (address) {
-      url += '&location=' + address;
-    } else if (this.props.geo && this.props.geo.length === 2) {
+    if (this.props.geo && this.props.geo.length === 2) {
       url += '&location=' + this.props.geo[1] + ',' + this.props.geo[0];
+    } else if (address) {
+      url += '&location=' + encodeURIComponent(address);
     } else {
       console.warn("every wish must have a valid location");
       return ''; // every wish
     }
-    url += "&signature=" + Config.api.gMapSignature;
+    // url += "&signature=" + Config.api.gMapSignature;
     return url;
   }
 
@@ -56,20 +56,20 @@ class LocationLink extends React.Component<Props> {
     console.log(address, imgUrl);
 
     return (
-      <View onPress={this._onPress}
+      <TouchableOpacity onPress={this._onPress}
         style={styles.container}
         >
         {imgUrl.length > 0 ?
           <Image resizeMode={'contain'}
+            onError={(e) => console.log(e.nativeEvent.error) }
             style={styles.image}
-            title={address} alt={address}
+            accessibilityLabel={address}
             source={{uri: imgUrl}}
-            style={{width:300, height:200}}
           />
           :
           <Text>{address}</Text>
         }
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -77,10 +77,11 @@ class LocationLink extends React.Component<Props> {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height:'100%'
   },
   image : {
     flex: 1,
-    width: "100%",
+    width:'100%',
     resizeMode: "contain",
     alignSelf: "center"
   }

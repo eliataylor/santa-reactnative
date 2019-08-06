@@ -4,8 +4,7 @@ const Config = {
         timeout: 0, // Milliseconds
         base64d:'c2FudGFDbGllbnQ6c2FudGFTZWNyZXQ=',
         tokName : '@santaToken',
-        gMapKey:'AIzaSyBKeuqrNHwRk8tCw7weyDLJqME7qZURIHw',
-        gMapSignature : 'dPYhTBtN4ASK9U_b-nvGOroQdvs='
+        gMapKey:'AIzaSyBKeuqrNHwRk8tCw7weyDLJqME7qZURIHw'
     }
 };
 
