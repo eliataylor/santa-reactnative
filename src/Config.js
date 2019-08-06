@@ -1,6 +1,6 @@
 const Config = {
     api: {
-        base: 'http://10.0.0.187:3000',
+        base: 'https://santa-api.herokuapp.com',
         timeout: 0, // Milliseconds
         base64d:'c2FudGFDbGllbnQ6c2FudGFTZWNyZXQ=',
         tokName : '@santaToken',

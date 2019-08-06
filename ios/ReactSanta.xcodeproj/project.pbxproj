@@ -5,34 +5,18 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ReactSantaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactSantaTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1698E35C89344158BD48A4F6 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48709CF19C5E4815AB7C7D00 /* SimpleLineIcons.ttf */; };
-		1747E933207F444E86746B47 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 374EB3C0DB744FE19CD8F6A1 /* MaterialIcons.ttf */; };
-		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ReactSantaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactSantaTests.m */; };
-		3189FDF9B9124ED3AA6F8BD2 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6CE74B5E99C4D488CBCF643 /* Foundation.ttf */; };
-		3DB6E568326145C8ADCB3EA9 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C49CD4085E594B579816FAA7 /* Zocial.ttf */; };
 		4C4DB6446384DE117E49A4E7 /* libPods-ReactSanta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E09EAFB7E24D943806D06650 /* libPods-ReactSanta.a */; };
 		51EA3167E996E40E8B5DFFF3 /* libPods-ReactSanta-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85E10613EDA54D90FA346D5F /* libPods-ReactSanta-tvOSTests.a */; };
-		61545522C7104232B0681FD0 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3CE4038E40294C2B930378C9 /* FontAwesome5_Solid.ttf */; };
-		6AD98FC1EE4544BD8547903B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75E6AE2535BC4CBFBFFA0419 /* FontAwesome.ttf */; };
-		6E55DE32F66B467CB7F87273 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76E778CC08134E16A3B249B8 /* FontAwesome5_Brands.ttf */; };
-		6FB1644A82A04B85A41C4595 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 673B1C5A2F024B8D9579D211 /* FontAwesome5_Regular.ttf */; };
-		72A2D5B4B2E246299F2F4DE6 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F586B76E1FD6455586F9544C /* AntDesign.ttf */; };
-		737BC280BD2045EF8FE52875 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29A7EEC372B34810AB2D55EA /* Feather.ttf */; };
-		938ACFB910C64E45A17FDE5D /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95A5CA7EE93B42739ACC03D2 /* Fontisto.ttf */; };
-		9FF087D170524D788D40E696 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 87CAF9A2FD094A74BEB38AF1 /* Entypo.ttf */; };
-		B498973272F94418A838EAEC /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C2039E06B9F404C95B12DB0 /* EvilIcons.ttf */; };
-		B8E434E43CFE4E728A9A33B1 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5751F4DE43F43309B56C7D8 /* MaterialCommunityIcons.ttf */; };
-		C4DFD2DD050B41EDA985E92C /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8AFB765BBCDA40B3AEAE3641 /* Ionicons.ttf */; };
-		CFDC77E71BBF4DBB8E10C920 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60390CB25A254A36974FEAFA /* Octicons.ttf */; };
 		D18F0EC87C6EA27CA9411ACF /* libPods-ReactSanta-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9391A3F08F1B0DE8A0DD479 /* libPods-ReactSanta-tvOS.a */; };
 		F70DA68BE9E9E164394A2F65 /* libPods-ReactSantaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0B6D4FE5559F0B3A6859908 /* libPods-ReactSantaTests.a */; };
 /* End PBXBuildFile section */
@@ -153,7 +137,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* ReactSanta */ = {
+		13B07FAE1A68108700A75B9A /* Santa 4 Homeless */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -164,7 +148,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = ReactSanta;
+			name = "Santa 4 Homeless";
 			sourceTree = "<group>";
 		};
 		2913B1E8F25F0DA3D6EDA93F /* Pods */ = {
@@ -205,7 +189,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* ReactSanta */,
+				13B07FAE1A68108700A75B9A /* Santa 4 Homeless */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ReactSantaTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -340,8 +324,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 940;
-				ORGANIZATIONNAME = Facebook;
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = "Eli A Taylor";
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -360,10 +344,9 @@
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ReactSanta" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -394,22 +377,6 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				72A2D5B4B2E246299F2F4DE6 /* AntDesign.ttf in Resources */,
-				9FF087D170524D788D40E696 /* Entypo.ttf in Resources */,
-				B498973272F94418A838EAEC /* EvilIcons.ttf in Resources */,
-				737BC280BD2045EF8FE52875 /* Feather.ttf in Resources */,
-				6AD98FC1EE4544BD8547903B /* FontAwesome.ttf in Resources */,
-				6E55DE32F66B467CB7F87273 /* FontAwesome5_Brands.ttf in Resources */,
-				6FB1644A82A04B85A41C4595 /* FontAwesome5_Regular.ttf in Resources */,
-				61545522C7104232B0681FD0 /* FontAwesome5_Solid.ttf in Resources */,
-				938ACFB910C64E45A17FDE5D /* Fontisto.ttf in Resources */,
-				3189FDF9B9124ED3AA6F8BD2 /* Foundation.ttf in Resources */,
-				C4DFD2DD050B41EDA985E92C /* Ionicons.ttf in Resources */,
-				B8E434E43CFE4E728A9A33B1 /* MaterialCommunityIcons.ttf in Resources */,
-				1747E933207F444E86746B47 /* MaterialIcons.ttf in Resources */,
-				CFDC77E71BBF4DBB8E10C920 /* Octicons.ttf in Resources */,
-				1698E35C89344158BD48A4F6 /* SimpleLineIcons.ttf in Resources */,
-				3DB6E568326145C8ADCB3EA9 /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,7 +625,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
-				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -715,7 +681,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.taylormade.santa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactSanta.app/ReactSanta";
 			};
@@ -735,7 +701,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.taylormade.santa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReactSanta.app/ReactSanta";
 			};
@@ -755,7 +721,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.taylormade.santa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ReactSanta;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -774,7 +740,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.taylormade.santa.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ReactSanta;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -894,6 +860,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -947,6 +914,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
