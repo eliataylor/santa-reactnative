@@ -240,6 +240,7 @@ class API {
           if (err.response.data.error) {
             return err.response.data.error;
           }
+          if (typeof err.response.data.message === 'string') return err.response.data.message;
           return err.response.data;
         } else if (err.request) {
           // The request was made but no response was received
