@@ -130,7 +130,7 @@ class Wishes extends React.Component<{}, State> {
     var that = this;
     console.log("UPDATING CATEGORIES", cats)
     this.setState({categories:cats}, e => {
-      // that.refresh();
+      that.refresh();
     });
   }
 
