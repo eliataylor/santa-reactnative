@@ -17,7 +17,8 @@ target 'ReactSanta' do
   pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
   pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
   pod 'React-RCTWebSocket', :path => '../node_modules/react-native/Libraries/WebSocket'
-
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  
   pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
   pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
@@ -28,7 +29,6 @@ target 'ReactSanta' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
   target 'ReactSantaTests' do
     inherit! :search_paths

@@ -6,7 +6,7 @@ import imageLogo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import { connect } from 'react-redux';
-import { verifyUser } from '../actions';
+import { verifyUser } from '../redux/authActions';
 
 interface State {
   verificationCode: string;

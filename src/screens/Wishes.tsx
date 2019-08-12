@@ -1,7 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, FlatList, Text, KeyboardAvoidingView, View, Image, SafeAreaView, Alert  } from "react-native";
-import Button from "../components/Button"
+import { StyleSheet, Button, SectionList, Text, TouchableOpacity, KeyboardAvoidingView, View, Image, SafeAreaView, Alert  } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Picker from "react-native-picker-select";
@@ -9,6 +8,7 @@ import WishItem from "../components/WishItem";
 import CategoryIcon from "../components/CategoryIcon";
 import {listData} from "../redux/listDataReducer";
 import Geolocation from '@react-native-community/geolocation';
+import { Icon } from 'react-native-vector-icons';
 
 Geolocation.setRNConfiguration({
   skipPermissionRequests:true,
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   content : {
     marginTop:20,
     paddingLeft:5,
-    paddingRight:5
+    paddingRight:12
   },
   iconBtn : {
     width: 40,
@@ -55,10 +55,18 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     alignSelf: "center"
   },
+  sectionHeader: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(247,247,247,1.0)',
+  },
 });
 
 interface State {
-  selected: boolean;
   radius:string;
   latlon:string;
   categories:object
@@ -75,7 +83,6 @@ const catMap = {
 class Wishes extends React.Component<{}, State> {
 
   readonly state: State = {
-    selected: false,
     radius:5000,
     latlon:'',
     categories:{...catMap}
@@ -115,13 +122,13 @@ class Wishes extends React.Component<{}, State> {
     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
   }
 
-  _keyExtractor = (item, index) => item._id;
+  _keyExtractor = (item, index) => item._id + '_' + index;
 
   toggleCat = (catId) => {
     var cats = {...this.state.categories};
     const emptyObject = (Object.keys(cats).length === 0 && cats.constructor === Object);
     if (emptyObject) {
-      cats = {...catMap}; // none selected === all selected
+      cats = {...catMap};
     } else if (typeof cats[catId] === 'string') {
       delete cats[catId];
     } else {
@@ -134,17 +141,26 @@ class Wishes extends React.Component<{}, State> {
     });
   }
 
-  _renderItem = ({item}) => (
-    <WishItem
-      {...item}
-    />
-  );
+  _renderItem = ({item}) => {
+      if (typeof item.wish != 'undefined') {
+        const { wish, ...offer } = item;
+        return (<WishItem offer={offer} wish={wish} />)
+      }
+      return (<WishItem wish={item} />)
+  };
 
   render() {
     if (this.state.latlon === '') {
-      return <Button label={strings.LOCATION_PROMPT} onPress={(e) => this.getCurrentPosition()} />;
+      return <Button title={strings.LOCATION_PROMPT} onPress={(e) => this.getCurrentPosition()} />;
     }
-    if (!this.props.lists.apiData || typeof this.props.lists.apiData.results !== 'object') return <Text>Invalid request</Text>;
+
+    const allSections = [];
+    if (this.props.offers && this.props.offers.length > 0) {
+      allSections.push({title: strings.OFFERS_SECTION, data: this.props.offers});
+    }
+    if (this.props.wishes && this.props.wishes.results) {
+      allSections.push({title: strings.WISHES_SECTION, data: this.props.wishes.results});
+    }
 
     var radiusOpts = [{label: '.5 mile', value: 500}], i = 1;
 
@@ -157,6 +173,9 @@ class Wishes extends React.Component<{}, State> {
       <KeyboardAvoidingView style={styles.container}>
       <SafeAreaView style={{backgroundColor:colors.LIGHT_GREEN}}>
           <View style={styles.filters}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')}>
+              <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
+            </TouchableOpacity>
             <View style={styles.iconBtn}>
               <Image
                 source={require('../assets/images/gpsicon.png')}
@@ -184,17 +203,21 @@ class Wishes extends React.Component<{}, State> {
             }
           </View>
       </SafeAreaView>
-  {this.props.lists.apiData.results.length === 0 ?
-        <View><Text>No results</Text></View>
-        :
-        <FlatList
-          style={styles.content}
-          data={this.props.lists.apiData.results}
-          extraData={this.state}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-        />
-        }
+      {
+        allSections.length > 0 ?
+        <SectionList
+                  sections={allSections}
+                  style={styles.content}
+                  keyExtractor={this._keyExtractor}
+                  renderItem={this._renderItem}
+                  renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+                />
+                :
+                <Text>No results</Text>
+      }
+
+
+
 </KeyboardAvoidingView>
     );
   }
@@ -204,8 +227,15 @@ const mapDispatchToProps = {
   listData: (url) => listData(url)
 }
 
-const mapStateToProps = state => ({
-  lists: state.lists
-})
+const mapStateToProps = state => {
+  var newProps = {wishes: state.lists.wishes};
+  if (state.lists.offers.length && state.lists.offers.results) {
+    newProps.offers = state.lists.offers.results;
+  } else {
+    newProps.offers = state.auth.me.offers; // WARN: this is only valid on appstartup
+  }
+  return newProps;
+}
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wishes)

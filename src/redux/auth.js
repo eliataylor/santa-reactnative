@@ -41,6 +41,7 @@ export default (state = initialState, action) => {
       } else {
         newState.me = action.payload.user;
       }
+      newState.me.offers = action.payload.offers;
       return newState;
     case LOGIN_FAILURE:
       newState.logInError = action.error;

@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 
 import strings from "../config/strings";
 import { colors } from '../theme'
-import { createUser, verifyUser } from '../actions'
+import { createUser, verifyUser } from '../redux/authActions'
 
 import Input from '../components/FormTextInput'
 import Button from '../components/Button'

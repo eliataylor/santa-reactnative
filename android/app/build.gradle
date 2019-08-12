@@ -95,7 +95,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 /**
  * The preferred build flavor of JavaScriptCore.
@@ -193,7 +193,6 @@ android {
 }
 
 dependencies {
-    implementation project(':@react-native-community_geolocation')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
@@ -213,4 +212,9 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
+applyNativeModulesAppBuildGradle(project);
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'FontAwesome.ttf' ]
+]
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

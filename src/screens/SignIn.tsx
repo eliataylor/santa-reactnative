@@ -7,7 +7,7 @@ import VerifyUser from "./VerifyUser";
 import imageLogo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
-import { authenticate } from '../actions'
+import { authenticate } from '../redux/authActions'
 
 interface State {
   email: string;
