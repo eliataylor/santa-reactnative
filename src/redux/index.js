@@ -6,5 +6,5 @@ import entityDataReducer from './entityDataReducer';
 export default combineReducers({
   "auth": authReducer,
   "lists": listDataReducer,
-  "entity": entityDataReducer,
+  "entity": entityDataReducer
 })

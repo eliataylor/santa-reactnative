@@ -53,7 +53,7 @@ class LocationLink extends React.Component<Props> {
   render() {
     const address = this.buildAddress();
     const imgUrl = this.buildImg();
-    console.log(address, imgUrl);
+    //console.log(address, imgUrl);
 
     return (
       <TouchableOpacity onPress={this._onPress}

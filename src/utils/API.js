@@ -176,45 +176,27 @@ class API {
 
     Get (path, config) {
         const call = this.requester.get(path, config);
-        /*
-        call.then((res) => {
-          return res;
-        }).catch((err) => {
-          console.log('API', 'Response from "' + path + '": "' + err + '"');
-          return Promise.reject(err);
-        });
-        */
+        return call;
+    }
+
+    Delete (path, config) {
+        const call = this.requester.delete(path, config);
         return call;
     }
 
     Put (path, data) {
         console.log('API', 'Put to "' + path + '"');
         const call = this.requester.put(path, data);
-        call.then((res) => {
-          console.log('API', 'Response from "' + path + '":');
-          console.log(res);
-          return res;
-        }).catch((err) => {
-          console.log('API', 'Response from "' + path + '": "' + err + '"');
-          return Promise.reject(err);
-        });
         return call;
     }
 
     Post (path, data) {
-        console.log('API', 'POST to "' + path + '"');
-
         data = Object.entries(data)
           .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
           .join('&');
 
+        console.log('API', 'POST to "' + path + '"', data);
         const call = this.requester.post(path, data);
-        /* call.then((res) => {
-            return res;
-        }).catch((err) => {
-            console.log('API', 'Response from "' + path + '": "' + err + '"');
-            return err;
-        }); */
         return call;
     }
 
@@ -222,19 +204,11 @@ class API {
         var path = req.url;
         console.log('API', 'REQUEST to "' + path + '"');
         const call = this.requester.request(req);
-        call.then((res) => {
-          return res;
-        }).catch((err) => {
-          console.log('API', 'Response from "' + path + '": "' + err + '"');
-          return Promise.reject(err);
-        });
         return call;
     }
 
     getErrorMsg(err) {
       if (err.response && err.response.data) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
           console.log(err.response.data);
           console.log(err.response.status);
           if (err.response.data.error) {
@@ -243,15 +217,14 @@ class API {
           if (typeof err.response.data.message === 'string') return err.response.data.message;
           return err.response.data;
         } else if (err.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
           console.log(err.request);
           return 'no server response received';
-        } else {
-          // Something happened in setting up the request that triggered an Error
+        } else if (typeof err.message != 'undefined') {
           console.log('Error', err.message);
           return err.message;
+        } else {
+          console.log('Default Server Error', err);
+          return err;
         }
     }
 

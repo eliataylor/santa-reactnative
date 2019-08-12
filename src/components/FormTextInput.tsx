@@ -22,24 +22,16 @@ class FormTextInput extends React.Component<Props> {
   };
 
   render() {
-    // We define our own custom style for the TextInput, but
-    // we still want to allow the developer to supply its
-    // own additional style if needed.
-    // To do so, we extract the "style" prop from all the
-    // other props to prevent it to override our own custom
-    // style.
-    const { error, style, ...otherProps } = this.props;
+    const { error, help, style, ...otherProps } = this.props;
     return (
       <View style={[styles.container, style]}>
         <TextInput
           ref={this.textInputRef}
           selectionColor={colors.DODGER_BLUE}
-          // Add the externally specified style to our own
-          // custom one
           style={[styles.textInput, style]}
-          // ...and then spread all the other props
           {...otherProps}
         />
+        {help ? <Text style={styles.helpText}>{help}</Text> : null}
         <Text style={styles.errorText}>{error || ""}</Text>
       </View>
     );
@@ -56,9 +48,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginBottom: 20
   },
+  helpText: {
+    margin:-18,
+    color: colors.SILVER
+  },
   errorText: {
-    // Setting a fixed text height prevents the label
-    // "jump" when we show/hide it
     height: 20,
     color: colors.TORCH_RED
   }

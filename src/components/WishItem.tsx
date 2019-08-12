@@ -8,7 +8,7 @@ import CategoryIcon from "./CategoryIcon";
 import LocationLink from "./LocationLink";
 import Deadline from "./Deadline";
 import moment from "moment";
-import { createOffer, updateOffer } from '../redux/entityDataReducer';
+import { createOffer, updateOffer, deleteWish } from '../redux/entityDataReducer';
 
 class WishItem extends React.PureComponent {
 
@@ -21,6 +21,23 @@ class WishItem extends React.PureComponent {
       [
         {text: strings.YES, onPress: () => {
             that.props.createOffer(wish);
+          }
+        },
+        {text: strings.NO, onPress: () => console.log('OK Pressed')},
+      ],
+      {cancelable: false},
+    );
+  }
+
+  deleteWish() {
+    var that = this;
+    const {wish} = this.props;
+    Alert.alert(
+      'Delete',
+      'Are you sure you want to delete this wish?',
+      [
+        {text: strings.YES, onPress: () => {
+            that.props.deleteWish(wish._id);
           }
         },
         {text: strings.NO, onPress: () => console.log('OK Pressed')},
@@ -58,6 +75,15 @@ class WishItem extends React.PureComponent {
             <Button style={styles.offerBtn}
                     label={'Cancel Delivery'}
                     onPress={(e) => this.updateOffer('canceled')} />
+            </View>
+    } else if (wish.elf._id === this.props.me._id){
+      cta = <View style={{marginTop:10}}>
+              <Button style={styles.wishBtn}
+              label={'Delete'}
+              onPress={(e) => this.deleteWish()} />
+              <Button style={styles.wishBtn}
+              label={strings.FULFILL}
+              onPress={(e) => this.startOffer()} />
             </View>
     } else {
       cta = <Button style={styles.wishBtn}
@@ -110,11 +136,12 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = {
   createOffer: (item) => createOffer(item),
+  deleteWish: (id) => deleteWish(id),
   updateOffer: (item, state) => updateOffer(item, state)
 }
 
 const mapStateToProps = state => ({
-  entity: state.entity
+  me: state.auth.me
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishItem)

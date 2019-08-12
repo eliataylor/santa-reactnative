@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
   },
   btnText : {
     textAlign:'center'
+  },
+  header : {
+    fontWeight:'bold',
+    textAlign:'center',
+    fontSize:18
   }
 })
 
@@ -77,7 +82,7 @@ export default class HomeScreen extends React.Component<{}, State> {
 
     return (
       <View style={styles.pageContainer}>
-        <Text>Hello there. Pick a role, do good, and earn your blessing</Text>
+        <Text style={styles.header}>Hello there. Pick a role, do good, and earn your blessing</Text>
 
         <View style={{ flexDirection:'row', alignItems: 'center', justifyContent: 'center' }}>
           <TouchableOpacity
@@ -96,10 +101,10 @@ export default class HomeScreen extends React.Component<{}, State> {
 
         </View>
         {this.state.activeTab === 'Wishes' ?
-          <Text>Click next and search nearby wishes to fulfill</Text>
+          <Text style={styles.header}>Click next and search nearby wishes to fulfill</Text>
         :
         this.state.activeTab == 'CreateWish' ?
-          <Text>Click next and create a wish for the homeless</Text>
+          <Text style={styles.header}>Click next and create a wish for the homeless</Text>
         :
         null
         }

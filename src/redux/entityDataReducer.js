@@ -28,17 +28,41 @@ export const createWish = (item) => {
 
     dispatch(entityDataStarted());
 
-    var url = '/api/wishes/create';
-    API.Post(url, {'wish':item._id}).then((res) => {
+    API.Post('/api/wishes/create', item).then((res) => {
       if (!res.data) {
-        console.log('invalid api response', res);
-        dispatch(entityDataFailure('invalid api response'));
+        var msg = API.getErrorMsg(res);
+        dispatch(entityDataFailure(msg));
       } else {
-        dispatch(listData(oldState.lists.apiurl)); // refresh lists
-        dispatch(checkToken()); // refresh offers
+        console.log("CREATED!!!!", res.data);
         dispatch(entityDataSuccess(res.data));
       }
     }).catch((err) => {
+      var msg = API.getErrorMsg(err);
+      console.log("CREATE ERROR", msg, err);
+      dispatch(entityDataFailure(err));
+    });
+  };
+};
+
+export const deleteWish = (id) => {
+  return (dispatch, getState) => {
+
+    var oldState = getState();
+    if (oldState.entity.loading === true) return false;
+
+    dispatch(entityDataStarted());
+
+    API.Delete('/api/wishes/'+id+'/delete').then((res) => {
+      if (!res.data) {
+        var msg = API.getErrorMsg(res);
+        dispatch(entityDataFailure(msg));
+      } else {
+        dispatch(listData(oldState.lists.apiurl)); // refresh lists
+        dispatch(entityDataSuccess(res.data));
+      }
+    }).catch((err) => {
+      var msg = API.getErrorMsg(err);
+      console.log("CREATE ERROR", msg, err);
       dispatch(entityDataFailure(err));
     });
   };
@@ -55,8 +79,8 @@ export const createOffer = (item) => {
     var url = '/api/offers/create';
     API.Post(url, {'wish':item._id}).then((res) => {
       if (!res.data) {
-        console.log('invalid api response', res);
-        dispatch(entityDataFailure('invalid api response'));
+        var msg = API.getErrorMsg(res);
+        dispatch(entityDataFailure(msg));
       } else {
         dispatch(listData(oldState.lists.apiurl)); // refresh lists
         dispatch(checkToken()); // refresh offers
@@ -80,8 +104,8 @@ export const updateOffer = (item, state) => {
     var url = '/api/offers/' + item._id + '/update';
     API.Put(url, {state:state}).then((res) => {
       if (!res.data) {
-        console.log('invalid api response', res);
-        dispatch(entityDataFailure('invalid api response'));
+        var msg = API.getErrorMsg(res);
+        dispatch(entityDataFailure(msg));
       } else {
         dispatch(listData(oldState.lists.apiurl)); // refresh lists
         dispatch(checkToken()); // refresh offers
@@ -96,7 +120,8 @@ export const updateOffer = (item, state) => {
 const initialState = {
   loading: false,
   apiData: false,
-  errors: null
+  errors: null,
+  lastsucces:0
 };
 
 export default function entityDataReducer(state = initialState, action) {
@@ -104,18 +129,22 @@ export default function entityDataReducer(state = initialState, action) {
     case ITEM_DATA_STARTED:
       return {
         ...state,
-        loading: true
+        loading: true,
+        apiData:false,
+        errors:null
       };
     case ITEM_DATA_SUCCESS:
       var newState = {...state};
       newState.loading = false;
       newState.errors = null;
       newState.apiData = action.payload;
+      newState.lastsucces = new Date().getTime(); // helps to force componentDidUpdate correctly
       return newState;
     case ITEM_DATA_FAILURE:
       return {
         ...state,
         loading: false,
+        apiData:false,
         errors: action.errors
       };
     default:

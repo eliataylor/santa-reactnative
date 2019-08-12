@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 
 interface State {
   radius:string;
-  latlon:string;
+  lonlat:string;
   categories:object
 }
 
@@ -84,10 +84,9 @@ class Wishes extends React.Component<{}, State> {
 
   readonly state: State = {
     radius:5000,
-    latlon:'',
+    lonlat:'',
     categories:{...catMap}
   };
-
 
   componentDidMount() {
     console.log('wishes DID MOUNT');
@@ -96,8 +95,8 @@ class Wishes extends React.Component<{}, State> {
   }
 
   refresh = ()  => {
-    if (this.state.latlon.length > 3) {
-      var url = "/api/wishes/list?coords=" + this.state.latlon + "&meters=" + this.state.radius;
+    if (this.state.lonlat.length > 3) {
+      var url = "/api/wishes/list?coords=" + this.state.lonlat + "&meters=" + this.state.radius;
       if (Object.keys(catMap).length !== Object.keys(this.state.categories).length) {
         for (var g in this.state.categories) {
           url += '&category[]=' + g;
@@ -113,8 +112,8 @@ class Wishes extends React.Component<{}, State> {
     console.log('new geo position requested');
     var that = this;
     Geolocation.getCurrentPosition(pos => {
-      var latlon = pos.coords.longitude + ',' + pos.coords.latitude;
-      that.setState({latlon:latlon}, () => {
+      var lonlat = pos.coords.longitude + ',' + pos.coords.latitude;
+      that.setState({lonlat:lonlat}, () => {
         that.refresh();
       });
     },
@@ -150,7 +149,7 @@ class Wishes extends React.Component<{}, State> {
   };
 
   render() {
-    if (this.state.latlon === '') {
+    if (this.state.lonlat === '') {
       return <Button title={strings.LOCATION_PROMPT} onPress={(e) => this.getCurrentPosition()} />;
     }
 
