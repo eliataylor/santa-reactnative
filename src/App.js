@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { StatusBar, Text } from 'react-native';
 import LoginOrRegister from './screens/LoginOrRegister';
-import API from './utils/API';
 import Snackbar from 'react-native-snackbar';
-import Wishes from './screens/Wishes';
-import {checkToken} from './actions';
+import RoleSelection from './screens/RoleSelection';
+import {checkToken} from './redux/authActions';
+import API from './utils/API';
 
 class App extends React.Component {
 
@@ -15,7 +15,7 @@ class App extends React.Component {
     var tokens = await API.getLocalTokens();
     console.log(tokens);
     if (tokens) {
-        this.props.checkToken();
+      this.props.checkToken();
     }
   }
 
@@ -25,9 +25,6 @@ class App extends React.Component {
       if (this.props.auth.me.isVerified === false) {
         return <LoginOrRegister />;
       }
-      if (this.props.auth.me.offers && this.props.auth.me.offers.length > 0) {
-        return <Text>Show my pending offer to cancel or fulfill</Text>;
-      }
       if (this.props.lists.error) {
         Snackbar.show({
           title : this.props.lists.error,
@@ -36,8 +33,7 @@ class App extends React.Component {
           color : 'white'
         });
       }
-
-      return <Wishes />;
+      return <RoleSelection />;
     }
 
     var errors = [this.props.auth.logInError, this.props.auth.signUpError, this.props.auth.verifyError];

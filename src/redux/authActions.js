@@ -1,5 +1,5 @@
-import API from './utils/API';
-import Config from './Config';
+import API from '../utils/API';
+import Config from '../Config';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {
@@ -22,7 +22,7 @@ import {
 
   LOG_OUT
 
-} from './redux/auth'
+} from './auth'
 
 export function logOut() {
   return {
