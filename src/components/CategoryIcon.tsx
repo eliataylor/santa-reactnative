@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, TouchableOpacity, Image, Text } from "react-native";
+import { StyleSheet, TouchableHighlight, Image, Text } from "react-native";
 import colors from "../config/colors";
 
 const AcademicsIcon = require("../assets/images/academics.png");
@@ -31,7 +31,10 @@ class CategoryIcon extends React.Component<Props> {
       iconEl = require("../assets/images/food.png");
     }
 
-    console.log("INTERNAL " + name + ' ' + disabled);
+    if (name) {
+      console.log("INTERNAL " + name + ' ' + disabled);
+    }
+
 
     let containerStyle = [
       styles.container,
@@ -39,7 +42,7 @@ class CategoryIcon extends React.Component<Props> {
     ];
 
     return (
-      <TouchableOpacity
+      <TouchableHighlight
         style={containerStyle}
         onPress={onPress}
         >
@@ -48,7 +51,7 @@ class CategoryIcon extends React.Component<Props> {
           style={styles.icon}
           accessibilityLabel={name}
           source={iconEl} />
-      </TouchableOpacity>
+      </TouchableHighlight>
     );
   }
 }

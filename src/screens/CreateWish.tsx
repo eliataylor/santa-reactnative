@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   Platform,
   Text,
+  Alert,
   View,
   Button,
   KeyboardAvoidingView,
@@ -17,15 +18,19 @@ import strings from "../config/strings";
 import { colors } from '../theme'
 import { createWish } from '../redux/entityDataReducer'
 import Picker from "react-native-picker-select";
-
+import Geolocation from '@react-native-community/geolocation';
 import Input from '../components/FormTextInput'
 
+
+Geolocation.setRNConfiguration({
+  skipPermissionRequests:true,
+  authorizationLevel:"whenInUse"
+});
 
 const styles = StyleSheet.create({
   form: {
     flex: 1,
     justifyContent: "center",
-    width: "80%"
   },
   container: {
     flex: 1,
@@ -54,24 +59,83 @@ interface State {
   desc: string;
   category: string;
   encampment: string;
+  lonlat:string;
 }
 
-class CreateWish extends React.Component<{}, State> {
+
+class CreateWish extends React.Component {
   readonly state: State = {
     title: '',
     desc: '',
     category: '',
-    encampment: ''
+    encampment: '',
+    lonlat: '',
   };
 
-  onChangeText = (key, value) => {
-    this.setState({
-      [key]: value
-    })
+  onChangeTitle = (value) => {
+    this.setState({title: value})
+  }
+  onChangeDesc = (value) => {
+    this.setState({desc: value})
+  }
+
+  getCurrentPosition = () => {
+    var that = this;
+    Geolocation.getCurrentPosition(pos => {
+      var lonlat = pos.coords.longitude + ',' + pos.coords.latitude;
+      that.setState({lonlat:lonlat}, () => {
+        // render streetview?
+      });
+    },
+    error => Alert.alert('Error', JSON.stringify(error)),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
   }
 
   submitWish() {
-    this.props.createWish(this.state.title, this.state.desc, this.state.category, this.state.encampment);
+    if (this.state.title.length < 3) {
+      return Alert.alert('Error', 'You must provide a title');
+    }
+    if (this.state.category.length < 3) {
+      return Alert.alert('Error', 'You must provide a category');
+    }
+    if (this.state.lonlat.length > 3) {
+      var item = {
+        title:this.state.title,
+        body:this.state.desc,
+        category:this.state.category,
+        lonlat:this.state.lonlat
+      };
+      this.props.createWish(item);
+    } else {
+      this.getCurrentPosition();
+    }
+  }
+
+  componentDidMount() {
+    Geolocation.requestAuthorization();
+    this.getCurrentPosition();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!nextProps.entity.errors && nextProps.entity.apiData.title === this.state.title && this.state.title != '') { // WARN: a safe assumption, but not ideal key
+      this.props.navigation.navigate('Wishes');
+      return false;
+    }
+    if (JSON.stringify(nextProps.entity) !== JSON.stringify(this.props.entity)) {
+      return true;
+    }
+    if (JSON.stringify(nextState) !== JSON.stringify(this.state)) {
+      return true;
+    }
+    return false;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.entity.errors && prevProps.entity.apiData.title === this.state.title && this.state.title != '') { // WARN: a safe assumption, but not ideal key
+      console.log("componentDidUpdate1", prevProps.entity, this.state);
+      this.props.navigation.navigate('Wishes');
+      this.setState({title: '',desc: '',category: '',encampment: '',lonlat: '',}); // reset form
+    }
   }
 
   render() {
@@ -93,13 +157,13 @@ class CreateWish extends React.Component<{}, State> {
           <Input
             placeholder="Wish Title"
             type='text'
-            onChangeText={this.onChangeText}
+            onChangeText={this.onChangeTitle}
             value={this.state.title}
           />
           <Input
             placeholder="Optional Description"
             type='text'
-            onChangeText={this.onChangeText}
+            onChangeText={this.onChangeDesc}
             value={this.state.desc}
           />
           <Picker
@@ -107,29 +171,44 @@ class CreateWish extends React.Component<{}, State> {
             selectedValue={this.state.category}
             onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
             items={catOpts} />
-          <Input
-            placeholder="Encampment"
-            type='text'
-            style={{display:'none'}}
-            onChangeText={this.onChangeText}
-            value={this.state.encampment}
-          />
+          <View style={{flexDirection:'row', marginTop:40}}>
+            <Image
+              source={require('../assets/images/gpsicon.png')}
+              onPress={(e) => this.getCurrentPosition()}
+              resizeMode={'contain'}
+              style={{width:30, height:30, marginRight:15}}
+              onError={(e) => console.log(e.nativeEvent.error) }
+              accessibilityLabel={'gps refresh'} />
+              <Input
+                placeholder="Location"
+                help='GPS Location of this wish'
+                type='text'
+                style={{color:colors.SILVER}}
+                color={colors.SILVER}
+                value={this.state.lonlat}
+              />
+          </View>
+          <View style={{marginTop:40}}>
+            <Button
+              title={'Create Wish'}
+              onPress={this.submitWish.bind(this)}
+            />
+          </View>
         </View>
-        <Button
-          title={'Create Wish'}
-          onPress={this.submitWish.bind(this)}
-        />
       </KeyboardAvoidingView>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  auth: {...state.auth}
-})
+const mapStateToProps = function(state){
+  var newProps = {};
+  newProps.auth = {...state.auth};
+  newProps.entity = {...state.entity};
+  return newProps;
+}
 
 const mapDispatchToProps = {
-  submitWish: (title,desc,category,encampment) => createWish(title,desc,category,encampment)
+  createWish: (item) => createWish(item)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateWish)

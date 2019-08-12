@@ -21,6 +21,7 @@ const routes = {
   },
   Wishes: {
     screen: Wishes,
+    path:'/wishes',
     navigationOptions: {
       title: 'Santa',
       tabBarIcon: ({ tintColor }) => (
@@ -33,6 +34,7 @@ const routes = {
   },
   CreateWish: {
     screen: CreateWish,
+    path:'/create-a-wish',
     navigationOptions: {
       title: 'Elf',
       tabBarIcon: ({ tintColor }) => (
