@@ -13,6 +13,7 @@ class Button extends React.Component<Props> {
     const { disabled, label, onPress } = this.props;
     // If the button is disabled we lower its opacity
     const containerStyle = [
+      {...this.props.style},
       styles.container,
       disabled
         ? styles.containerDisabled
@@ -32,11 +33,10 @@ class Button extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.SOFT_RED,
     paddingVertical:8,
+    paddingHorizontal:8,
     borderRadius: 4,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: "rgba(255,255,255,0.7)"

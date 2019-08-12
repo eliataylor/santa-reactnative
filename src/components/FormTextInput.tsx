@@ -40,7 +40,8 @@ class FormTextInput extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 10
+    marginBottom: 10,
+    position:'relative'
   },
   textInput: {
     height: 40,
@@ -50,7 +51,8 @@ const styles = StyleSheet.create({
   },
   helpText: {
     margin:-18,
-    color: colors.SILVER
+    color: colors.SILVER,
+    paddingLeft:20
   },
   errorText: {
     height: 20,

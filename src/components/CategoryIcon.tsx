@@ -31,11 +31,6 @@ class CategoryIcon extends React.Component<Props> {
       iconEl = require("../assets/images/food.png");
     }
 
-    if (name) {
-      console.log("INTERNAL " + name + ' ' + disabled);
-    }
-
-
     let containerStyle = [
       styles.container,
       (disabled === true) ? styles.containerDisabled : styles.containerEnabled
