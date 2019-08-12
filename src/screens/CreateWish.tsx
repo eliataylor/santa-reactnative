@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {
   Platform,
   Text,
+  Button,
   Alert,
   View,
-  Button,
   KeyboardAvoidingView,
   TextInput,
   StyleSheet,
@@ -169,9 +169,10 @@ class CreateWish extends React.Component {
           <Picker
             placeholder={{label:'Select a category', value:''}}
             selectedValue={this.state.category}
+            style={{borderColor: colors.SILVER,borderBottomWidth: StyleSheet.hairlineWidth}}
             onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
             items={catOpts} />
-          <View style={{flexDirection:'row', marginTop:40}}>
+          <View style={{flexDirection:'row', marginTop:30, alignItems:'center'}}>
             <Image
               source={require('../assets/images/gpsicon.png')}
               onPress={(e) => this.getCurrentPosition()}
@@ -190,6 +191,7 @@ class CreateWish extends React.Component {
           </View>
           <View style={{marginTop:40}}>
             <Button
+              style={{backgroundColor:colors.LIGHT_GREEN}}
               title={'Create Wish'}
               onPress={this.submitWish.bind(this)}
             />

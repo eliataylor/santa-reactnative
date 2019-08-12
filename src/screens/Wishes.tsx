@@ -28,14 +28,18 @@ const styles = StyleSheet.create({
      flexDirection: 'row',
      justifyContent: 'space-between',
      alignItems: 'center',
+     backgroundColor:colors.LIGHT_GREY,
+     borderBottomWidth: StyleSheet.hairlineWidth,
+     borderBottomColor: "rgba(000,000,000,0.5)",
      width: '100%',
      flexWrap: 'nowrap',
-     marginBottom: 10,
-     padding:8,
-     maxHeight:80
+     marginTop:0,
+     marginBottom:0,
+     paddingHorizontal:4,
+     paddingBottom:5,
   },
   content : {
-    marginTop:20,
+    marginTop:0,
     paddingLeft:5,
     paddingRight:12
   },
@@ -56,13 +60,14 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
+    paddingVertical:5,
+    paddingHorizontal: 10,
+    marginTop:0,
+    marginBottom:0,
     fontSize: 14,
     fontWeight: 'bold',
-    backgroundColor: 'rgba(247,247,247,1.0)',
+    color:colors.LIGHT_GREEN,
+    backgroundColor:colors.LIGHT_GREY,
   },
 });
 
@@ -140,6 +145,49 @@ class Wishes extends React.Component<{}, State> {
     });
   }
 
+  _renderSectionHead = ({section}) => {
+    if (section.title === 'Nearby Wishes') {
+
+      var radiusOpts = [{label: '.5 mile', value: 500}], i = 1;
+
+      while(i < 50){
+        radiusOpts.push({label:i + ' miles', value:(i * 1000)});
+        i++;
+      };
+
+      return (
+        <View>
+        <Text style={styles.sectionHeader}>{section.title}</Text>
+        <View style={styles.filters}>
+        <View style={styles.iconBtn}>
+          <Image
+            source={require('../assets/images/gpsicon.png')}
+            onPress={(e) => this.getCurrentPosition()}
+            resizeMode={'contain'}
+            style={styles.icon}
+            onError={(e) => console.log(e.nativeEvent.error) }
+            accessibilityLabel={'gps refresh'} />
+        </View>
+        <View>
+          <Picker
+            value={this.state.radius}
+            onValueChange={(itemValue, itemIndex) => this.setState({ radius: itemValue })}
+            items={radiusOpts} />
+        </View>
+        {Object.entries(catMap).map( ([key, value]) => {
+          return <CategoryIcon
+            key={key}
+            disabled={(typeof this.state.categories[key] === 'undefined')}
+            name={value} id={key}
+            onPress={this.toggleCat.bind(this, key)} />;
+          })
+        }
+      </View></View>)
+    } else {
+      return (<Text style={[styles.sectionHeader, {color:colors.TORCH_RED}]}>{section.title}</Text>);
+    }
+  }
+
   _renderItem = ({item}) => {
       if (typeof item.wish != 'undefined') {
         const { wish, ...offer } = item;
@@ -161,47 +209,13 @@ class Wishes extends React.Component<{}, State> {
       allSections.push({title: strings.WISHES_SECTION, data: this.props.wishes.results});
     }
 
-    var radiusOpts = [{label: '.5 mile', value: 500}], i = 1;
-
-    while(i < 50){
-      radiusOpts.push({label:i + ' miles', value:(i * 1000)});
-      i++;
-    };
-
     return (
       <KeyboardAvoidingView style={styles.container}>
-      <SafeAreaView style={{backgroundColor:colors.LIGHT_GREEN}}>
-          <View style={styles.filters}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')}>
-              <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
-            </TouchableOpacity>
-            <View style={styles.iconBtn}>
-              <Image
-                source={require('../assets/images/gpsicon.png')}
-                onPress={(e) => this.getCurrentPosition()}
-                resizeMode={'contain'}
-                style={styles.icon}
-                onError={(e) => console.log(e.nativeEvent.error) }
-                accessibilityLabel={'gps refresh'} />
-            </View>
-            <View>
-              <Picker
-                value={this.state.radius}
-                onValueChange={(itemValue, itemIndex) => this.setState({ radius: itemValue })}
-                items={radiusOpts} />
-            </View>
-            {Object.entries(catMap).map( ([key, value]) => {
-              var isDisabled = typeof this.state.categories[key] === 'undefined';
-              console.log(value + ' DISABLED ' + isDisabled);
-              return <CategoryIcon
-                key={key}
-                disabled={isDisabled}
-                name={value} id={key}
-                onPress={this.toggleCat.bind(this, key)} />;
-              })
-            }
-          </View>
-      </SafeAreaView>
+        <View style={{width:'100%', paddingLeft:30}}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')} >
+            <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
+          </TouchableOpacity>
+        </View>
       {
         allSections.length > 0 ?
         <SectionList
@@ -209,7 +223,7 @@ class Wishes extends React.Component<{}, State> {
                   style={styles.content}
                   keyExtractor={this._keyExtractor}
                   renderItem={this._renderItem}
-                  renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+                  renderSectionHeader={this._renderSectionHead}
                 />
                 :
                 <Text>No results</Text>

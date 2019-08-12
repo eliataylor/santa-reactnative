@@ -68,26 +68,23 @@ class WishItem extends React.PureComponent {
     const { wish, offer } = this.props;
     var cta = null;
     if (offer && offer.state === 'inprogress') {
-      cta = <View style={{marginTop:10}}>
-            <Button style={styles.offerBtn}
-                    label={'Mark Delivered'}
+      cta = <View style={styles.btnGroup}>
+            <Button label={'Mark Delivered'} style={{backgroundColor:colors.LIGHT_GREEN}}
                     onPress={(e) => this.updateOffer('fulfilled')} />
-            <Button style={styles.offerBtn}
-                    label={'Cancel Delivery'}
+            <Button label={'Cancel'} style={{backgroundColor:colors.TORCH_RED}}
                     onPress={(e) => this.updateOffer('canceled')} />
             </View>
     } else if (wish.elf._id === this.props.me._id){
-      cta = <View style={{marginTop:10}}>
-              <Button style={styles.wishBtn}
-              label={'Delete'}
-              onPress={(e) => this.deleteWish()} />
-              <Button style={styles.wishBtn}
-              label={strings.FULFILL}
+      cta = <View style={styles.btnGroup}>
+              <Button  label={strings.FULFILL} style={{backgroundColor:colors.LIGHT_GREEN}}
               onPress={(e) => this.startOffer()} />
+              <Button
+              label={'Delete'} style={{backgroundColor:colors.TORCH_RED}}
+              onPress={(e) => this.deleteWish()} />
             </View>
     } else {
-      cta = <Button style={styles.wishBtn}
-              label={strings.FULFILL}
+      cta = <Button
+              label={strings.FULFILL} style={{backgroundColor:colors.LIGHT_GREEN}}
               onPress={(e) => this.startOffer()} />
     }
 
@@ -113,7 +110,13 @@ class WishItem extends React.PureComponent {
 
 
 const styles = StyleSheet.create({
-  container: {marginTop:10,marginBottom:10},
+  container: {
+    marginTop:15,
+    marginBottom:0,
+    borderColor: colors.SILVER,
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  btnGroup: {flex: 1, flexDirection: 'row', flexWrap:'wrap', justifyContent:'space-between', alignItems:'center'},
   timeframe: {flex: 1, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'},
   details: {width:'100%', height:150, flexDirection:'row', flexWrap:'nowrap', justifyContent:'space-between', alignItems:'flex-start', alignContent:'flex-start'},
   left: {width:'49%', alignSelf:'flex-start'},
@@ -125,12 +128,6 @@ const styles = StyleSheet.create({
   body: {
     fontWeight:'normal',
     fontSize:14
-  },
-  offerBtn : {
-    backgroundColor: colors.TORCH_RED,
-  },
-  wishBtn : {
-    backgroundColor: colors.LIGHT_GREEN,
   }
 });
 
