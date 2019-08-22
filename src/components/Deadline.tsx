@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   text: {
     color: colors.TORCH_RED,
     textAlign: "center",
+    fontSize:18
   }
 });
 

@@ -54,14 +54,6 @@ class SignUp extends React.Component<{}, State> {
     this.props.verifyUser(firstname, authCode)
   }
 
-//  getDerivedStateFromProps(nextProps) {
-/*  componentWillReceiveProps(nextProps) {
-    const {nexSteps} = nextProps.auth;
-    if (nexSteps && this.props.auth.nexSteps != nexSteps) { // test deep
-      // this.setState(initialState)
-    }
-  } */
-
   render() {
     const { signUpError, nextSteps } = this.props
     return (
@@ -131,27 +123,13 @@ const styles = StyleSheet.create({
   },
   form: {
     flex: 1,
-    justifyContent: "center",
-    width: "80%"
+    justifyContent: "center"
   },
   container: {
     flex: 1,
+    backgroundColor: colors.WHITE,
     justifyContent: 'center',
     paddingHorizontal: 40
-  },
-  greeting: {
-    marginTop: 20,
-    // fontFamily: fonts.light,
-    fontSize: 24
-  },
-  greeting2: {
-    //fontFamily: fonts.light,
-    color: '#666',
-    fontSize: 24,
-    marginTop: 5
-  },
-  heading: {
-    flexDirection: 'row'
   },
   logo: {
     flex: 1,
