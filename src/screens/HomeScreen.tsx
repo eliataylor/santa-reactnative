@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import colors from '../config/colors';
+import Button from '../components/Button';
 
 const styles = StyleSheet.create({
   pageContainer: { flex: 1, alignItems: 'stretch', justifyContent: 'space-around', padding:10 },
@@ -85,19 +86,15 @@ export default class HomeScreen extends React.Component<{}, State> {
         <Text style={styles.header}>Hello there. Pick a role, do good, and earn your blessing</Text>
 
         <View style={{ flexDirection:'row', alignItems: 'center', justifyContent: 'center' }}>
-          <TouchableOpacity
-            style={styles.roleBtn}
-            onPress={this.setTab.bind(this, 'Wishes')}
-            >
-            <Text style={styles.btnText}>{"Santa"}</Text>
-          </TouchableOpacity>
+          <Button
+            style={[styles.roleBtn, {backgroundColor:colors.TORCH_RED}]}
+            label={"Santa"}
+            onPress={this.setTab.bind(this, 'Wishes')} />
 
-          <TouchableOpacity
-            style={styles.roleBtn}
-            onPress={this.setTab.bind(this, 'CreateWish')}
-            >
-            <Text style={styles.btnText}>{"Elf"}</Text>
-          </TouchableOpacity>
+          <Button
+          style={[styles.roleBtn, {backgroundColor:colors.LIGHT_GREEN}]}
+            label={"Elf"}
+            onPress={this.setTab.bind(this, 'CreateWish')} />
 
         </View>
         {this.state.activeTab === 'Wishes' ?
@@ -108,12 +105,14 @@ export default class HomeScreen extends React.Component<{}, State> {
         :
         null
         }
-        <Button
-          title="Next"
-          color={colors.TORCH_RED}
-          disabled={this.state.activeTab === ''}
-          onPress={() => {this.props.navigation.navigate(this.state.activeTab);}}
-        />
+        <View>
+          <Button
+            label={"Next"}
+            style={{width:'auto', backgroundColor:colors.LIGHT_GREEN}}
+            disabled={this.state.activeTab === ''}
+            onPress={() => {this.props.navigation.navigate(this.state.activeTab);}}
+          />
+        </View>
       </View>
     );
   }

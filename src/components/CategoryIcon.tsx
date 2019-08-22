@@ -19,15 +19,16 @@ class CategoryIcon extends React.Component<Props> {
   render() {
     const { name, onPress, id, disabled } = this.props;
     var iconEl = null;
-    if (name === 'Arts' || id == '5d34461c274db5adac4a8d38') {
+    // TODO: sync IDs between heroku and localhost, or query on startup
+    if (name === 'Arts' || id === '5d34461c274db5adac4a8d38' || id === '5d358d0766ec4539b5ea4184') {
       iconEl = require("../assets/images/arts.png");
-    } else if (name === 'Clothes' || id == '5d34461c274db5adac4a8d36') {
+    } else if (name === 'Clothes' || id === '5d34461c274db5adac4a8d36' || id === '5d358d0666ec4539b5ea4182') {
       iconEl = require("../assets/images/clothes.png");
-    } else if (name === 'First Aid' || id == '5d34461c274db5adac4a8d37') {
+    } else if (name === 'First Aid' || id === '5d34461c274db5adac4a8d37' || id === '5d358d0766ec4539b5ea4183') {
       iconEl = require("../assets/images/firstaid.png");
-    } else if (name === 'Academics' || id == '5d34461c274db5adac4a8d39') {
+    } else if (name === 'Academics' || id === '5d34461c274db5adac4a8d39' || id === '5d358d0866ec4539b5ea4185') {
       iconEl = require("../assets/images/academics.png");
-    } else if (name === 'Food' || id == '5d34461c274db5adac4a8d35') {
+    } else if (name === 'Food' || id === '5d34461c274db5adac4a8d35' || id === '5d358d0666ec4539b5ea4181') {
       iconEl = require("../assets/images/food.png");
     }
 

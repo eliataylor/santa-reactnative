@@ -10,6 +10,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Dimensions,
   ActivityIndicator,
 } from 'react-native';
 
@@ -18,41 +19,57 @@ import strings from "../config/strings";
 import { colors } from '../theme'
 import { createWish } from '../redux/entityDataReducer'
 import Picker from "react-native-picker-select";
-import Geolocation from '@react-native-community/geolocation';
-import Input from '../components/FormTextInput'
+import FormTextInput from '../components/FormTextInput'
+import LocationSelector from '../components/LocationSelector';
 
+const { width, height } = Dimensions.get('window');
 
-Geolocation.setRNConfiguration({
-  skipPermissionRequests:true,
-  authorizationLevel:"whenInUse"
-});
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems:'center',
+    paddingHorizontal: 40,
+    paddingVertical:50
+  },
   form: {
     flex: 1,
     justifyContent: "center",
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 40,
-    paddingVertical:50
+  map: {
+    flex:1,
+    position:'relative',
+    width:(width - 30),
+    height: (height/3),
+    marginVertical:10
   },
   errorMessage: {
     // fontFamily: fonts.base,
     fontSize: 12,
     marginTop: 10,
     color: 'transparent'
+  },
+  textInput: {
+    height: 40,
+    borderColor: colors.SILVER,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: 20
+  },
+  loading : {
+     position: 'absolute',
+     left: 0,
+     right: 0,
+     top: 0,
+     bottom: 0,
+     opacity: 0.5,
+     width:'100%',
+     height:'100%',
+     backgroundColor: 'rgba(0,0,0,.5)',
+     justifyContent: 'center',
+     alignItems: 'center'
   }
 });
-
-const catMap = {
-  '5d34461c274db5adac4a8d39' : 'Academics',
-  '5d34461c274db5adac4a8d38' : 'Arts',
-  '5d34461c274db5adac4a8d36' : 'Clothes',
-  '5d34461c274db5adac4a8d37' : 'First Aid',
-  '5d34461c274db5adac4a8d35' : 'Food'
-}
 
 interface State {
   title: string;
@@ -69,26 +86,19 @@ class CreateWish extends React.Component {
     desc: '',
     category: '',
     encampment: '',
-    lonlat: '',
+    lonlat: ''
   };
 
-  onChangeTitle = (value) => {
-    this.setState({title: value})
-  }
-  onChangeDesc = (value) => {
-    this.setState({desc: value})
+  constructor(props) {
+    super(props);
+    this.onMarkerChange = this.onMarkerChange.bind(this);
   }
 
-  getCurrentPosition = () => {
-    var that = this;
-    Geolocation.getCurrentPosition(pos => {
-      var lonlat = pos.coords.longitude + ',' + pos.coords.latitude;
-      that.setState({lonlat:lonlat}, () => {
-        // render streetview?
-      });
-    },
-    error => Alert.alert('Error', JSON.stringify(error)),
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
+  onChangeTitle = (value: string) => {
+    this.setState({title: value})
+  }
+  onChangeDesc = (value: string) => {
+    this.setState({desc: value})
   }
 
   submitWish() {
@@ -107,13 +117,8 @@ class CreateWish extends React.Component {
       };
       this.props.createWish(item);
     } else {
-      this.getCurrentPosition();
+      console.log('you must enable your location');
     }
-  }
-
-  componentDidMount() {
-    Geolocation.requestAuthorization();
-    this.getCurrentPosition();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -130,6 +135,12 @@ class CreateWish extends React.Component {
     return false;
   }
 
+  onMarkerChange(coords) {
+    console.log("ON MARKER CHANGE", coords);
+    var lonlat = coords.longitude + ',' + coords.latitude;
+    this.setState({lonlat:lonlat});
+  }
+
   componentDidUpdate(prevProps) {
     if (!prevProps.entity.errors && prevProps.entity.apiData.title === this.state.title && this.state.title != '') { // WARN: a safe assumption, but not ideal key
       console.log("componentDidUpdate1", prevProps.entity, this.state);
@@ -140,54 +151,51 @@ class CreateWish extends React.Component {
 
   render() {
     const { signUpError, nextSteps } = this.props
+
     const catOpts = [];
-    for(var i in catMap){
-      catOpts.push({label:catMap[i], value:i});
-    };
+    if (this.props.auth.categories) {
+      for(var i=0; i < this.props.auth.categories.length; i++){
+        catOpts.push({label:this.props.auth.categories[i].name, value:this.props.auth.categories[i]._id});
+      };
+    }
 
     return (
-      <KeyboardAvoidingView
+      <View
         style={styles.container}
         behavior="padding"
       >
+        {(this.props.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large' /></View> : null}
         <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')}>
           <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
         </TouchableOpacity>
         <View style={styles.form}>
-          <Input
+          <FormTextInput
             placeholder="Wish Title"
             type='text'
+            returnKeyType='next'
+            autoCorrect={true}
             onChangeText={this.onChangeTitle}
             value={this.state.title}
+            keyboardType='default'
           />
-          <Input
+          <FormTextInput
             placeholder="Optional Description"
             type='text'
+            returnKeyType='next'
+            keyboardType='default'
             onChangeText={this.onChangeDesc}
             value={this.state.desc}
           />
-          <Picker
-            placeholder={{label:'Select a category', value:''}}
-            selectedValue={this.state.category}
-            style={{borderColor: colors.SILVER,borderBottomWidth: StyleSheet.hairlineWidth}}
-            onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
-            items={catOpts} />
-          <View style={{flexDirection:'row', marginTop:30, alignItems:'center'}}>
-            <Image
-              source={require('../assets/images/gpsicon.png')}
-              onPress={(e) => this.getCurrentPosition()}
-              resizeMode={'contain'}
-              style={{width:30, height:30, marginRight:15}}
-              onError={(e) => console.log(e.nativeEvent.error) }
-              accessibilityLabel={'gps refresh'} />
-              <Input
-                placeholder="Location"
-                help='GPS Location of this wish'
-                type='text'
-                style={{color:colors.SILVER}}
-                color={colors.SILVER}
-                value={this.state.lonlat}
-              />
+          <View style={{  marginBottom: 10, position:'relative'}}>
+            <Picker
+              style={styles.textInput}
+              placeholder={{label:'Select a category', value:''}}
+              selectedValue={this.state.category}
+              onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
+              items={catOpts} />
+          </View>
+          <View style={styles.map}>
+            <LocationSelector  onMarkerChange={this.onMarkerChange} />
           </View>
           <View style={{marginTop:40}}>
             <Button
@@ -197,7 +205,7 @@ class CreateWish extends React.Component {
             />
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }
@@ -206,6 +214,7 @@ const mapStateToProps = function(state){
   var newProps = {};
   newProps.auth = {...state.auth};
   newProps.entity = {...state.entity};
+  newProps.loading = state.entity.loading;
   return newProps;
 }
 

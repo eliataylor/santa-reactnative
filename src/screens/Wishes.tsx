@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, Button, SectionList, Text, TouchableOpacity, KeyboardAvoidingView, View, Image, SafeAreaView, Alert  } from "react-native";
+import { StyleSheet, Button, SectionList, Text, TouchableHighlight,  TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, View, Image, SafeAreaView, Alert  } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Picker from "react-native-picker-select";
@@ -8,7 +8,6 @@ import WishItem from "../components/WishItem";
 import CategoryIcon from "../components/CategoryIcon";
 import {listData} from "../redux/listDataReducer";
 import Geolocation from '@react-native-community/geolocation';
-import { Icon } from 'react-native-vector-icons';
 
 Geolocation.setRNConfiguration({
   skipPermissionRequests:true,
@@ -32,7 +31,6 @@ const styles = StyleSheet.create({
      borderBottomWidth: StyleSheet.hairlineWidth,
      borderBottomColor: "rgba(000,000,000,0.5)",
      width: '100%',
-     flexWrap: 'nowrap',
      marginTop:0,
      marginBottom:0,
      paddingHorizontal:4,
@@ -56,7 +54,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height:"100%",
-    resizeMode: "contain",
     alignSelf: "center"
   },
   sectionHeader: {
@@ -69,6 +66,19 @@ const styles = StyleSheet.create({
     color:colors.LIGHT_GREEN,
     backgroundColor:colors.LIGHT_GREY,
   },
+  loading : {
+    position: 'absolute',
+   left: 0,
+   right: 0,
+   top: 0,
+   bottom: 0,
+   opacity: 0.5,
+   width:'100%',
+   height:'100%',
+   backgroundColor: 'rgba(0,0,0,.5)',
+   justifyContent: 'center',
+   alignItems: 'center'
+  }
 });
 
 interface State {
@@ -77,36 +87,29 @@ interface State {
   categories:object
 }
 
-const catMap = {
-  '5d34461c274db5adac4a8d39' : 'Academics',
-  '5d34461c274db5adac4a8d38' : 'Arts',
-  '5d34461c274db5adac4a8d36' : 'Clothes',
-  '5d34461c274db5adac4a8d37' : 'First Aid',
-  '5d34461c274db5adac4a8d35' : 'Food'
-}
-
 class Wishes extends React.Component<{}, State> {
 
   readonly state: State = {
-    radius:5000,
+    radius:25000,
     lonlat:'',
-    categories:{...catMap}
+    categories:{},
+    locationHelp:'GPS Location of this wish'
   };
 
   componentDidMount() {
-    console.log('wishes DID MOUNT');
-    Geolocation.requestAuthorization();
+    //Geolocation.requestAuthorization();
     this.refresh();
   }
 
   refresh = ()  => {
     if (this.state.lonlat.length > 3) {
       var url = "/api/wishes/list?coords=" + this.state.lonlat + "&meters=" + this.state.radius;
-      if (Object.keys(catMap).length !== Object.keys(this.state.categories).length) {
+//      if (Object.keys(this.state.categories).length > 0) {
         for (var g in this.state.categories) {
           url += '&category[]=' + g;
         }
-      }
+//      }
+      //console.warn(url);
       this.props.listData(url);
     } else {
       this.getCurrentPosition();
@@ -114,32 +117,43 @@ class Wishes extends React.Component<{}, State> {
   }
 
   getCurrentPosition = () => {
-    console.log('new geo position requested');
     var that = this;
+    that.setState({locationHelp:'Loading your GPS location...'});
     Geolocation.getCurrentPosition(pos => {
       var lonlat = pos.coords.longitude + ',' + pos.coords.latitude;
       that.setState({lonlat:lonlat}, () => {
         that.refresh();
+        that.setState({locationHelp:'GPS Location of this wish'});
       });
     },
-    error => Alert.alert('Error', JSON.stringify(error)),
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
+    error => {
+      that.setState({locationHelp:'Please enabled GPS Location in your settings'});
+      Alert.alert('Error', error.message)
+    },
+    {enableHighAccuracy: false, timeout: 20000, maximumAge: 10000});
+  }
+
+  _radiusChanged = (itemValue, itemIndex) => {
+    var that = this;
+    this.setState({ radius: itemValue }, function(){
+      that.refresh();
+    });
   }
 
   _keyExtractor = (item, index) => item._id + '_' + index;
 
   toggleCat = (catId) => {
     var cats = {...this.state.categories};
-    const emptyObject = (Object.keys(cats).length === 0 && cats.constructor === Object);
-    if (emptyObject) {
-      cats = {...catMap};
+    if (Object.keys(cats).length === this.props.catMap.length) {
+      cats = {}; // === all selected
     } else if (typeof cats[catId] === 'string') {
       delete cats[catId];
     } else {
-      cats[catId] = catMap[catId];
+      // TODO: if Object.keys(cats).length === 0, then all ALL OTHERS
+      cats[catId] = catId;
     }
     var that = this;
-    console.log("UPDATING CATEGORIES", cats)
+    //console.warn("UPDATING CATEGORIES " + catId, cats);
     this.setState({categories:cats}, e => {
       that.refresh();
     });
@@ -160,26 +174,31 @@ class Wishes extends React.Component<{}, State> {
         <Text style={styles.sectionHeader}>{section.title}</Text>
         <View style={styles.filters}>
         <View style={styles.iconBtn}>
-          <Image
-            source={require('../assets/images/gpsicon.png')}
-            onPress={(e) => this.getCurrentPosition()}
-            resizeMode={'contain'}
-            style={styles.icon}
-            onError={(e) => console.log(e.nativeEvent.error) }
-            accessibilityLabel={'gps refresh'} />
+          {(this.state.locationHelp === 'Loading your GPS location...') ?
+            <ActivityIndicator size='large'/>
+            :
+            <TouchableHighlight
+              style={styles.icon}
+              onPress={(e) => this.getCurrentPosition()}
+              ><Image
+              source={require('../assets/images/gpsicon.png')}
+              resizeMode={'contain'}
+              style={styles.icon}
+              onError={(e) => console.log(e.nativeEvent.error) }
+              accessibilityLabel={'gps refresh'} /></TouchableHighlight>
+          }
         </View>
-        <View>
-          <Picker
-            value={this.state.radius}
-            onValueChange={(itemValue, itemIndex) => this.setState({ radius: itemValue })}
-            items={radiusOpts} />
-        </View>
-        {Object.entries(catMap).map( ([key, value]) => {
+        <Picker
+          value={this.state.radius}
+          useNativeAndroidPickerStyle={false}
+          onValueChange={this._radiusChanged}
+          items={radiusOpts} />
+        {Object.entries(this.props.catMap).map( ([i, value]) => {
           return <CategoryIcon
-            key={key}
-            disabled={(typeof this.state.categories[key] === 'undefined')}
-            name={value} id={key}
-            onPress={this.toggleCat.bind(this, key)} />;
+            key={value._id}
+            disabled={(Object.keys(this.state.categories).length > 0 && typeof this.state.categories[value._id] === 'undefined')}
+            name={value.name} id={value._id}
+            onPress={this.toggleCat.bind(this, value._id)} />;
           })
         }
       </View></View>)
@@ -198,7 +217,13 @@ class Wishes extends React.Component<{}, State> {
 
   render() {
     if (this.state.lonlat === '') {
-      return <Button title={strings.LOCATION_PROMPT} onPress={(e) => this.getCurrentPosition()} />;
+      if (this.state.locationHelp === 'Loading your GPS location...') {
+        return (<View style={styles.loading}>
+          <Text>{this.state.locationHelp}</Text>
+          <ActivityIndicator size='large'/>
+        </View>);
+      }
+      return (<View style={styles.container}><Button title={strings.LOCATION_PROMPT} onPress={(e) => this.getCurrentPosition()} /></View>);
     }
 
     const allSections = [];
@@ -216,6 +241,7 @@ class Wishes extends React.Component<{}, State> {
             <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
           </TouchableOpacity>
         </View>
+        { (this.props.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
       {
         allSections.length > 0 ?
         <SectionList
@@ -228,10 +254,7 @@ class Wishes extends React.Component<{}, State> {
                 :
                 <Text>No results</Text>
       }
-
-
-
-</KeyboardAvoidingView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -241,7 +264,7 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = state => {
-  var newProps = {wishes: state.lists.wishes};
+  var newProps = {wishes: state.lists.wishes, loading:state.lists.loading, catMap:state.auth.categories};
   if (state.lists.offers.length && state.lists.offers.results) {
     newProps.offers = state.lists.offers.results;
   } else {
