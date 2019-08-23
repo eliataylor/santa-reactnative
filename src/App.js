@@ -1,13 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, Text } from 'react-native';
+import { StatusBar, Text, View, TouchableOpacity } from 'react-native';
 import LoginOrRegister from './screens/LoginOrRegister';
 import Snackbar from 'react-native-snackbar';
 import RoleSelection from './screens/RoleSelection';
 import {checkToken} from './redux/authActions';
 import API from './utils/API';
+import NotifService from './utils/NotifService';
 
 class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+  }
+
 
   async componentDidMount() {
     StatusBar.setHidden(true);
@@ -19,7 +26,28 @@ class App extends React.Component {
     }
   }
 
+  onRegister(token) {
+    console.log(token);
+    Alert.alert("Registered !", JSON.stringify(token));
+    //this.setState({ registerToken: token.token, gcmRegistered: true });
+  }
+
+  onNotif(notif) {
+    console.log(notif);
+    Alert.alert(notif.title, notif.message);
+  }
+
   render() {
+
+    if (true) {
+      return (<View>
+          <TouchableOpacity onPress={() => { this.notif.localNotif() }}><Text>Local Notification (now)</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => { this.notif.scheduleNotif() }}><Text>Schedule Notification in 30s</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => { this.notif.cancelNotif() }}><Text>Cancel last notification (if any)</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => { this.notif.cancelAll() }}><Text>Cancel all notifications</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => { this.notif.checkPermission(this.handlePerm.bind(this)) }}><Text>Check Permission</Text></TouchableOpacity>
+        </View>)
+    }
 
     if (this.props.auth.me) {
       if (this.props.auth.me.isVerified === false) {

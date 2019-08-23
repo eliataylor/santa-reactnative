@@ -75,6 +75,7 @@
 		B9CCED7664F2492FA924E493 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		C6DF3E4C975D200B52A56A85 /* Pods-ReactSanta-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSanta-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ReactSanta-tvOS/Pods-ReactSanta-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C83388D322CA45B590F23461 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		CE2CA5BA230FF8300054C65E /* ReactSanta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ReactSanta.entitlements; path = ReactSanta/ReactSanta.entitlements; sourceTree = "<group>"; };
 		D27D09325C6C11D207D07224 /* Pods-ReactSanta-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSanta-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ReactSanta-tvOS/Pods-ReactSanta-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		D6C7C44840D84A148025D18F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		E3491D71EDAE44CF873482A7 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -189,6 +190,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CE2CA5BA230FF8300054C65E /* ReactSanta.entitlements */,
 				13B07FAE1A68108700A75B9A /* Santa 4 Homeless */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ReactSantaTests */,
@@ -341,6 +343,14 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 4E7BA47MN7;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -697,6 +707,7 @@
 			baseConfigurationReference = 92DAD89AA1BB06F13D7A7A4B /* Pods-ReactSanta.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ReactSanta/ReactSanta.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 4E7BA47MN7;
@@ -719,6 +730,7 @@
 			baseConfigurationReference = 3FBC66A172E5345009A52F86 /* Pods-ReactSanta.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ReactSanta/ReactSanta.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4E7BA47MN7;
 				HEADER_SEARCH_PATHS = "$(inherited)";
