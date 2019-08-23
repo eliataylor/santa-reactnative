@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, Text, View, TouchableOpacity } from 'react-native';
+import { StatusBar, Text, Alert, SafeAreaView, TouchableOpacity } from 'react-native';
 import LoginOrRegister from './screens/LoginOrRegister';
 import Snackbar from 'react-native-snackbar';
 import RoleSelection from './screens/RoleSelection';
@@ -37,17 +37,21 @@ class App extends React.Component {
     Alert.alert(notif.title, notif.message);
   }
 
+  handlePerm(perms) {
+    Alert.alert("Permissions", JSON.stringify(perms));
+  }
+
   render() {
 
-    if (true) {
-      return (<View>
+    /* if (true) {
+      return (<SafeAreaView style={{paddingHorizontal:50, paddingVertical:40}}>
           <TouchableOpacity onPress={() => { this.notif.localNotif() }}><Text>Local Notification (now)</Text></TouchableOpacity>
           <TouchableOpacity onPress={() => { this.notif.scheduleNotif() }}><Text>Schedule Notification in 30s</Text></TouchableOpacity>
           <TouchableOpacity onPress={() => { this.notif.cancelNotif() }}><Text>Cancel last notification (if any)</Text></TouchableOpacity>
           <TouchableOpacity onPress={() => { this.notif.cancelAll() }}><Text>Cancel all notifications</Text></TouchableOpacity>
           <TouchableOpacity onPress={() => { this.notif.checkPermission(this.handlePerm.bind(this)) }}><Text>Check Permission</Text></TouchableOpacity>
-        </View>)
-    }
+        </SafeAreaView>)
+    } */
 
     if (this.props.auth.me) {
       if (this.props.auth.me.isVerified === false) {

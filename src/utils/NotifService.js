@@ -59,7 +59,7 @@ export default class NotifService {
 
       /* iOS only properties */
       alertAction: 'view', // (optional) default: view
-      category: null, // (optional) default: null
+      category: 'userInfo', // (optional) default: null
       userInfo: null, // (optional) default: null (object containing additional notification data)
 
       /* iOS and Android properties */
@@ -94,7 +94,7 @@ export default class NotifService {
 
       /* iOS only properties */
       alertAction: 'view', // (optional) default: view
-      category: null, // (optional) default: null
+      category: 'userInfo', // (optional) default: null
       userInfo: null, // (optional) default: null (object containing additional notification data)
 
       /* iOS and Android properties */
