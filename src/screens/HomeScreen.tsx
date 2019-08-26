@@ -73,7 +73,7 @@ class HomeScreen extends React.Component<Props, State> {
 
     return (
       <View style={styles.pageContainer}>
-        <Text style={styles.header}>Hello there. Pick a role, do good, and earn your blessing</Text>
+        <Text style={styles.header}>{this.props.me.name.first ? 'Welcome ' + this.props.me.name.first : 'Hello there'}. Pick a role, do good, and earn your blessing</Text>
 
         <View style={{flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
           <Button

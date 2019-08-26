@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, Button, SectionList, Text, TouchableHighlight,  TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, View, Image, SafeAreaView, Alert  } from "react-native";
+import { StyleSheet, Button, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, View, Image, SafeAreaView, Alert  } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Picker from "react-native-picker-select";
@@ -97,7 +97,9 @@ class Wishes extends React.Component<{}, State> {
   };
 
   componentDidMount() {
-    //Geolocation.requestAuthorization();
+    if (Platform.OS === 'ios') {
+      Geolocation.requestAuthorization();
+    }
     this.refresh();
   }
 

@@ -12,10 +12,9 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this), '629412147035');
     this.state = {permissions:false}
   }
-
 
   async componentDidMount() {
     StatusBar.setHidden(true);

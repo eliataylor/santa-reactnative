@@ -9,7 +9,8 @@
     "run-android": "react-native run-android",
     "test": "jest",
     "lint": "eslint .",
-    "build:ios": "react-native bundle --entry-file='index.ios.js' --bundle-output='./ios/ReactSanta/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'"
+    "build:ios": "react-native bundle --entry-file='index.ios.js' --bundle-output='./ios/ReactSanta/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
+    "postinstall" : "npx jetify"
   },
   "dependencies": {
     "@react-native-community/async-storage": "github:react-native-community/react-native-async-storage",
