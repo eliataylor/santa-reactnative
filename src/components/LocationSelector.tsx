@@ -1,8 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Button, Dimensions, Platform } from 'react-native';
 
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+
+Geolocation.setRNConfiguration({
+  skipPermissionRequests:true,
+  authorizationLevel:"whenInUse"
+});
 
 const { width, height } = Dimensions.get('window');
 
@@ -12,12 +17,6 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
-
-
-Geolocation.setRNConfiguration({
-  skipPermissionRequests:true,
-  authorizationLevel:"whenInUse"
-});
 
 class LocationSelector extends React.Component {
   constructor(props) {
@@ -37,14 +36,19 @@ class LocationSelector extends React.Component {
   }
 
   componentDidMount() {
-    Geolocation.requestAuthorization();
+    if (Platform.OS === 'ios') {
+      Geolocation.requestAuthorization();
+    }
     this.getCurrentPosition();
   }
 
   getCurrentPosition() {
     var that = this;
+
     Geolocation.getCurrentPosition(pos => {
+      console.log('GOT POSITION', pos);
       that.setState({loc:pos.coords});
+      that.props.onMarkerChange(pos.coords); // send back to parent in case it's the current location
     },
     error => Alert.alert('Error', JSON.stringify(error)),
     {enableHighAccuracy:false, timeout: 20000, maximumAge: 1000});
@@ -62,7 +66,7 @@ class LocationSelector extends React.Component {
   render() {
 
     if (this.state.loc === false) {
-      return (<Button title={'Enable your Location'} onPress={this.getCurrentPosition} />)
+      return (<Button title={'Enable your Location'} onPress={(e) => this.getCurrentPosition()} />)
     }
 
     return (

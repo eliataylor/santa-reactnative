@@ -12,7 +12,7 @@ def getPassword(String currentUser, String keyChain) {
    //noinspection GroovyAssignabilityCheck
       stdout.toString().trim()
 }
- 
+
 
 buildscript {
     ext {
@@ -21,6 +21,8 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 28
         supportLibVersion = "28.0.0"
+        googlePlayServicesVersion = "+"
+        firebaseVersion = "+"
     }
     repositories {
         google()
