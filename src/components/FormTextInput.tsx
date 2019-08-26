@@ -31,8 +31,8 @@ class FormTextInput extends React.Component<Props> {
           style={[styles.textInput, style]}
           {...otherProps}
         />
-        {help ? <Text style={styles.helpText}>{help}</Text> : null}
-        <Text style={styles.errorText}>{error || ""}</Text>
+        {(help && help !== '') ? <Text style={styles.helpText}>{help}</Text> : null}
+        {(error && error !== '') ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
     );
   }

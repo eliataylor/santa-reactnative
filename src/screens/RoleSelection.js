@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-
+import { connect } from 'react-redux';
 import { colors } from '../theme';
 import HomeScreen from './HomeScreen';
 import Wishes from './Wishes';
@@ -52,6 +52,7 @@ const routeConfig = {
   headerMode: 'none',
   initialRouteName : 'HomeScreen'
 }
+
 
 const RootStack = createStackNavigator(routes, routeConfig);
 export default createAppContainer(RootStack);

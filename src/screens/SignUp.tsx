@@ -13,10 +13,10 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
-
+const logo = require('../assets/images/logo.png');
 import strings from "../config/strings";
 import { colors } from '../theme'
-import { createUser, verifyUser } from '../redux/authActions'
+import { createUser } from '../redux/authActions'
 
 import Input from '../components/FormTextInput'
 import Button from '../components/Button'
@@ -49,11 +49,6 @@ class SignUp extends React.Component<{}, State> {
     this.props.createUser(firstname, password, email, phone)
   }
 
-  confirm() {
-    const { authCode, firstname } = this.state
-    this.props.verifyUser(firstname, authCode)
-  }
-
   render() {
     const { signUpError, nextSteps } = this.props
     return (
@@ -62,17 +57,11 @@ class SignUp extends React.Component<{}, State> {
         behavior="padding"
       >
         <Image
-          source={require('../assets/images/logo.png')}
+          source={logo}
           style={styles.logo}
           resizeMode="contain"
         />
         <View style={styles.form}>
-          <Input
-            value={this.state.firstname}
-            placeholder="First Name"
-            type='firstname'
-            onChangeText={this.onChangeText}
-          />
           <Input
             value={this.state.email}
             placeholder="Email"
@@ -81,7 +70,13 @@ class SignUp extends React.Component<{}, State> {
             onChangeText={this.onChangeText}
           />
           <Input
-            placeholder="Phone Number"
+            value={this.state.firstname}
+            placeholder="Optional First Name"
+            type='firstname'
+            onChangeText={this.onChangeText}
+          />
+          <Input
+            placeholder="Optional Phone Number"
             type='phone_number'
             keyboardType='phone-pad'
             onChangeText={this.onChangeText}
@@ -89,7 +84,7 @@ class SignUp extends React.Component<{}, State> {
           />
           <Input
             value={this.state.password}
-            placeholder="Password"
+            placeholder="Optional Password"
             secureTextEntry
             type='password'
             onChangeText={this.onChangeText}
@@ -109,7 +104,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  verifyUser: (firstname, authCode) => verifyUser(firstname, authCode),
   createUser: (firstname, password, email, phone) => createUser(firstname, password, email, phone)
 }
 

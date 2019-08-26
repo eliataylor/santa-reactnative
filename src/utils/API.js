@@ -218,7 +218,7 @@ class API {
           return err.response.data;
         } else if (err.request) {
           console.log(err.request);
-          return 'no server response received';
+          return 'no server response from ' + Config.api.base;
         } else if (typeof err.message != 'undefined') {
           console.log('Error', err.message);
           return err.message;

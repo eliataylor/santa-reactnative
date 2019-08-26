@@ -65,7 +65,6 @@ export default (state = initialState, action) => {
       return newState;
     case VERIFY_SUCCESS:
       newState.verifyError = false;
-      newState.me = action.user;
       return newState;
     case VERIFY_FAILURE:
       newState.verifyError = action.error;

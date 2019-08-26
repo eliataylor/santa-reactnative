@@ -179,25 +179,23 @@ export function checkToken() {
 }
 
 // updates isVerified
-export function verifyUser(code) {
+export function checkVerificationCode(code) {
   return (dispatch, getState) => {
+
     dispatch(verifyStart())
 
     var state = getState();
-    var fakeIt = {...state.auth.me};
-    fakeIt.isVerified = true;
-    return dispatch(verifySuccess(fakeIt));
-
-    //server verification is not complete yet
-    API.Put('/api/users/:id/verify/:code', code)
+    // server verification is not complete yet
+    API.Get('/api/verify/'+state.auth.me._id+'/' + code)
       .then(res => {
-        let me = res.data.user;
-        let token = {...res.data};
-        delete token.user;
-        AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
-            dispatch(verifySuccess(res.data))
-            return res;
-        });
+        console.log("VERIFIED", res.data);
+        if (typeof res.data.success !== 'undefined') {
+          dispatch(verifySuccess());
+          // TODO run appstartup
+          dispatch(checkToken());
+        }
+        var msg = res.data.error;
+        return dispatch(verifyFailure(msg || 'unknown error'));
       })
       .catch(err => {
         var msg = API.getErrorMsg(err);
