@@ -4,7 +4,7 @@ import { Image, StyleSheet, KeyboardAvoidingView, View } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import VerifyUser from "./VerifyUser";
-import imageLogo from "../assets/images/logo.png";
+import logo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import { authenticate } from '../redux/authActions'
@@ -69,7 +69,7 @@ class SignIn extends React.Component<{}, State> {
       <KeyboardAvoidingView
         style={styles.container}
         behavior="padding" >
-        <Image source={imageLogo} style={styles.logo} />
+        <Image source={logo} style={styles.logo} />
         <View style={styles.form}>
           <FormTextInput
             value={email}

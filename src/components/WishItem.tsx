@@ -111,16 +111,16 @@ class WishItem extends React.PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop:15,
-    marginBottom:0,
-    borderColor: colors.SILVER,
-    borderBottomWidth: StyleSheet.hairlineWidth
+      marginTop:15,
+      marginBottom:0,
+      borderColor: colors.SILVER,
+      borderBottomWidth: StyleSheet.hairlineWidth
   },
   btnGroup: {flex: 1, flexDirection: 'row', flexWrap:'wrap', justifyContent:'space-between', alignItems:'center'},
   timeframe: {flex: 1, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'},
   details: {width:'100%', height:150, flexDirection:'row', flexWrap:'nowrap', justifyContent:'space-between', alignItems:'flex-start', alignContent:'flex-start'},
-  left: {width:'49%', alignSelf:'flex-start'},
-  right: {width:'49%', alignSelf:'flex-start'},
+  left: { width:'49%', alignSelf:'flex-start' },
+  right: { width:'49%', alignSelf:'flex-start' },
   h1: {
     fontWeight: 'bold',
     fontSize:18,

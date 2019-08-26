@@ -13,6 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+    this.state = {permissions:false}
   }
 
 
@@ -26,10 +27,32 @@ class App extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.permissions !== false && this.props.auth.me && this.props.auth.me.isVerified === true) {
+      this.notif.checkPermission(this.handlePerm.bind(this));
+    }
+    return true;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.state.permissions !== false && this.props.auth.me && this.props.auth.me.isVerified === true) {
+      this.notif.checkPermission(this.handlePerm.bind(this));
+    }
+  }
+
   onRegister(token) {
-    console.log(token);
-    Alert.alert("Registered !", JSON.stringify(token));
-    //this.setState({ registerToken: token.token, gcmRegistered: true });
+    console.log('DEVICE TOKEN REGISTERED', token);
+    this.setState({ registerToken: token.token, gcmRegistered: true });
+    API.Post('/api/users/:id/devicetoken', {deviceToken:token.token})
+    .then(res => {
+      console.log('stored device token', res.data);
+      return res.data
+    })
+    .catch(err => {
+      var msg = API.getErrorMsg(err);
+      console.log('error logging in: ', msg)
+      return err;
+    });
   }
 
   onNotif(notif) {
@@ -38,11 +61,11 @@ class App extends React.Component {
   }
 
   handlePerm(perms) {
+    this.setState({permissions:perms});
     Alert.alert("Permissions", JSON.stringify(perms));
   }
 
   render() {
-
     /* if (true) {
       return (<SafeAreaView style={{paddingHorizontal:50, paddingVertical:40}}>
           <TouchableOpacity onPress={() => { this.notif.localNotif() }}><Text>Local Notification (now)</Text></TouchableOpacity>
@@ -54,9 +77,6 @@ class App extends React.Component {
     } */
 
     if (this.props.auth.me) {
-      if (this.props.auth.me.isVerified === false) {
-        return <LoginOrRegister />;
-      }
       if (this.props.lists.error) {
         Snackbar.show({
           title : this.props.lists.error,
@@ -65,7 +85,7 @@ class App extends React.Component {
           color : 'white'
         });
       }
-      return <RoleSelection />;
+      return <RoleSelection auth={this.props.auth} />;
     }
 
     var errors = [this.props.auth.logInError, this.props.auth.signUpError, this.props.auth.verifyError];

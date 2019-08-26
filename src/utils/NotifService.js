@@ -4,7 +4,6 @@ export default class NotifService {
 
   constructor(onRegister, onNotification) {
     this.configure(onRegister, onNotification);
-
     this.lastId = 0;
   }
 

@@ -2,6 +2,10 @@ import React from 'react';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import colors from '../config/colors';
 import Button from '../components/Button';
+import FormTextInput from "../components/FormTextInput";
+import { connect } from 'react-redux';
+import VerifyUser from "./VerifyUser";
+const logo = require('../assets/images/logo.png');
 
 const styles = StyleSheet.create({
   pageContainer: { flex: 1, alignItems: 'stretch', justifyContent: 'space-around', padding:10 },
@@ -17,15 +21,6 @@ const styles = StyleSheet.create({
     borderColor: colors.SILVER,
     width:'40%',
   },
-  btnEnabled: {
-    opacity: 1,
-  },
-  btnDisabled: {
-    opacity: 0.5,
-  },
-  btnText : {
-    textAlign:'center'
-  },
   header : {
     fontWeight:'bold',
     textAlign:'center',
@@ -37,7 +32,7 @@ interface State {
   activeTab:string;
 }
 
-export default class HomeScreen extends React.Component<{}, State> {
+class HomeScreen extends React.Component<Props, State> {
 
   readonly state: State = {
     activeTab:''
@@ -48,7 +43,7 @@ export default class HomeScreen extends React.Component<{}, State> {
 
     return {
       headerTitle: <Image
-        source={require('../assets/images/logo.png')}
+        source={logo}
         style={{ width: 30, height: 30 }}
       />,
       headerLeft: (
@@ -66,37 +61,32 @@ export default class HomeScreen extends React.Component<{}, State> {
     };
   };
 
-  setTab = (tab) => {
+  setTab(tab) {
     this.setState({ activeTab: tab });
   };
 
-  render() {
 
-    /* const  elfBtnStyles = [
-      styles.roleBtn,
-      (this.state.activeTab === 'Wishes') ? styles.btnDisabled : styles.btnEnabled
-    ]
-    const santaBtnStyles = [
-      styles.roleBtn,
-      (this.state.activeTab === 'CreateWish') ? styles.btnDisabled : styles.btnEnabled
-    ];  */
+  render() {
+    if (this.props.me.isVerified ===false ) {
+      return <VerifyUser />;
+    }
 
     return (
       <View style={styles.pageContainer}>
         <Text style={styles.header}>Hello there. Pick a role, do good, and earn your blessing</Text>
 
-        <View style={{ flexDirection:'row', alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
           <Button
             style={[styles.roleBtn, {backgroundColor:colors.TORCH_RED}]}
             label={"Santa"}
             onPress={this.setTab.bind(this, 'Wishes')} />
 
           <Button
-          style={[styles.roleBtn, {backgroundColor:colors.LIGHT_GREEN}]}
+            style={[styles.roleBtn, {backgroundColor:colors.LIGHT_GREEN}]}
             label={"Elf"}
             onPress={this.setTab.bind(this, 'CreateWish')} />
-
         </View>
+
         {this.state.activeTab === 'Wishes' ?
           <Text style={styles.header}>Click next and search nearby wishes to fulfill</Text>
         :
@@ -110,10 +100,15 @@ export default class HomeScreen extends React.Component<{}, State> {
             label={"Next"}
             style={{width:'auto', backgroundColor:colors.LIGHT_GREEN}}
             disabled={this.state.activeTab === ''}
-            onPress={() => {this.props.navigation.navigate(this.state.activeTab);}}
+            onPress={() => {this.props.navigation.navigate(this.state.activeTab)}}
           />
         </View>
       </View>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  me: state.auth.me
+});
+export default connect(mapStateToProps, null)(HomeScreen);
