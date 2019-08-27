@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Button, Dimensions, Platform } from 'react-nati
 
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import colors from "../config/colors";
 
 Geolocation.setRNConfiguration({
   skipPermissionRequests:true,
@@ -29,7 +30,7 @@ class LocationSelector extends React.Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-      loc: false
+      loc: ''
     };
 
     this.onSelect = this.onSelect.bind(this);
@@ -47,10 +48,13 @@ class LocationSelector extends React.Component {
 
     Geolocation.getCurrentPosition(pos => {
       console.log('GOT POSITION', pos);
-      that.setState({loc:pos.coords});
-      that.props.onMarkerChange(pos.coords); // send back to parent in case it's the current location
+      var coor = {latitude:pos.coords.latitude, longitude:pos.coords.longitude};
+      that.setState({loc:coor});
+      that.props.onMarkerChange(coor); // send back to parent in case it's the current location
     },
-    error => Alert.alert('Error', JSON.stringify(error)),
+    error => {
+      that.setState({loc:JSON.stringify(error)});
+    },
     {enableHighAccuracy:false, timeout: 20000, maximumAge: 1000});
   }
 
@@ -64,9 +68,16 @@ class LocationSelector extends React.Component {
   }
 
   render() {
-
-    if (this.state.loc === false) {
-      return (<Button title={'Enable your Location'} onPress={(e) => this.getCurrentPosition()} />)
+    if (this.state.loc === '') {
+      return (<Text>Checking your location</Text>);
+    }
+    if (typeof this.state.loc === 'string') {
+      return (
+        <View style={styles.container}>
+          <Button title={'Enable your Location'} onPress={(e) => this.getCurrentPosition()} />
+          <Text>{this.state.loc}</Text>
+        </View>
+        )
     }
 
     return (
@@ -81,7 +92,6 @@ class LocationSelector extends React.Component {
           showsUserLocation={false}
           showsMyLocationButton={true}
           initialRegion={this.state.region}
-          // onRegionChange={this.onRegionChange}
         >
           <Marker
             draggable
@@ -91,6 +101,7 @@ class LocationSelector extends React.Component {
             >
           </Marker>
         </MapView>
+        <Text styles={styles.help}>Press and hold the location of this Wish</Text>
       </View>
     );
   }
@@ -109,6 +120,11 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  help: {
+    fontSize:10,
+    color:colors.SILVER,
+    textAlign:'right'
+  }
 });
 
 export default LocationSelector;

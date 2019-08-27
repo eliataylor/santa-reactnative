@@ -10,7 +10,7 @@
     "test": "jest",
     "lint": "eslint .",
     "build:ios": "react-native bundle --entry-file='index.ios.js' --bundle-output='./ios/ReactSanta/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
-    "postinstall" : "npx jetify"
+    "postinstall": "npx jetify"
   },
   "dependencies": {
     "@react-native-community/async-storage": "github:react-native-community/react-native-async-storage",
@@ -21,7 +21,7 @@
     "react": "16.8.6",
     "react-native": "0.60.3",
     "react-native-gesture-handler": "^1.3.0",
-    "react-native-maps": "0.25.0",
+    "react-native-maps": "^0.25.0",
     "react-native-picker-select": "^6.3.0",
     "react-native-push-notification": "^3.1.8",
     "react-native-reanimated": "^1.2.0",

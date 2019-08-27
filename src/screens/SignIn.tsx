@@ -1,12 +1,13 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { Image, StyleSheet, KeyboardAvoidingView, View } from "react-native";
+import { Image, StyleSheet, KeyboardAvoidingView, Alert, View } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import VerifyUser from "./VerifyUser";
 import logo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
+import API from "../utils/API";
 import { authenticate } from '../redux/authActions'
 
 interface State {
@@ -56,6 +57,20 @@ class SignIn extends React.Component<{}, State> {
     }
   };
 
+  resendLink() {
+    API.Post('/api/loginlink', {email:this.state.email})
+    .then(res => {
+      console.log('loginlink', res.data);
+      Alert.alert('Check your email', 'and click your login link');
+    })
+    .catch(err => {
+      var msg = API.getErrorMsg(err);
+      console.log('error sending verification link: ', msg)
+      Alert.alert('Error', error);
+      return err;
+    });
+  }
+
   render() {
     if (this.props.auth.me) {
       if (this.props.auth.me.isVerified === false) {
@@ -73,7 +88,6 @@ class SignIn extends React.Component<{}, State> {
         <View style={styles.form}>
           <FormTextInput
             value={email}
-            autoCorrect={false}
             keyboardType='email-address'
             returnKeyType='next'
             onChangeText={this.handleEmailChange}
@@ -93,9 +107,15 @@ class SignIn extends React.Component<{}, State> {
           <Button
             label={strings.SIGNIN}
             onPress={this.handleLoginPress}
-            disabled={!email || !password}
+            disabled={email.indexOf("@") < 2 || password.length < 4}
           />
         </View>
+        <Button
+          label={'Email Login Link'}
+          style={{backgroundColor:colors.LIGHT_GREY, color:colors.SILVER}}
+          onPress={(e) => this.resendLink()}
+          disabled={email.indexOf('@') < 2}
+        />
       </KeyboardAvoidingView>
     );
   }
