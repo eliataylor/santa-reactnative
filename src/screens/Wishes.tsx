@@ -171,6 +171,8 @@ class Wishes extends React.Component<{}, State> {
         i++;
       };
 
+      radiusOpts.push({label:'Anywhere', value:'anywhere'});
+
       return (
         <View>
         <Text style={styles.sectionHeader}>{section.title}</Text>

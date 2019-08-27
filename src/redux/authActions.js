@@ -144,10 +144,8 @@ export function authenticate(credentials) {
 
     API.Post('/oauth/token', credentials)
     .then(res => {
-      let me = res.data.user;
-      let token = {...res.data};
-      delete token.user;
-      console.warn('setting token ' + Config.api.tokName);
+      let me = res.data.me;
+      let token = res.data.token;
       AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
           dispatch(logInSuccess(res.data))
           return res;

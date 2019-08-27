@@ -11,13 +11,16 @@ interface Props {
 class Button extends React.Component<Props> {
   render() {
     const { disabled, label, onPress, style, ...otherProps } = this.props;
-    // If the button is disabled we lower its opacity
-    const containerStyle = [
-      {...this.props.style},
-      styles.container,
-      (disabled === true) ? styles.containerDisabled : styles.containerEnabled,
-      style
-    ];
+
+    const containerStyle = [styles.container];
+    if (style) containerStyle.push(style);
+    containerStyle.push( (disabled === true) ? styles.containerDisabled : styles.containerEnabled );
+
+
+    const textStyle = [styles.text];
+    if (style && typeof style.color !== 'undefined') {
+      textStyle.push({color:style.color});
+    }
     return (
       <TouchableOpacity
         style={containerStyle}
@@ -25,7 +28,7 @@ class Button extends React.Component<Props> {
         disabled={disabled}
         {...otherProps}
         >
-        <Text style={styles.text}>{label}</Text>
+        <Text style={textStyle}>{label}</Text>
       </TouchableOpacity>
     );
   }
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
     opacity: 1
   },
   containerDisabled: {
-    opacity: 0.3
+    opacity: 0.4,
   },
   text: {
     color: colors.WHITE,

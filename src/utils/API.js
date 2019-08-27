@@ -97,7 +97,7 @@ class API {
       // @TODO if not a secured page >  return Promise.resolve();
       let tokens = false;
       try {
-        console.warn('getting token ' + Config.api.tokName);
+        //console.warn('getting token ' + Config.api.tokName);
         token = await AsyncStorage.getItem(Config.api.tokName);
         tokens = JSON.parse(tokens);
         if (tokens === null || typeof tokens.accessToken !== 'string') tokens = false;
