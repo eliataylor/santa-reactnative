@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { Image, Linking, Platform, StyleSheet, KeyboardAvoidingView, Alert, View } from "react-native";
+import { Image, Linking, Platform, StyleSheet, KeyboardAvoidingView, Keyboard, Alert, View, ActivityIndicator } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import VerifyUser from "./VerifyUser";
@@ -50,6 +50,7 @@ class SignIn extends React.Component<{}, State> {
     } else if (this.state.password.length < 4) {
         this.setState({passwordHelp:strings.PASSWORD_REQUIRED});
     } else {
+      Keyboard.dismiss();
       var data = {grant_type:'password', password:this.state.password};
       if (this.state.phone) data.phone = this.state.phone;
       else data.email = this.state.email;  // either work on front end (backend still doesn't send sms verification codes though)
@@ -58,6 +59,7 @@ class SignIn extends React.Component<{}, State> {
   };
 
   resendLink() {
+    Keyboard.dismiss();
     API.Post('/api/loginlink', {email:this.state.email})
     .then(res => {
       console.log('loginlink', res.data);
@@ -84,6 +86,7 @@ class SignIn extends React.Component<{}, State> {
       <KeyboardAvoidingView
         style={styles.container}
         behavior="padding" >
+        { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image source={logo} style={styles.logo} />
         <View style={styles.form}>
           <FormTextInput
@@ -127,6 +130,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.WHITE,
     alignItems: "center",
     justifyContent: "space-between"
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width:'100%',
+    height:'100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex:999999
   },
   logo: {
     flex: 1,

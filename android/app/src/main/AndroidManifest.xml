@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.reactsanta">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.reactsanta">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -34,7 +33,7 @@
               <category android:name="android.intent.category.BROWSABLE" />
               <!-- Accepts URIs that begin with "https://santa-api.herokuapp.com/api -->
               <data android:scheme="https" android:host="santa-api.herokuapp.com" android:pathPrefix="/api" />
-              <!-- note that the leading "/" is required for pathPrefix -->
+              <!-- Note that the leading "/" is required for pathPrefix -->
           </intent-filter>
           <intent-filter android:label="filter_deeplink_santa_localhost">
               <action android:name="android.intent.action.VIEW" />
@@ -59,11 +58,9 @@
        android:name="com.google.android.geo.API_KEY"
        android:value="AIzaSyBKeuqrNHwRk8tCw7weyDLJqME7qZURIHw" />
 
-
     <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name" android:value="Santa Fulfills"/>
     <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description" android:value="Help fulfill wishes for the homeless in your community"/>
     <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"  android:resource="@android:color/white"/>
-
 
     <!-- < Only if you're using GCM or localNotificationSchedule() > -->
     <receiver
