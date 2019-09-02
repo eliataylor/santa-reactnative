@@ -34,6 +34,21 @@ class VerifyUser extends React.Component<{}, State> {
     return this.props.checkVerificationCode(this.state.verificationCode);
   };
 
+  componentDidMount() {
+    const { code, uid } = this.props.navigation.state.params;
+    if (this.state.verificationCode === '') {
+      console.log('test code from link', this.props.navigation.state.params);
+      this.props.checkVerificationCode(code, uid);
+      this.setState({verificationCode:code});
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.me && this.props.auth.me.isVerified === true) {
+      this.props.navigation.navigate('Visitor');
+    }
+  }
+
   resendLink() {
     API.Post('/api/loginlink', {email:this.props.auth.me.email})
     .then(res => {
@@ -116,7 +131,7 @@ const styles = StyleSheet.create({
 
 
 const mapDispatchToProps = {
-  checkVerificationCode: (code) => checkVerificationCode(code)
+  checkVerificationCode: (code, uid) => checkVerificationCode(code, uid)
 }
 
 const mapStateToProps = state => ({

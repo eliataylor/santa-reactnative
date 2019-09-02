@@ -1,10 +1,14 @@
 import React from 'react'
 import { Image, StyleSheet } from 'react-native'
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator, createStackNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation';
 
 import { colors } from '../theme';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import VerifyUser from './VerifyUser';
+import HomeScreen from './HomeScreen';
+import Wishes from './Wishes';
+import CreateWish from './CreateWish';
 import strings from "../config/strings";
 
 const styles = StyleSheet.create({
@@ -14,7 +18,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const routes = {
+const visitorRoutes = {
   SignIn: {
     screen: SignIn,
     navigationOptions: {
@@ -41,7 +45,7 @@ const routes = {
   }
 }
 
-const routeConfig = {
+const visitorRouteConfig = {
   tabBarPosition: 'bottom',
   tabBarOptions: {
     showLabel: true,
@@ -59,5 +63,30 @@ const routeConfig = {
   }
 }
 
-const LoginOrRegister = createBottomTabNavigator(routes, routeConfig);
-export default createAppContainer(LoginOrRegister);
+const LoginOrRegister = createBottomTabNavigator(visitorRoutes, visitorRouteConfig);
+
+const AppNavigator = createSwitchNavigator({
+  Visitor: LoginOrRegister,
+  HomeScreen : {
+    screen: HomeScreen
+  },
+  Wishes: {
+    screen: Wishes,
+    path:'/wishes',
+    navigationOptions: {
+      title: 'Fulfills Wishes'
+    }
+  },
+  CreateWish: {
+    screen: CreateWish,
+    path:'/create-a-wish',
+    navigationOptions: {
+      title: 'Create A Wish'
+    }
+  },
+  VerifyUser : {
+    screen: VerifyUser
+  }
+});
+
+export default createAppContainer(AppNavigator);

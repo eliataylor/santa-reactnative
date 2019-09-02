@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, Text, Alert, SafeAreaView, TouchableOpacity } from 'react-native';
-import LoginOrRegister from './screens/LoginOrRegister';
+import { StatusBar, Text, Linking, Platform, Alert } from 'react-native';
+import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
-import RoleSelection from './screens/RoleSelection';
 import {checkToken} from './redux/authActions';
 import API from './utils/API';
+import Confgi from './Config';
 import NotifService from './utils/NotifService';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this), '629412147035');
+    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this), Config.android.senderId);
     this.state = {permissions:false}
   }
 
@@ -21,8 +21,44 @@ class App extends React.Component {
     console.log('APP DID MOUNT');
     var tokens = await API.getLocalTokens();
     console.log(tokens);
+    if (Platform.OS === 'android') {
+      Linking.getInitialURL().then(url => {
+        this.parseUrl(url);
+      });
+    } else {
+      Linking.addEventListener('url', this.handleOpenURL);
+    }
     if (tokens) {
       this.props.checkToken();
+    } else {
+      console.log('no tokens found');
+    }
+  }
+
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this.handleOpenURL);
+  }
+
+  handleOpenURL = (event) => {
+    this.parseUrl(event.url);
+  }
+
+
+  // WARN: docs say use this.navigator.dispatch(NavigationActions.navigate({ routeName: someRouteName }));
+  // but they don't explain NavigationActions
+  parseUrl = (url) => {
+    if (!url) return console.log('no url on launch', this.navigator._navigation);
+    console.log("parsing url", this.navigator._navigation);
+    const route = url.replace(/.*?:\/\//g, '');
+    const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
+    console.log('load', url, route, pathname);
+    if (pathname.indexOf('/api/users/') === 0) {
+      var parts = pathname.split('/');
+      this.navigator._navigation.navigate('VerifyUser', {code:parts[5], uid:parts[3]});
+    } else if (pathname.indexOf('/api/wishes') === 0) {
+      this.navigator._navigation.navigate('Wishes');
+    } else if (pathname.indexOf('/api/create-a-wish') === 0) {
+      this.navigator._navigation.navigate('CreateWish');
     }
   }
 
@@ -34,6 +70,14 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (!prevProps.auth.me && this.props.auth.me) {
+      if (this.props.auth.me.isVerified === true) {
+        this.navigator._navigation.navigate('Wishes');
+      } else {
+        this.navigator._navigation.navigate('VerifyUser');
+      }
+    }
+    // WARN: this doesn't need to happen only after logging in (where prevProps.auth.me == false)
     if (this.state.permissions !== false && this.props.auth.me && this.props.auth.me.isVerified === true) {
       this.notif.checkPermission(this.handlePerm.bind(this));
     }
@@ -64,30 +108,12 @@ class App extends React.Component {
     Alert.alert("Permissions", JSON.stringify(perms));
   }
 
+  onNavigationStateChange(prevState, newState, action) {
+    console.log('onNavigationStateChange', prevState, newState, action);
+  }
+
   render() {
-    /* if (true) {
-      return (<SafeAreaView style={{paddingHorizontal:50, paddingVertical:40}}>
-          <TouchableOpacity onPress={() => { this.notif.localNotif() }}><Text>Local Notification (now)</Text></TouchableOpacity>
-          <TouchableOpacity onPress={() => { this.notif.scheduleNotif() }}><Text>Schedule Notification in 30s</Text></TouchableOpacity>
-          <TouchableOpacity onPress={() => { this.notif.cancelNotif() }}><Text>Cancel last notification (if any)</Text></TouchableOpacity>
-          <TouchableOpacity onPress={() => { this.notif.cancelAll() }}><Text>Cancel all notifications</Text></TouchableOpacity>
-          <TouchableOpacity onPress={() => { this.notif.checkPermission(this.handlePerm.bind(this)) }}><Text>Check Permission</Text></TouchableOpacity>
-        </SafeAreaView>)
-    } */
-
-    if (this.props.auth.me) {
-      if (this.props.lists.error) {
-        Snackbar.show({
-          title : this.props.lists.error,
-          duration : Snackbar.LENGTH_LONG,
-          backgroundColor	: 'red',
-          color : 'white'
-        });
-      }
-      return <RoleSelection auth={this.props.auth} />;
-    }
-
-    var errors = [this.props.auth.logInError, this.props.auth.signUpError, this.props.auth.verifyError];
+    var errors = [this.props.auth.logInError, this.props.auth.signUpError, this.props.auth.verifyError, this.props.lists.errors, this.props.entity.errors];
     for(var e in errors) {
       if (errors[e]) {
         Snackbar.show({
@@ -98,7 +124,11 @@ class App extends React.Component {
         });
       }
     }
-    return <LoginOrRegister />;
+    // TODO: snackbar success responses from server?
+
+    return <NavContainer
+        onNavigationStateChange={this.handleNavigationChange}
+        ref={nav => {this.navigator = nav;}} />;
   }
 }
 
@@ -108,7 +138,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  lists:state.lists
+  lists:state.lists,
+  entity:state.entity,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

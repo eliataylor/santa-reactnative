@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { Image, StyleSheet, KeyboardAvoidingView, Alert, View } from "react-native";
+import { Image, Linking, Platform, StyleSheet, KeyboardAvoidingView, Alert, View } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import VerifyUser from "./VerifyUser";
@@ -8,7 +8,7 @@ import logo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import API from "../utils/API";
-import { authenticate } from '../redux/authActions'
+import { authenticate } from '../redux/authActions';
 
 interface State {
   email: string;

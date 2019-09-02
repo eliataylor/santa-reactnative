@@ -17,7 +17,7 @@ class WishItem extends React.PureComponent {
     const {wish} = this.props;
     Alert.alert(
       strings.FULFILL,
-      strings.FULLFIL_PROMPT,
+      strings.FULFILL_PROMPT,
       [
         {text: strings.YES, onPress: () => {
             that.props.createOffer(wish);

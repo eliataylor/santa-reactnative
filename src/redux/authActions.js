@@ -177,14 +177,15 @@ export function checkToken() {
 }
 
 // updates isVerified
-export function checkVerificationCode(code) {
+export function checkVerificationCode(code, uid) {
   return (dispatch, getState) => {
 
-    dispatch(verifyStart())
+    dispatch(verifyStart());
 
-    var state = getState();
-    // server verification is not complete yet
-    API.Get('/api/verify/'+state.auth.me._id+'/' + code)
+    if (!uid) {
+      uid = getState().auth.me._id;
+    }
+    API.Get('/api/verify/'+uid+'/' + code)
       .then(res => {
         console.log("VERIFIED", res.data);
         if (typeof res.data.success !== 'undefined') {
