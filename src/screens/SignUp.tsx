@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
-  Modal
 } from 'react-native';
 
 import { connect } from 'react-redux'
@@ -56,6 +55,7 @@ class SignUp extends React.Component<{}, State> {
         style={styles.container}
         behavior="padding"
       >
+        { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image
           source={logo}
           style={styles.logo}
@@ -110,14 +110,21 @@ const mapDispatchToProps = {
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
 
 const styles = StyleSheet.create({
-  modal: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   form: {
     flex: 1,
     justifyContent: "center"
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width:'100%',
+    height:'100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex:999999
   },
   container: {
     flex: 1,

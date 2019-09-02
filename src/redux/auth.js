@@ -21,6 +21,7 @@ export const LOG_OUT = 'LOG_OUT' // generally async anyway (client kills token, 
 const initialState = {
   me: false,
 
+  loading:false,
   signUpError: false,
   verifyError: false,
   logInError: false,
@@ -33,9 +34,11 @@ export default (state = initialState, action) => {
   switch(action.type) {
 
     case LOGIN_STARTED:
+      newState.loading = true;
       newState.logInError = false;
       return newState;
     case LOGIN_SUCCESS:
+      newState.loading = false;
       if (action.payload.me) {
         newState.me = action.payload.me; // from checkToken
       } else {
@@ -45,12 +48,15 @@ export default (state = initialState, action) => {
       newState.me.offers = action.payload.offers;
       return newState;
     case LOGIN_FAILURE:
+      newState.loading = false;
       newState.logInError = action.error;
       return newState;
     case SIGNUP_STARTED:
+      newState.loading = true;
       newState.signUpError = false;
       return newState;
     case SIGNUP_SUCCESS:
+      newState.loading = false;
       newState.signUpError = false;
       newState.me = action.user;
       if (newState.me.isVerified === false) {
@@ -58,25 +64,32 @@ export default (state = initialState, action) => {
       }
       return newState;
     case SIGNUP_FAILURE:
+      newState.loading = false;
       newState.signUpError = action.error;
       return newState;
     case VERIFY_STARTED:
+      newState.loading = true;
       newState.verifyError = false;
       return newState;
     case VERIFY_SUCCESS:
+      newState.loading = false;
       newState.verifyError = false;
       return newState;
     case VERIFY_FAILURE:
+      newState.loading = false;
       newState.verifyError = action.error;
       return newState;
     case NEXT_STEP_STARTED:
+      newState.loading = true;
       newState.logInError = false;
       return newState;
     case NEXT_STEP_SUCCESS:
+      newState.loading = false;
       newState.logInError = false;
       newState.me = action.user;
       return newState;
     case NEXT_STEP_FAILURE:
+      newState.loading = false;
       newState.logInError = action.error;
       return newState;
 

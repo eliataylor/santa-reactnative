@@ -182,16 +182,23 @@ export function checkVerificationCode(code, uid) {
 
     dispatch(verifyStart());
 
+    const state = getState();
     if (!uid) {
-      uid = getState().auth.me._id;
+      uid = state.auth.me._id;
     }
+    if (!uid) {
+      console.log('missing uid', state)
+    }
+
     API.Get('/api/verify/'+uid+'/' + code)
       .then(res => {
         console.log("VERIFIED", res.data);
-        if (typeof res.data.success !== 'undefined') {
+        if (typeof res.data.me !== 'undefined') {
           dispatch(verifySuccess());
-          // TODO run appstartup
-          dispatch(checkToken());
+          AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.data.token),  storage => {
+              dispatch(logInSuccess(res.data))
+              return res;
+          });
         }
         var msg = res.data.error;
         return dispatch(verifyFailure(msg || 'unknown error'));

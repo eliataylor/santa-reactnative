@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, StyleSheet, SafeAreaView, Text, View, TouchableOpacity, Alert } from "react-native";
+import { Image, StyleSheet, SafeAreaView, Text, View, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import colors from "../config/colors";
@@ -31,7 +31,8 @@ class VerifyUser extends React.Component<{}, State> {
         this.setState({verificationHelp:strings.VERIFICATION_REQUIRED});
         return false;
     }
-    return this.props.checkVerificationCode(this.state.verificationCode);
+    const { uid } = this.props.navigation.state.params;
+    return this.props.checkVerificationCode(this.state.verificationCode, uid);
   };
 
   componentDidMount() {
@@ -50,6 +51,10 @@ class VerifyUser extends React.Component<{}, State> {
   }
 
   resendLink() {
+    if (!this.props.auth.me) {
+      console.log('enter your email where to send the link'); // TODO: snackbar
+      return this.props.navigation.navigate('Visitor');
+    }
     API.Post('/api/loginlink', {email:this.props.auth.me.email})
     .then(res => {
       console.log('loginlink', res.data);
@@ -70,7 +75,7 @@ class VerifyUser extends React.Component<{}, State> {
       <SafeAreaView
         style={styles.pageContainer}
         behavior="padding" >
-
+        { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image source={logo}
                style={styles.logo}
                resizeMode="contain" />
@@ -113,6 +118,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding:10,
     height:'100%'
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width:'100%',
+    height:'100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex:999999
   },
   logo: {
     width: "100%",
