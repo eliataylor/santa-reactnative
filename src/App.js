@@ -1,23 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, Text, Linking, Platform, Alert } from 'react-native';
+import { StatusBar, Text, Linking, Platform, Alert, AppState } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
 import {checkToken} from './redux/authActions';
 import API from './utils/API';
-import Confgi from './Config';
 import NotifService from './utils/NotifService';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this), Config.android.senderId);
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
+    this.notif = false;
     this.state = {permissions:false}
   }
 
   async componentDidMount() {
     StatusBar.setHidden(true);
+    AppState.addEventListener('change', this.handleAppStateChange);
     console.log('APP DID MOUNT');
     var tokens = await API.getLocalTokens();
     console.log(tokens);
@@ -25,8 +26,10 @@ class App extends React.Component {
       Linking.getInitialURL().then(url => {
         this.parseUrl(url);
       });
+      // this.notif.subscribeToTopic(topic: string)
     } else {
       Linking.addEventListener('url', this.handleOpenURL);
+      // this.notif.getApplicationIconBadgeNumber(callback: Function)
     }
     if (tokens) {
       this.props.checkToken();
@@ -36,8 +39,17 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange);
     Linking.removeEventListener('url', this.handleOpenURL);
   }
+
+  handleAppStateChange(appState) {
+    console.log("React handleAppStateChange " + appState);
+    if (appState === 'background') {
+      //
+    }
+  }
+
 
   handleOpenURL = (event) => {
     this.parseUrl(event.url);
@@ -62,13 +74,6 @@ class App extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.permissions !== false && this.props.auth.me && this.props.auth.me.isVerified === true) {
-      this.notif.checkPermission(this.handlePerm.bind(this));
-    }
-    return true;
-  }
-
   componentDidUpdate(prevProps) {
     if (!prevProps.auth.me && this.props.auth.me) {
       if (this.props.auth.me.isVerified === true) {
@@ -76,20 +81,33 @@ class App extends React.Component {
       } else {
         this.navigator._navigation.navigate('VerifyUser');
       }
-    }
-    // WARN: this doesn't need to happen only after logging in (where prevProps.auth.me == false)
-    if (this.state.permissions !== false && this.props.auth.me && this.props.auth.me.isVerified === true) {
-      this.notif.checkPermission(this.handlePerm.bind(this));
+
+      if (this.notif === false) {
+        this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+      } else if (this.state.permissions === false) {
+        console.log("componentDidUpdate CHECKING Permissions", this.state.permissions);
+        this.notif.checkPermission(this.handlePerm.bind(this));
+      }
     }
   }
 
   onRegister(token) {
-    console.log('DEVICE TOKEN REGISTERED', token);
-    this.setState({ registerToken: token.token, gcmRegistered: true });
-    API.Post('/api/users/:id/devicetoken', {deviceToken:token.token})
+    console.log('DEVICE TOKEN REGISTERED', token, this.props.auth.me);
+    if (this.props.auth.me.devices) {
+      try {
+        var devices = (this.props.auth.me.devices) ? JSON.parse(this.props.auth.me.devices) : {};
+      } catch(e) {
+        console.log('bad devices for json', this.props.auth.me.devices);
+        devices = {};
+      }
+      if (typeof devices[token.token] === 'string') {
+        return console.log('device is already saved on server');
+      }
+    }
+    API.Put('/api/users/'+this.props.auth.me._id+'/devicetoken', token)
     .then(res => {
       console.log('stored device token', res.data);
-      return res.data
+      return res.data;
     })
     .catch(err => {
       var msg = API.getErrorMsg(err);
@@ -105,7 +123,7 @@ class App extends React.Component {
 
   handlePerm(perms) {
     this.setState({permissions:perms});
-    Alert.alert("Permissions", JSON.stringify(perms));
+    console.log("Handling Permissions", perms);
   }
 
   onNavigationStateChange(prevState, newState, action) {
