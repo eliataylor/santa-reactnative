@@ -6,6 +6,9 @@ const Config = {
         base64d:'c2FudGFDbGllbnQ6c2FudGFTZWNyZXQ=',
         tokName : '@santaToken',
         gMapKey:'AIzaSyBKeuqrNHwRk8tCw7weyDLJqME7qZURIHw'
+    },
+    android : {
+      senderId : '629412147035'
     }
 };
 

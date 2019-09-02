@@ -15,7 +15,7 @@ const strings = {
   OFFER_FULFILL : 'Did you deliver this wish?',
   OFFER_CANCEL : 'Are you sure you want to canceled this wish?',
   FULFILL : 'Fulfill this wish',
-  FULLFIL_PROMPT : 'Are you sure you can deliver this wish within 90 minutes?',
+  FULFILL_PROMPT : 'Are you sure you can deliver this wish within 90 minutes?',
   VERIFICATION_REQUIRED : 'This must be the exact code sent to your listed email or phone',
   VERIFICATION_HELP:'Paste the verification code you were sent here'
 };
