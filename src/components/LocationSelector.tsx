@@ -50,6 +50,7 @@ class LocationSelector extends React.Component {
       console.log('GOT POSITION', pos);
       var coor = {latitude:pos.coords.latitude, longitude:pos.coords.longitude};
       that.setState({loc:coor});
+      that.props.onGpsLocation(pos.coords);
       that.props.onMarkerChange(coor); // send back to parent in case it's the current location
     },
     error => {
