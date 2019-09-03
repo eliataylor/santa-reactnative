@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, Text, Linking, Platform, Alert, AppState } from 'react-native';
+import { StatusBar, Text, Linking, Platform, AppState } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
 import {checkToken} from './redux/authActions';
@@ -13,15 +13,19 @@ class App extends React.Component {
     super(props);
     this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.notif = false;
-    this.state = {permissions:false}
-  }
+    this.state = {permissions:false};
 
-  async componentDidMount() {
-    StatusBar.setHidden(true);
-    AppState.addEventListener('change', this.handleAppStateChange);
-    console.log('APP DID MOUNT');
-    var tokens = await API.getLocalTokens();
-    console.log(tokens);
+    API.getLocalTokens().then(tokens => {
+      console.log(tokens);
+      if (tokens) {
+        this.props.checkToken();
+      } else {
+        console.log('no tokens found');
+      }
+    }).catch(err => {
+      console.log('no tokens found');
+    });
+    
     if (Platform.OS === 'android') {
       Linking.getInitialURL().then(url => {
         this.parseUrl(url);
@@ -31,11 +35,12 @@ class App extends React.Component {
       Linking.addEventListener('url', this.handleOpenURL);
       // this.notif.getApplicationIconBadgeNumber(callback: Function)
     }
-    if (tokens) {
-      this.props.checkToken();
-    } else {
-      console.log('no tokens found');
-    }
+  }
+
+  async componentDidMount() {
+    StatusBar.setHidden(true);
+    AppState.addEventListener('change', this.handleAppStateChange);
+    console.log('APP DID MOUNT');
   }
 
   componentWillUnmount() {
@@ -54,7 +59,6 @@ class App extends React.Component {
   handleOpenURL = (event) => {
     this.parseUrl(event.url);
   }
-
 
   // WARN: docs say use this.navigator.dispatch(NavigationActions.navigate({ routeName: someRouteName }));
   // but they don't explain NavigationActions
@@ -118,7 +122,7 @@ class App extends React.Component {
 
   onNotif(notif) {
     console.log(notif);
-    Alert.alert(notif.title, notif.message);
+    // only need in background
   }
 
   handlePerm(perms) {
