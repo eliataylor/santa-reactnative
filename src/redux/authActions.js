@@ -140,6 +140,9 @@ export function createUser(username, password, email, phone) {
 
 export function updateLocation(coords) {
   return (dispatch, getState) => {
+
+    // TODO: stop if coords are < 10 meters away
+
     return API.Put('/api/users/'+getState().auth.me._id+'/location', coords)
     .then(res => {
       console.log('last location update: ', res.data);

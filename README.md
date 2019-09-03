@@ -4,3 +4,5 @@ keytool -genkeypair -v -keystore santa4homeless.keystore -alias santa4homeless -
 adb devices
 adb -s <device name> reverse tcp:8081 tcp:8081
 adb shell input keyevent 82
+
+$reactNative.AsyncStorage.clear();
