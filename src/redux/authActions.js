@@ -138,6 +138,18 @@ export function createUser(username, password, email, phone) {
   }
 }
 
+export function updateLocation(coords) {
+  return (dispatch, getState) => {
+    return API.Put('/api/users/'+getState().auth.me._id+'/location', coords)
+    .then(res => {
+      console.log('last location update: ', res.data);
+    })
+    .catch(err => {
+      console.log('error updating location: ', err);
+    });
+  }
+}
+
 export function authenticate(credentials) {
   return (dispatch) => {
     dispatch(logInStart())
@@ -199,9 +211,10 @@ export function checkVerificationCode(code, uid) {
               dispatch(logInSuccess(res.data))
               return res;
           });
+        } else {
+          var msg = res.data.error;
+          return dispatch(verifyFailure(msg || 'unknown verification error'));
         }
-        var msg = res.data.error;
-        return dispatch(verifyFailure(msg || 'unknown error'));
       })
       .catch(err => {
         var msg = API.getErrorMsg(err);

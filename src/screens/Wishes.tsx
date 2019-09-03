@@ -7,6 +7,7 @@ import Picker from "react-native-picker-select";
 import WishItem from "../components/WishItem";
 import CategoryIcon from "../components/CategoryIcon";
 import {listData} from "../redux/listDataReducer";
+import {updateLocation} from '../redux/authActions';
 import Geolocation from '@react-native-community/geolocation';
 
 Geolocation.setRNConfiguration({
@@ -122,6 +123,7 @@ class Wishes extends React.Component<{}, State> {
     var that = this;
     that.setState({locationHelp:'Loading your GPS location...'});
     Geolocation.getCurrentPosition(pos => {
+      that.props.updateLocation(pos.coords);
       var lonlat = pos.coords.longitude + ',' + pos.coords.latitude;
       that.setState({lonlat:lonlat}, () => {
         that.refresh();
@@ -264,7 +266,8 @@ class Wishes extends React.Component<{}, State> {
 }
 
 const mapDispatchToProps = {
-  listData: (url) => listData(url)
+  listData: (url) => listData(url),
+  updateLocation: (coords) => updateLocation(coords)
 }
 
 const mapStateToProps = state => {

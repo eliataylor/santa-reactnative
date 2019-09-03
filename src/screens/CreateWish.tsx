@@ -18,6 +18,7 @@ import { connect } from 'react-redux'
 import strings from "../config/strings";
 import { colors } from '../theme'
 import { createWish } from '../redux/entityDataReducer'
+import { updateLocation } from '../redux/authActions';
 import Picker from "react-native-picker-select";
 import FormTextInput from '../components/FormTextInput'
 import LocationSelector from '../components/LocationSelector';
@@ -195,7 +196,7 @@ class CreateWish extends React.Component {
               items={catOpts} />
           </View>
           <View style={styles.map}>
-            <LocationSelector  onMarkerChange={this.onMarkerChange} />
+            <LocationSelector  onMarkerChange={this.onMarkerChange} onGpsLocation={this.updateLocation} />
           </View>
           <View style={{marginTop:40}}>
             <Button
@@ -219,7 +220,8 @@ const mapStateToProps = function(state){
 }
 
 const mapDispatchToProps = {
-  createWish: (item) => createWish(item)
+  createWish: (item) => createWish(item),
+  updateLocation : (coords) => updateLocation(coords)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateWish)
