@@ -62,26 +62,26 @@ class SignUp extends React.Component<{}, State> {
             placeholder="Email"
             type='email'
             keyboardType='email-address'
-            onChangeText={(text) => this.setState({email:text})}
+            onChangeText={(text) => this.setState({email:text.toLowerCase().trim()})}
           />
           <Input
             value={this.state.firstname}
             placeholder="Optional First Name"
             type='firstname'
-            onChangeText={(text) => this.setState({firstname:text})}
+            onChangeText={(text) => this.setState({firstname:text.trim()})}
           />
           <Input
             placeholder="Optional Phone Number"
             type='phone_number'
             keyboardType='phone-pad'
-            onChangeText={(text) => this.setState({phone:text})}
+            onChangeText={(text) => this.setState({phone:text.trim()})}
           />
           <Input
             value={this.state.password}
             placeholder="Optional Password"
             secureTextEntry
             type='password'
-            onChangeText={(text) => this.setState({password:text})}
+            onChangeText={(text) => this.setState({password:text.trim()})}
           />
           <Button
             label={strings.SIGNUP}
