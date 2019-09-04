@@ -83,7 +83,7 @@ class SignIn extends React.Component<{}, State> {
     const {email, password, emailHelp, passwordHelp} = this.state;
 
     return (
-      <KeyboardAvoidingView
+      <View
         style={styles.container}
         behavior="padding" >
         { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
@@ -119,7 +119,7 @@ class SignIn extends React.Component<{}, State> {
           onPress={(e) => this.resendLink()}
           disabled={email.indexOf('@') < 2}
         />
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

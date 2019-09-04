@@ -8,7 +8,7 @@ import VerifyUser from "./VerifyUser";
 const logo = require('../assets/images/logo.png');
 
 const styles = StyleSheet.create({
-  pageContainer: { flex: 1, alignItems: 'stretch', justifyContent: 'space-around', padding:10 },
+  pageContainer: { flex: 1, alignItems: 'stretch', justifyContent: 'space-around', padding:10, backgroundColor:colors.WHITE },
   roleBtn: {
     marginRight:10,
     marginLeft:10,

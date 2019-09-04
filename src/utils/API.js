@@ -191,6 +191,7 @@ class API {
     }
 
     Post (path, data) {
+      // DUE to heroku: 'Invalid request: content must be application/x-www-form-urlencoded',
         data = Object.entries(data)
           .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
           .join('&');

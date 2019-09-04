@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   Platform,
   Text,
+  Alert,
   View,
   KeyboardAvoidingView,
   TextInput,
@@ -25,7 +26,6 @@ interface State {
   password: string;
   email: string;
   phone: string;
-  authCode: string;
 }
 
 class SignUp extends React.Component<{}, State> {
@@ -33,27 +33,22 @@ class SignUp extends React.Component<{}, State> {
     firstname: '',
     password: '',
     email: '',
-    phone: '',
-    authCode: ''
+    phone: ''
   };
 
-  onChangeText = (key, value) => {
-    this.setState({
-      [key]: value
-    })
-  }
-
   signUp() {
-    const { firstname, password, email, phone } = this.state
+    const { firstname, password, email, phone } = this.state;
+    if (email.indexOf("@") < 3) {
+      return Alert.alert("Invalid Form", 'Only an email address is required');
+    }
     this.props.createUser(firstname, password, email, phone)
   }
 
   render() {
     const { signUpError, nextSteps } = this.props
     return (
-      <KeyboardAvoidingView
+      <View
         style={styles.container}
-        behavior="padding"
       >
         { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image
@@ -61,41 +56,40 @@ class SignUp extends React.Component<{}, State> {
           style={styles.logo}
           resizeMode="contain"
         />
-        <View style={styles.form}>
+        <View style={styles.form} behavior="padding">
           <Input
             value={this.state.email}
             placeholder="Email"
             type='email'
             keyboardType='email-address'
-            onChangeText={this.onChangeText}
+            onChangeText={(text) => this.setState({email:text})}
           />
           <Input
             value={this.state.firstname}
             placeholder="Optional First Name"
             type='firstname'
-            onChangeText={this.onChangeText}
+            onChangeText={(text) => this.setState({firstname:text})}
           />
           <Input
             placeholder="Optional Phone Number"
             type='phone_number'
             keyboardType='phone-pad'
-            onChangeText={this.onChangeText}
-            value={this.state.phone}
+            onChangeText={(text) => this.setState({phone:text})}
           />
           <Input
             value={this.state.password}
             placeholder="Optional Password"
             secureTextEntry
             type='password'
-            onChangeText={this.onChangeText}
+            onChangeText={(text) => this.setState({password:text})}
+          />
+          <Button
+            label={strings.SIGNUP}
+            style={{marginBottom:10}}
+            onPress={this.signUp.bind(this)}
           />
         </View>
-        <Button
-          label={strings.SIGNUP}
-          style={{marginBottom:10}}
-          onPress={this.signUp.bind(this)}
-        />
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }
@@ -135,7 +129,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     flex: 1,
-    width: "100%",
     resizeMode: "contain",
     alignSelf: "center"
   },

@@ -28,6 +28,7 @@ class LocationSelector extends React.Component {
   }
 
   componentDidMount() {
+    console.log("LocationSelector DIDMOUNT");
     if (Platform.OS === 'ios') {
       Geolocation.requestAuthorization();
     }
@@ -37,6 +38,7 @@ class LocationSelector extends React.Component {
   getCurrentPosition() {
     var that = this;
 
+    console.log("LocationSelector requesting Location");
     Geolocation.getCurrentPosition(pos => {
       console.warn('GOT POSITION', pos);
       var coords = {latitude:pos.coords.latitude, longitude:pos.coords.longitude};
@@ -47,9 +49,13 @@ class LocationSelector extends React.Component {
     },
     error => {
       console.warn(error);
-      that.setState({loc:JSON.stringify(error)});
+      if (error.message) {
+        that.setState({loc:error.message});
+      } else {
+        that.setState({loc:JSON.stringify(error)});
+      }
     },
-    {enableHighAccuracy:true, timeout:15000, maximumAge: 20000});
+    {enableHighAccuracy:false, timeout:15000, maximumAge: 20000});
   }
 
   onSelect(e) {
@@ -68,7 +74,7 @@ class LocationSelector extends React.Component {
     if (typeof this.state.loc === 'string') {
       return (
         <View style={styles.container}>
-          <Button title={'Enable your Location'} onPress={(e) => this.getCurrentPosition()} />
+          <Button title={'Try Location Again'} onPress={(e) => this.getCurrentPosition()} />
           <Text>{this.state.loc}</Text>
         </View>
         )
