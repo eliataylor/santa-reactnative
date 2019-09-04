@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, Button, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, View, Image, SafeAreaView, Alert  } from "react-native";
+import { StyleSheet, Button, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, View, Image, SafeAreaView  } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Picker from "react-native-picker-select";
@@ -103,6 +103,12 @@ class Wishes extends React.Component<{}, State> {
     }
     this.refresh();
   }
+  componentDidUpdate() {
+    if (this.state.loc !== '' && this.state.locationHelp === 'Loading your GPS location...') { // app gets stuck on ActivityIndicator when coming in from VerifyUser
+      this.setState({locationHelp:'GPS Location of this wish'});
+      // this.refresh();
+    }
+  }
 
   refresh = ()  => {
     if (this.state.lonlat.length > 3) {
@@ -131,10 +137,9 @@ class Wishes extends React.Component<{}, State> {
       });
     },
     error => {
-      that.setState({locationHelp:'Please enabled GPS Location in your settings'});
-      Alert.alert('Error', error.message)
+      that.setState({locationHelp:'Please enabled GPS Location in your settings \n ' + error.message});
     },
-    {enableHighAccuracy: false, timeout: 20000, maximumAge: 10000});
+    {enableHighAccuracy: false, timeout:15000, maximumAge: 20000});
   }
 
   _radiusChanged = (itemValue, itemIndex) => {
@@ -229,7 +234,7 @@ class Wishes extends React.Component<{}, State> {
           <ActivityIndicator size='large'/>
         </View>);
       }
-      return (<View style={styles.container}><Button title={strings.LOCATION_PROMPT} onPress={(e) => this.getCurrentPosition()} /></View>);
+      return (<View style={styles.loading}><Button title={strings.LOCATION_PROMPT} onPress={(e) => this.getCurrentPosition()} /></View>);
     }
 
     const allSections = [];

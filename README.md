@@ -6,3 +6,6 @@ adb -s <device name> reverse tcp:8081 tcp:8081
 adb shell input keyevent 82
 
 $reactNative.AsyncStorage.clear();
+
+cd /Developer/santa/ReactSanta/android/app/release
+for file in *.apk; do adb install $file; done

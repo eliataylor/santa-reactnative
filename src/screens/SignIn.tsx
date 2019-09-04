@@ -114,8 +114,8 @@ class SignIn extends React.Component<{}, State> {
           />
         </View>
         <Button
-          label={'Email Login Link'}
-          style={{backgroundColor:colors.LIGHT_GREY, color:colors.SILVER}}
+          label={'Email me a login link'}
+          style={{backgroundColor:colors.LIGHT_GREY, color:colors.SILVER, marginBottom:10}}
           onPress={(e) => this.resendLink()}
           disabled={email.indexOf('@') < 2}
         />
