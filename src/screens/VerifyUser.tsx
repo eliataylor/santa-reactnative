@@ -31,13 +31,16 @@ class VerifyUser extends React.Component<{}, State> {
         this.setState({verificationHelp:strings.VERIFICATION_REQUIRED});
         return false;
     }
-    const { uid } = this.props.navigation.state.params;
+    var uid = null;
+    if (this.props.navigation && this.props.navigation.state.params) {
+      uid = this.props.navigation.state.params.uid;
+    }
     return this.props.checkVerificationCode(this.state.verificationCode, uid);
   };
 
   componentDidMount() {
     if (this.state.verificationCode === '') {
-      if (this.props.navigation.state.params) {
+      if (this.props.navigation && this.props.navigation.state.params) {
         const { code, uid } = this.props.navigation.state.params;
         console.log('test code from link', this.props.navigation.state.params);
         this.props.checkVerificationCode(code, uid);
@@ -48,7 +51,7 @@ class VerifyUser extends React.Component<{}, State> {
 
   componentDidUpdate(prevProps) {
     if (this.props.auth.me && this.props.auth.me.isVerified === true) {
-      this.props.navigation.navigate('Visitor');
+      this.props.navigation.navigate('HomeScreen');
     }
   }
 
