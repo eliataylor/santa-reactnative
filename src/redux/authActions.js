@@ -56,10 +56,10 @@ function signUpStart() {
   }
 }
 
-function signUpSuccess(user) {
+function signUpSuccess(payload) {
   return {
     type: SIGNUP_SUCCESS,
-    user
+    payload
   }
 }
 
@@ -124,12 +124,17 @@ export function createUser(username, password, email, phone) {
     if (email) me.email = email;
 
     return API.Post('/api/users/register', me)
-    .then(user => {
-      console.log('signUp succeeded: ', user)
-      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(user.token),  storage => {
-          dispatch(signUpSuccess(res.user));
-          return res.user;
-      });
+    .then(res => {
+      if (res.data.error) {
+        console.log('signUp failed: ', res.data.error);
+        dispatch(signUpFailure(res.data.error));
+        // TODO: navigate to login with password?
+      } else {
+        return AsyncStorage.setItem(Config.api.tokName, JSON.stringify(res.data.token),  storage => {
+            dispatch(signUpSuccess(res.data));
+        });
+      }
+      return res.data;
     })
     .catch(err => {
       console.log('error creating User: ', err);
@@ -159,12 +164,17 @@ export function authenticate(credentials) {
 
     API.Post('/oauth/token', credentials)
     .then(res => {
-      let me = res.data.me;
-      let token = res.data.token;
-      AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
-          dispatch(logInSuccess(res.data))
-          return res;
-      });
+      if (res.data.error) {
+        dispatch(logInFailure(res.data.error));
+      } else {
+        let me = res.data.me;
+        let token = res.data.token;
+        AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
+            dispatch(logInSuccess(res.data))
+            return res;
+        });
+      }
+      return res.data;
     })
     .catch (err => {
       var msg = API.getErrorMsg(err);

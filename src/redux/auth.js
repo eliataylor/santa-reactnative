@@ -58,9 +58,11 @@ export default (state = initialState, action) => {
     case SIGNUP_SUCCESS:
       newState.loading = false;
       newState.signUpError = false;
-      newState.me = action.user;
+      newState.me = action.payload.me; // from registration
+      newState.categories = action.payload.categories;
+      newState.me.offers = action.payload.offers;
       if (newState.me.isVerified === false) {
-        newState.nextSteps.push(VERIFY_STARTED);
+        // newState.nextSteps.push(VERIFY_STARTED); consider using this instead of componentDidUpdate to redirect
       }
       return newState;
     case SIGNUP_FAILURE:

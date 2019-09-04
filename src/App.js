@@ -93,6 +93,8 @@ class App extends React.Component {
         console.log("componentDidUpdate CHECKING Permissions", this.state.permissions);
         this.notif.checkPermission(this.handlePerm.bind(this));
       }
+    } else if (!prevProps.auth.signUpError && this.props.auth.signUpError && this.props.auth.signUpError.indexOf('your password') > -1) {
+      this.navigator._navigation.navigate('Visitor'); // directly to signin and populate email / password
     }
   }
 
@@ -136,12 +138,12 @@ class App extends React.Component {
   }
 
   render() {
-    var errors = [this.props.auth.logInError, this.props.auth.signUpError, this.props.auth.verifyError, this.props.lists.errors, this.props.entity.errors];
+    var errors = [this.props.auth.signUpError, this.props.auth.logInError, this.props.auth.verifyError, this.props.lists.errors, this.props.entity.errors];
     for(var e in errors) {
       if (errors[e]) {
         Snackbar.show({
           title : errors[e],
-          duration : Snackbar.LENGTH_LONG,
+          duration : (e === 0) ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG,
           backgroundColor	: 'red',
           color : 'white'
         });
