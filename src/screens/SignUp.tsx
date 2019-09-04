@@ -92,6 +92,7 @@ class SignUp extends React.Component<{}, State> {
         </View>
         <Button
           label={strings.SIGNUP}
+          style={{marginBottom:10}}
           onPress={this.signUp.bind(this)}
         />
       </KeyboardAvoidingView>

@@ -208,24 +208,32 @@ class API {
     }
 
     getErrorMsg(err) {
+      var msg = [];
+      if (typeof err.message != 'undefined') {
+        console.log('Error', err.message);
+        msg.push(err.message);
+      }
       if (err.response && err.response.data) {
           console.log(err.response.data);
           console.log(err.response.status);
-          if (err.response.data.error) {
-            return err.response.data.error;
+          if (typeof err.response.data.message === 'string') {
+            msg.push(err.response.data.message);
+          } else if (err.response.data.error) {
+            msg.push(err.response.data.error);
+          } else {
+            msg.push(err.response.data);
           }
-          if (typeof err.response.data.message === 'string') return err.response.data.message;
-          return err.response.data;
-        } else if (err.request) {
-          console.log(err.request);
-          return 'no server response from ' + Config.api.base;
-        } else if (typeof err.message != 'undefined') {
-          console.log('Error', err.message);
-          return err.message;
-        } else {
-          console.log('Default Server Error', err);
-          return err;
-        }
+      }
+      if (err.request) {
+        console.log(err.request);
+        msg.push('no server response from ' + Config.api.base);
+      }
+      if (msg.length === 0) {
+        msg.push(JSON.stringify(err));
+        console.log('Default Server Error', err);
+      }
+
+      return msg.join('. ');
     }
 
 }

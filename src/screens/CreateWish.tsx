@@ -196,7 +196,7 @@ class CreateWish extends React.Component {
               items={catOpts} />
           </View>
           <View style={styles.map}>
-            <LocationSelector  onMarkerChange={this.onMarkerChange} onGpsLocation={this.updateLocation} />
+            <LocationSelector  onMarkerChange={this.onMarkerChange} onGpsLocation={this.props.updateLocation} />
           </View>
           <View style={{marginTop:40}}>
             <Button

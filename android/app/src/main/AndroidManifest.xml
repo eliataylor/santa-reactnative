@@ -1,8 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.reactsanta">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:protectionLevel="signature" />
+    <permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:protectionLevel="signature"/>
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <permission android:name="${applicationId}.permission.C2D_MESSAGE"  android:protectionLevel="signature" />
@@ -27,7 +35,7 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
 
-        <intent-filter android:label="filter_deeplink_santa_http">
+        <intent-filter android:label="Santa Fulfills" >
               <action android:name="android.intent.action.VIEW" />
               <category android:name="android.intent.category.DEFAULT" />
               <category android:name="android.intent.category.BROWSABLE" />
@@ -35,14 +43,14 @@
               <data android:scheme="https" android:host="santa-api.herokuapp.com" android:pathPrefix="/api" />
               <!-- Note that the leading "/" is required for pathPrefix -->
           </intent-filter>
-          <intent-filter android:label="filter_deeplink_santa_localhost">
+          <intent-filter android:label="Santa Fulfills">
               <action android:name="android.intent.action.VIEW" />
               <category android:name="android.intent.category.DEFAULT" />
               <category android:name="android.intent.category.BROWSABLE" />
               <!-- Accepts URIs that begin with "https://santa-local.herokuapp.com/api -->
               <data android:scheme="https" android:host="santa-local.herokuapp.com" android:pathPrefix="/api" />
           </intent-filter>
-          <intent-filter android:label="filter_deeplink_santa">
+          <intent-filter android:label="Santa Fulfills">
               <action android:name="android.intent.action.VIEW" />
               <category android:name="android.intent.category.DEFAULT" />
               <category android:name="android.intent.category.BROWSABLE" />

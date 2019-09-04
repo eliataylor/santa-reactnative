@@ -13,23 +13,14 @@ Geolocation.setRNConfiguration({
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const SPACE = 0.01;
 
 class LocationSelector extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
       loc: ''
     };
 
@@ -47,16 +38,18 @@ class LocationSelector extends React.Component {
     var that = this;
 
     Geolocation.getCurrentPosition(pos => {
-      console.log('GOT POSITION', pos);
-      var coor = {latitude:pos.coords.latitude, longitude:pos.coords.longitude};
-      that.setState({loc:coor});
-      that.props.onGpsLocation(pos.coords);
-      that.props.onMarkerChange(coor); // send back to parent in case it's the current location
+      console.warn('GOT POSITION', pos);
+      var coords = {latitude:pos.coords.latitude, longitude:pos.coords.longitude};
+      that.setState({loc:coords}, () => {
+        that.props.onMarkerChange(coords); // send back to parent form
+        that.props.onGpsLocation(coords); // send back to connected parent as current location for server update
+      });
     },
     error => {
+      console.warn(error);
       that.setState({loc:JSON.stringify(error)});
     },
-    {enableHighAccuracy:false, timeout: 20000, maximumAge: 1000});
+    {enableHighAccuracy:true, timeout:15000, maximumAge: 20000});
   }
 
   onSelect(e) {
@@ -92,12 +85,17 @@ class LocationSelector extends React.Component {
           onLongPress={this.onSelect}
           showsUserLocation={false}
           showsMyLocationButton={true}
-          initialRegion={this.state.region}
+          initialRegion={{
+            latitude: this.state.loc.latitude,
+            longitude: this.state.loc.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+          }}
         >
           <Marker
             draggable
             coordinate={this.state.loc}
-             onSelect={this.onSelect}
+            onSelect={this.onSelect}
             onDragEnd={this.onSelect}
             >
           </Marker>
@@ -109,7 +107,7 @@ class LocationSelector extends React.Component {
 }
 
 LocationSelector.propTypes = {
-  provider: ProviderPropType,
+  provider: ProviderPropType
 };
 
 const styles = StyleSheet.create({
