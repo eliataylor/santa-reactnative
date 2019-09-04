@@ -36,11 +36,13 @@ class VerifyUser extends React.Component<{}, State> {
   };
 
   componentDidMount() {
-    const { code, uid } = this.props.navigation.state.params;
     if (this.state.verificationCode === '') {
-      console.log('test code from link', this.props.navigation.state.params);
-      this.props.checkVerificationCode(code, uid);
-      this.setState({verificationCode:code});
+      if (this.props.navigation.state.params) {
+        const { code, uid } = this.props.navigation.state.params;
+        console.log('test code from link', this.props.navigation.state.params);
+        this.props.checkVerificationCode(code, uid);
+        this.setState({verificationCode:code});
+      }
     }
   }
 
