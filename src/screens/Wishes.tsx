@@ -98,11 +98,17 @@ class Wishes extends React.Component<{}, State> {
   };
 
   componentDidMount() {
+    console.log("WISHES DID MOUNT");
     if (Platform.OS === 'ios') {
       Geolocation.requestAuthorization();
     }
     this.refresh();
   }
+  
+  componentWillUnmount() {
+    console.log("WISHES WILL UNMOUNT");
+  }
+
   componentDidUpdate() {
     if (this.state.loc !== '' && this.state.locationHelp === 'Loading your GPS location...') { // app gets stuck on ActivityIndicator when coming in from VerifyUser
       this.setState({locationHelp:'GPS Location of this wish'});

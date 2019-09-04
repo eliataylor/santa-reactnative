@@ -14,18 +14,26 @@ class App extends React.Component {
     this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.notif = false;
     this.state = {permissions:false};
+  }
 
-    API.getLocalTokens().then(tokens => {
-      console.log(tokens);
+  async componentDidMount() {
+    console.log('APP DID MOUNT');
+    //StatusBar.setHidden(true);
+    AppState.addEventListener('change', this.handleAppStateChange);
+
+    var tokens = await API.getLocalTokens();
+    if (this.props.auth.me) {
+      console.log('already logged in', tokens);
+      this.navigator._navigation.navigate('HomeScreen');
+    } else {
       if (tokens) {
         this.props.checkToken();
       } else {
-        console.log('no tokens found');
+        console.log('no tokens found', tokens);
       }
-    }).catch(err => {
-      console.log('no tokens found');
-    });
-    
+    }
+
+    // WARN: race condition with return of 'me' from token?
     if (Platform.OS === 'android') {
       Linking.getInitialURL().then(url => {
         this.parseUrl(url);
@@ -37,24 +45,17 @@ class App extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    StatusBar.setHidden(true);
-    AppState.addEventListener('change', this.handleAppStateChange);
-    console.log('APP DID MOUNT');
-  }
-
   componentWillUnmount() {
+    console.log('APP WILLUNMOUNT')
     AppState.removeEventListener('change', this.handleAppStateChange);
-    Linking.removeEventListener('url', this.handleOpenURL);
+    if (Platform.OS !== 'android') {
+      Linking.addEventListener('url', this.handleOpenURL);
+    }
   }
 
   handleAppStateChange(appState) {
     console.log("React handleAppStateChange " + appState);
-    if (appState === 'background') {
-      //
-    }
   }
-
 
   handleOpenURL = (event) => {
     this.parseUrl(event.url);
@@ -63,7 +64,7 @@ class App extends React.Component {
   // WARN: docs say use this.navigator.dispatch(NavigationActions.navigate({ routeName: someRouteName }));
   // but they don't explain NavigationActions
   parseUrl = (url) => {
-    if (!url) return console.log('no url on launch', this.navigator._navigation);
+    if (!url) return console.log('no url on launch');
     console.log("parsing url", this.navigator._navigation);
     const route = url.replace(/.*?:\/\//g, '');
     const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
@@ -81,7 +82,7 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     if (!prevProps.auth.me && this.props.auth.me) {
       if (this.props.auth.me.isVerified === true) {
-        this.navigator._navigation.navigate('Wishes');
+        this.navigator._navigation.navigate('HomeScreen');
       } else {
         this.navigator._navigation.navigate('VerifyUser');
       }

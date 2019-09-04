@@ -115,7 +115,7 @@ function nextStepFailure(err) {
 /** Actual functions **/
 export function createUser(username, password, email, phone) {
   return (dispatch) => {
-    dispatch(signUpStarted())
+    dispatch(signUpStart())
     var me = {};
 
     if (username) me['name.first'] = username;
@@ -141,7 +141,7 @@ export function createUser(username, password, email, phone) {
 export function updateLocation(coords) {
   return (dispatch, getState) => {
 
-    // TODO: stop if coords are < 10 meters away
+    // TODO: stop if coords are < 10 meters away. requires updating auth.me.lastLocation which will fire more renders
 
     return API.Put('/api/users/'+getState().auth.me._id+'/location', coords)
     .then(res => {
