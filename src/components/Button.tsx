@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor:colors.LIGHT_GREEN,
+    fontFamily:'Poppins-Black',
     paddingVertical:8,
     paddingHorizontal:8,
     borderRadius: 4,
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   text: {
+    fontFamily:'Poppins-Bold',
     color: colors.WHITE,
     textAlign: "center",
   }

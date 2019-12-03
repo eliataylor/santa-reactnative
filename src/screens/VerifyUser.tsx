@@ -17,8 +17,7 @@ interface State {
 class VerifyUser extends React.Component<{}, State> {
 
   readonly state: State = {
-    verificationCode: '',
-    verificationHelp: ''
+    verificationCode: '', verificationHelp: ''
   };
 
   handleVerificationCode = (code: string) => {

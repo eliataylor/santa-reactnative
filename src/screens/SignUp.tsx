@@ -105,10 +105,16 @@ const mapDispatchToProps = {
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
 
 const styles = StyleSheet.create({
-  form: {
+  container: {
     flex: 1,
-    justifyContent: "center"
+    backgroundColor: colors.WHITE,
+    alignItems: "center",
+    justifyContent: "space-between"
   },
+  form: {
+    justifyContent: "center",
+    width: "80%"
+  },  
   loading: {
     position: 'absolute',
     left: 0,
@@ -120,12 +126,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex:999999
-  },
-  container: {
-    flex: 1,
-    backgroundColor: colors.WHITE,
-    justifyContent: 'center',
-    paddingHorizontal: 40
   },
   logo: {
     flex: 1,
