@@ -131,6 +131,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between"
   },
+  form: {
+    justifyContent: "center",
+    width: "80%"
+  },
   loading: {
     position: 'absolute',
     left: 0,
@@ -148,11 +152,6 @@ const styles = StyleSheet.create({
     width: "100%",
     resizeMode: "contain",
     alignSelf: "center"
-  },
-  form: {
-    flex: 1,
-    justifyContent: "center",
-    width: "80%"
   },
   errorMessage: {
     fontSize: 12,

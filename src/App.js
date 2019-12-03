@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, Text, Linking, Platform, AppState } from 'react-native';
+import { StatusBar, StyleSheet, Text, Linking, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
 import {checkToken} from './redux/authActions';
 import API from './utils/API';
 import NotifService from './utils/NotifService';
+import colors from "./config/colors";
 
 class App extends React.Component {
 
@@ -13,7 +14,8 @@ class App extends React.Component {
     super(props);
     this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.notif = false;
-    this.state = {permissions:false};
+    this.state = {permissions:false, starting:true};
+    this.backHandler = null;
   }
 
   async componentDidMount() {
@@ -24,11 +26,12 @@ class App extends React.Component {
     var tokens = await API.getLocalTokens();
     if (this.props.auth.me) {
       console.log('already logged in', tokens);
-      this.navigator._navigation.navigate('HomeScreen');
+      this.setState({starting:false}, e => this.navigator._navigation.navigate('HomeScreen'));
     } else {
       if (tokens) {
         this.props.checkToken();
       } else {
+        this.setState({starting:false});
         console.log('no tokens found', tokens);
       }
     }
@@ -43,6 +46,27 @@ class App extends React.Component {
       Linking.addEventListener('url', this.handleOpenURL);
       // this.notif.getApplicationIconBadgeNumber(callback: Function)
     }
+
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      console.log("back button clicked", this.navigator._navState);
+      var curScreen = this.navigator._navState.routes[this.navigator._navState.index].key;
+      if (this.props.auth.me) {
+        if (curScreen === 'CreateWish' || curScreen === 'Wishes') {
+          this.navigator._navigation.navigate('HomeScreen');
+        } else {
+          this.navigator._navigation.goBack();
+        }
+      } else {
+        if (curScreen === 'VerifyUser') {
+          this.navigator._navigation.navigate('HomeScreen');
+        } else {
+          this.navigator._navigation.navigate('VerifyUser');
+        }
+      }
+      return true;
+    });
+
+
   }
 
   componentWillUnmount() {
@@ -51,6 +75,7 @@ class App extends React.Component {
     if (Platform.OS !== 'android') {
       Linking.addEventListener('url', this.handleOpenURL);
     }
+    this.backHandler.remove();
   }
 
   handleAppStateChange(appState) {
@@ -64,7 +89,7 @@ class App extends React.Component {
   // WARN: docs say use this.navigator.dispatch(NavigationActions.navigate({ routeName: someRouteName }));
   // but they don't explain NavigationActions
   parseUrl = (url) => {
-    if (!url) return console.log('no url on launch');
+    if (!url || this.state.starting === true) return console.log('no url on launch');
     console.log("parsing url", this.navigator._navigation);
     const route = url.replace(/.*?:\/\//g, '');
     const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
@@ -81,11 +106,13 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (!prevProps.auth.me && this.props.auth.me) {
-      if (this.props.auth.me.isVerified === true) {
-        this.navigator._navigation.navigate('HomeScreen');
-      } else {
-        this.navigator._navigation.navigate('VerifyUser');
-      }
+      this.setState({starting:false}, e => {
+        if (this.props.auth.me.isVerified === true) {
+          this.navigator._navigation.navigate('HomeScreen');
+        } else {
+          this.navigator._navigation.navigate('VerifyUser');
+        }
+      });
 
       if (this.notif === false) {
         this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
@@ -94,7 +121,7 @@ class App extends React.Component {
         this.notif.checkPermission(this.handlePerm.bind(this));
       }
     } else if (!prevProps.auth.signUpError && this.props.auth.signUpError && this.props.auth.signUpError.indexOf('your password') > -1) {
-      this.navigator._navigation.navigate('Visitor'); // directly to signin and populate email / password
+      this.setState({starting:false}, e => this.navigator._navigation.navigate('Visitor')); // directly to signin and populate email / password
     }
   }
 
@@ -118,7 +145,7 @@ class App extends React.Component {
     })
     .catch(err => {
       var msg = API.getErrorMsg(err);
-      console.log('error logging in: ', msg)
+      console.log('error logging in: ', msg);
       return err;
     });
   }
@@ -150,8 +177,12 @@ class App extends React.Component {
       }
     }
     // TODO: snackbar success responses from server?
+    if (this.state.starting === true) {
+      return (<View style={styles.loading}><ActivityIndicator size="large" color={colors.SOFT_RED} /></View>);
+    }
 
     return <NavContainer
+        style={styles.root}
         onNavigationStateChange={this.handleNavigationChange}
         ref={nav => {this.navigator = nav;}} />;
   }
@@ -167,4 +198,26 @@ const mapStateToProps = state => ({
   entity:state.entity,
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.WHITE,
+    justifyContent: 'center',
+    fontFamily:'Poppins-Regular'
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width:'100%',
+    height:'100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex:999999
+  }
+});
