@@ -13,6 +13,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: colors.ALMOST_WHITE
   },
+  paddedContainer: {
+    paddingTop:10,
+    paddingBottom:10,
+    paddingLeft:10,
+    paddingRight:10,
+    backgroundColor: colors.ALMOST_WHITE
+  },
   row : {
     flexDirection:'row', alignItems: 'center', justifyContent:'space-between', width:'100%',
   },
@@ -47,9 +54,34 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     alignSelf: "center"
   },
+  header : {
+    fontFamily:'Poppins-ExtraBold',
+    textAlign:'center',
+    color:colors.BLACK,
+    fontSize:22,
+    width:'100%'
+  },
+  subheader : {
+    fontFamily:'Poppins-Bold',
+    textAlign:'center',
+    color:colors.BLACK,
+    fontSize:18,
+    width:'100%'
+  },
+  prompt : {
+    fontFamily:'Poppins-Regular',
+    fontSize:14,
+    color:colors.ALMOST_WHITE,
+    textAlign:'center'
+  },
+
   errorMessage: {
     fontSize: 12,
     color: 'red',
+  },
+
+  roleBtn : {
+    fontSize:26
   },
 
   picker: {

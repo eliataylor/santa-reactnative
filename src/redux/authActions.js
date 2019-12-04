@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import {
   // events
+  APP_READY,
   LOGIN_STARTED,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
@@ -27,6 +28,12 @@ import {
 export function logOut() {
   return {
     type: LOG_OUT
+  }
+}
+
+function appReady() {
+  return {
+    type: APP_READY
   }
 }
 
@@ -186,15 +193,20 @@ export function authenticate(credentials) {
 }
 
 
-export function checkToken() {
+export function checkToken(token) {
   return (dispatch) => {
-    API.Get('/api/users/me')
+    if (!token) {
+      return dispatch(appReady()); // first time visits can just start
+    }
+    API.Get('/api/users/me') // TODO: send through new axios instance without oauth interceptors
     .then(res => {
-      return dispatch(logInSuccess(res.data))
+      dispatch(appReady());
+      return dispatch(logInSuccess(res.data));
     })
     .catch (err => {
       var msg = API.getErrorMsg(err);
       console.log('error logging in: ', msg)
+      dispatch(appReady());
       dispatch(logInFailure(msg))
       return err;
     })

@@ -1,4 +1,6 @@
 // events
+export const APP_READY = 'APP_READY';
+
 export const LOGIN_STARTED = 'LOGIN_STARTED' // for modals / navigation
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS' //
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
@@ -22,6 +24,7 @@ const initialState = {
   me: false,
 
   loading:false,
+  appReady:false,
   signUpError: false,
   verifyError: false,
   logInError: false,
@@ -32,12 +35,15 @@ const initialState = {
 export default (state = initialState, action) => {
   var newState = {...state};
   switch(action.type) {
-
+    case APP_READY:
+      newState.appReady = true;
+      return newState;
     case LOGIN_STARTED:
       newState.loading = true;
       newState.logInError = false;
       return newState;
     case LOGIN_SUCCESS:
+    newState.appReady = true;
       newState.loading = false;
       if (action.payload.me) {
         newState.me = action.payload.me; // from checkToken
@@ -48,6 +54,7 @@ export default (state = initialState, action) => {
       newState.me.offers = action.payload.offers;
       return newState;
     case LOGIN_FAILURE:
+    newState.appReady = true;
       newState.loading = false;
       newState.logInError = action.error;
       return newState;
@@ -56,6 +63,7 @@ export default (state = initialState, action) => {
       newState.signUpError = false;
       return newState;
     case SIGNUP_SUCCESS:
+      newState.appReady = true;
       newState.loading = false;
       newState.signUpError = false;
       newState.me = action.payload.me; // from registration
@@ -66,6 +74,7 @@ export default (state = initialState, action) => {
       }
       return newState;
     case SIGNUP_FAILURE:
+      newState.appReady = true;
       newState.loading = false;
       newState.signUpError = action.error;
       return newState;
@@ -74,10 +83,12 @@ export default (state = initialState, action) => {
       newState.verifyError = false;
       return newState;
     case VERIFY_SUCCESS:
+    newState.appReady = true;
       newState.loading = false;
       newState.verifyError = false;
       return newState;
     case VERIFY_FAILURE:
+    newState.appReady = true;
       newState.loading = false;
       newState.verifyError = action.error;
       return newState;
