@@ -2,75 +2,26 @@ import React, { Component } from 'react';
 import {
   Platform,
   Text,
-  Button,
   Alert,
   View,
   KeyboardAvoidingView,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
   Image,
-  Dimensions,
   ActivityIndicator,
 } from 'react-native';
 
 import { connect } from 'react-redux'
 import strings from "../config/strings";
-import { colors } from '../theme'
+import colors from '../config/colors'
 import { createWish } from '../redux/entityDataReducer'
 import { updateLocation } from '../redux/authActions';
 import Picker from "react-native-picker-select";
+import Button from '../components/Button'
 import FormTextInput from '../components/FormTextInput'
 import LocationSelector from '../components/LocationSelector';
 
-const { width, height } = Dimensions.get('window');
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems:'center',
-    paddingHorizontal: 40,
-    paddingVertical:50
-  },
-  form: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  map: {
-    flex:1,
-    position:'relative',
-    width:(width - 30),
-    height: (height/3),
-    marginVertical:10
-  },
-  errorMessage: {
-    // fontFamily: fonts.base,
-    fontSize: 12,
-    marginTop: 10,
-    color: 'transparent'
-  },
-  textInput: {
-    height: 40,
-    borderColor: colors.SILVER,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 20
-  },
-  loading : {
-     position: 'absolute',
-     left: 0,
-     right: 0,
-     top: 0,
-     bottom: 0,
-     opacity: 0.5,
-     width:'100%',
-     height:'100%',
-     backgroundColor: 'rgba(0,0,0,.5)',
-     justifyContent: 'center',
-     alignItems: 'center'
-  }
-});
+import styles from '../theme';
 
 interface State {
   title: string;
@@ -189,7 +140,7 @@ class CreateWish extends React.Component {
           />
           <View style={{  marginBottom: 10, position:'relative'}}>
             <Picker
-              style={styles.textInput}
+              style={styles.picker}
               placeholder={{label:'Select a category', value:''}}
               selectedValue={this.state.category}
               onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
@@ -201,7 +152,7 @@ class CreateWish extends React.Component {
           <View style={{marginTop:40}}>
             <Button
               style={{backgroundColor:colors.LIGHT_GREEN}}
-              title={'Create Wish'}
+              label={'Create Wish'}
               onPress={this.submitWish.bind(this)}
             />
           </View>

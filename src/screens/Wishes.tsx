@@ -1,11 +1,13 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, Button, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, View, Image, SafeAreaView  } from "react-native";
+import { StyleSheet, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, View, Image, SafeAreaView  } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
+import Button from "../components/Button";
 import Picker from "react-native-picker-select";
 import WishItem from "../components/WishItem";
 import CategoryIcon from "../components/CategoryIcon";
+import Icon from "../components/Icon";
 import {listData} from "../redux/listDataReducer";
 import {updateLocation} from '../redux/authActions';
 import Geolocation from '@react-native-community/geolocation';
@@ -14,7 +16,6 @@ Geolocation.setRNConfiguration({
   skipPermissionRequests:true,
   authorizationLevel:"whenInUse"
 });
-
 
 const styles = StyleSheet.create({
   container: {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
      flexDirection: 'row',
      justifyContent: 'space-between',
      alignItems: 'center',
-     backgroundColor:colors.LIGHT_GREY,
+     backgroundColor:colors.ALMOST_WHITE,
      borderBottomWidth: StyleSheet.hairlineWidth,
      borderBottomColor: "rgba(000,000,000,0.5)",
      width: '100%',
@@ -64,22 +65,27 @@ const styles = StyleSheet.create({
     marginBottom:0,
     fontSize: 14,
     fontWeight: 'bold',
+    width:'100%',
     color:colors.LIGHT_GREEN,
     backgroundColor:colors.LIGHT_GREY,
   },
   loading : {
-    position: 'absolute',
+   position: 'absolute',
    left: 0,
    right: 0,
    top: 0,
    bottom: 0,
-   opacity: 0.5,
    width:'100%',
    height:'100%',
-   backgroundColor: 'rgba(0,0,0,.5)',
    justifyContent: 'center',
    alignItems: 'center'
-  }
+ },
+  picker: {
+    backgroundColor: colors.WHITE,
+    borderRadius:8,
+    color:colors.BLACK,
+    fontFamily:'Poppins-Medium',
+  },
 });
 
 interface State {
@@ -94,7 +100,7 @@ class Wishes extends React.Component<{}, State> {
     radius:25000,
     lonlat:'',
     categories:{},
-    locationHelp:'GPS Location of this wish'
+    locationHelp:strings.LOCATION_PROMPT
   };
 
   componentDidMount() {
@@ -104,16 +110,9 @@ class Wishes extends React.Component<{}, State> {
     }
     this.refresh();
   }
-  
+
   componentWillUnmount() {
     console.log("WISHES WILL UNMOUNT");
-  }
-
-  componentDidUpdate() {
-    if (this.state.loc !== '' && this.state.locationHelp === 'Loading your GPS location...') { // app gets stuck on ActivityIndicator when coming in from VerifyUser
-      this.setState({locationHelp:'GPS Location of this wish'});
-      // this.refresh();
-    }
   }
 
   refresh = ()  => {
@@ -133,17 +132,16 @@ class Wishes extends React.Component<{}, State> {
 
   getCurrentPosition = () => {
     var that = this;
-    that.setState({locationHelp:'Loading your GPS location...'});
+    this.setState({locationHelp:strings.LOCATION_TESTING});
     Geolocation.getCurrentPosition(pos => {
       that.props.updateLocation(pos.coords);
       var lonlat = pos.coords.longitude + ',' + pos.coords.latitude;
-      that.setState({lonlat:lonlat}, () => {
+      that.setState({lonlat:lonlat, locationHelp:strings.LOCATION_PROMPT}, () => {
         that.refresh();
-        that.setState({locationHelp:'GPS Location of this wish'});
       });
     },
     error => {
-      that.setState({locationHelp:'Please enabled GPS Location in your settings \n ' + error.message});
+      that.setState({locationHelp:strings.LOCATION_PROMPT + ' \n ' + error.message});
     },
     {enableHighAccuracy: false, timeout:15000, maximumAge: 20000});
   }
@@ -191,22 +189,19 @@ class Wishes extends React.Component<{}, State> {
         <Text style={styles.sectionHeader}>{section.title}</Text>
         <View style={styles.filters}>
         <View style={styles.iconBtn}>
-          {(this.state.locationHelp === 'Loading your GPS location...') ?
+          {(this.state.locationHelp === strings.LOCATION_TESTING) ?
             <ActivityIndicator size='large'/>
             :
-            <TouchableHighlight
-              style={styles.icon}
+            <Icon
               onPress={(e) => this.getCurrentPosition()}
-              ><Image
-              source={require('../assets/images/gpsicon.png')}
-              resizeMode={'contain'}
-              style={styles.icon}
-              onError={(e) => console.log(e.nativeEvent.error) }
-              accessibilityLabel={'gps refresh'} /></TouchableHighlight>
+              icon={require('../assets/images/baseline_my_location_black_18dp.png')}
+              label={this.state.locationHelp}
+              />
           }
         </View>
         <Picker
           value={this.state.radius}
+          style={styles.picker}
           useNativeAndroidPickerStyle={false}
           onValueChange={this._radiusChanged}
           items={radiusOpts} />
@@ -234,13 +229,10 @@ class Wishes extends React.Component<{}, State> {
 
   render() {
     if (this.state.lonlat === '') {
-      if (this.state.locationHelp === 'Loading your GPS location...') {
-        return (<View style={styles.loading}>
-          <Text>{this.state.locationHelp}</Text>
-          <ActivityIndicator size='large'/>
-        </View>);
-      }
-      return (<View style={styles.loading}><Button title={strings.LOCATION_PROMPT} onPress={(e) => this.getCurrentPosition()} /></View>);
+      return (<View style={styles.loading}><Button
+        style={{backgroundColor:colors.SOFT_RED}}
+        label={this.state.locationHelp}
+        onPress={(e) => this.getCurrentPosition()} /></View>);
     }
 
     const allSections = [];
@@ -253,7 +245,7 @@ class Wishes extends React.Component<{}, State> {
 
     return (
       <KeyboardAvoidingView style={styles.container}>
-        <View style={{width:'100%', paddingLeft:30}}>
+        <View style={styles.sectionHeader}>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')} >
             <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
           </TouchableOpacity>
@@ -269,7 +261,7 @@ class Wishes extends React.Component<{}, State> {
                   renderSectionHeader={this._renderSectionHead}
                 />
                 :
-                <Text>No results</Text>
+                (this.props.loading === false) ? <Text>No results</Text> : null
       }
       </KeyboardAvoidingView>
     );

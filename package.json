@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start-cli": "node node_modules/react-native/local-cli/cli.js start",
-    "start": "react-native start",
+    "start": "react-native start --verbose",
     "run-ios": "react-native run-ios",
-    "run-android": "react-native run-android",
+    "run-android": "react-native run-android --verbose",
     "test": "jest",
     "lint": "eslint .",
     "build:ios": "react-native bundle --entry-file='index.ios.js' --bundle-output='./ios/ReactSanta/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",

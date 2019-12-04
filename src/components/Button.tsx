@@ -36,15 +36,13 @@ class Button extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor:colors.LIGHT_GREEN,
-    fontFamily:'Poppins-Black',
+    alignSelf:'stretch',
+    justifyContent:'center',
     paddingVertical:8,
-    paddingHorizontal:8,
+    paddingHorizontal:4,
     borderRadius: 4,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "rgba(255,255,255,0.7)"
+    borderWidth:0,
+    backgroundColor:colors.LIGHT_GREEN,
   },
   containerEnabled: {
     opacity: 1
@@ -53,7 +51,7 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   text: {
-    fontFamily:'Poppins-Bold',
+    fontFamily:'Poppins-ExtraBold',
     color: colors.WHITE,
     textAlign: "center",
   }

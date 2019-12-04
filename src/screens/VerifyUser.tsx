@@ -57,7 +57,7 @@ class VerifyUser extends React.Component<{}, State> {
   resendLink() {
     if (!this.props.auth.me) {
       console.log('enter your email where to send the link'); // TODO: snackbar
-      return this.props.navigation.navigate('Visitor');
+      return this.props.navigation.navigate('SignIn');
     }
     API.Post('/api/loginlink', {email:this.props.auth.me.email})
     .then(res => {

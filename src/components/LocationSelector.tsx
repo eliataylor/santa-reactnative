@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button, Dimensions, Platform } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, Platform } from 'react-native';
 
+import Button from './Button';
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import colors from "../config/colors";
@@ -40,7 +41,7 @@ class LocationSelector extends React.Component {
 
     console.log("LocationSelector requesting Location");
     Geolocation.getCurrentPosition(pos => {
-      console.warn('GOT POSITION', pos);
+      console.log('GOT POSITION', pos);
       var coords = {latitude:pos.coords.latitude, longitude:pos.coords.longitude};
       that.setState({loc:coords}, () => {
         that.props.onMarkerChange(coords); // send back to parent form
@@ -74,8 +75,8 @@ class LocationSelector extends React.Component {
     if (typeof this.state.loc === 'string') {
       return (
         <View style={styles.container}>
-          <Button title={'Try Location Again'} onPress={(e) => this.getCurrentPosition()} />
-          <Text>{this.state.loc}</Text>
+          <Button label={'Try Location Again'} onPress={(e) => this.getCurrentPosition()} />
+          <Text >{this.state.loc}</Text>
         </View>
         )
     }
@@ -106,7 +107,7 @@ class LocationSelector extends React.Component {
             >
           </Marker>
         </MapView>
-        <Text styles={styles.help}>Press and hold the location of this Wish</Text>
+        <Text styles={styles.help}>Press and hold the location of where this wish should be delivered.</Text>
       </View>
     );
   }
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
   },
   help: {
     fontSize:10,
+    fontFamily:'Poppins-Light',
     color:colors.SILVER,
     textAlign:'right'
   }

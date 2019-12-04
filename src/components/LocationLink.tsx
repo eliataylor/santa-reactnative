@@ -35,24 +35,32 @@ class LocationLink extends React.Component<Props> {
     return address.join(' ');
   }
 
-  buildImg = () => {
-    var url = "https://maps.googleapis.com/maps/api/streetview?size=170x100&fov=120&key="+ Config.api.gMapKey;
+  buildImg = (type) => {
+    var url = 'https://maps.googleapis.com/maps/api/', param = "";
+    if (type === 'streetview') {
+      url += "streetview?size=170x100&fov=120";
+      param = "location";
+    } else {
+      url += "staticmap?zoom=4&size=170x100&maptype=roadmap";
+      param = "center";
+    }
     var address = this.buildAddress();
     if (this.props.geo && this.props.geo.length === 2) {
-      url += '&location=' + this.props.geo[1] + ',' + this.props.geo[0];
+      url += '&'+param+'='  + this.props.geo[1] + ',' + this.props.geo[0];
     } else if (address) {
-      url += '&location=' + encodeURIComponent(address);
+      url += '&'+param+'=' + encodeURIComponent(address);
     } else {
       console.warn("every wish must have a valid location");
       return ''; // every wish
     }
     // url += "&signature=" + Config.api.gMapSignature;
-    return url;
+    return url + "&key="+ Config.api.gMapKey;
   }
 
   render() {
+    const maptype = this.props.maptype || 'staticmap';
     const address = this.buildAddress();
-    const imgUrl = this.buildImg();
+    const imgUrl = this.buildImg(maptype);
     //console.log(address, imgUrl);
 
     return (
@@ -76,12 +84,11 @@ class LocationLink extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height:'100%'
+    height:100,
   },
   image : {
     flex: 1,
-    width:'100%',
+    height:100,
     resizeMode: "contain",
     alignSelf: "center"
   }

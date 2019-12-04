@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, StyleSheet, Text, Linking, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
+import { StatusBar, Text, Linking, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
 import {checkToken} from './redux/authActions';
 import API from './utils/API';
 import NotifService from './utils/NotifService';
+import styles from './theme';
 import colors from "./config/colors";
 
 class App extends React.Component {
@@ -29,12 +30,35 @@ class App extends React.Component {
       this.setState({starting:false}, e => this.navigator._navigation.navigate('HomeScreen'));
     } else {
       if (tokens) {
+        console.log('checking token', tokens);
         this.props.checkToken();
       } else {
         this.setState({starting:false});
         console.log('no tokens found', tokens);
       }
     }
+
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (!this.navigator || !this.navigator._navState) {
+        return console.log('no routes yet');
+      };
+      console.log("back button clicked", this.navigator._navState);
+      var curScreen = this.navigator._navState.routes[this.navigator._navState.index].key;
+      if (this.props.auth.me) {
+        if (curScreen === 'CreateWish' || curScreen === 'Wishes') {
+          this.navigator._navigation.navigate('HomeScreen');
+        } else {
+          this.navigator._navigation.goBack();
+        }
+      } else {
+        if (curScreen === 'VerifyUser') {
+          this.navigator._navigation.navigate('SignUp');
+        } else {
+          this.navigator._navigation.navigate('VerifyUser');
+        }
+      }
+      return true;
+    });
 
     // WARN: race condition with return of 'me' from token?
     if (Platform.OS === 'android') {
@@ -46,26 +70,6 @@ class App extends React.Component {
       Linking.addEventListener('url', this.handleOpenURL);
       // this.notif.getApplicationIconBadgeNumber(callback: Function)
     }
-
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      console.log("back button clicked", this.navigator._navState);
-      var curScreen = this.navigator._navState.routes[this.navigator._navState.index].key;
-      if (this.props.auth.me) {
-        if (curScreen === 'CreateWish' || curScreen === 'Wishes') {
-          this.navigator._navigation.navigate('HomeScreen');
-        } else {
-          this.navigator._navigation.goBack();
-        }
-      } else {
-        if (curScreen === 'VerifyUser') {
-          this.navigator._navigation.navigate('HomeScreen');
-        } else {
-          this.navigator._navigation.navigate('VerifyUser');
-        }
-      }
-      return true;
-    });
-
 
   }
 
@@ -89,23 +93,27 @@ class App extends React.Component {
   // WARN: docs say use this.navigator.dispatch(NavigationActions.navigate({ routeName: someRouteName }));
   // but they don't explain NavigationActions
   parseUrl = (url) => {
-    if (!url || this.state.starting === true) return console.log('no url on launch');
-    console.log("parsing url", this.navigator._navigation);
-    const route = url.replace(/.*?:\/\//g, '');
-    const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
-    console.log('load', url, route, pathname);
-    if (pathname.indexOf('/api/users/') === 0) {
-      var parts = pathname.split('/');
-      this.navigator._navigation.navigate('VerifyUser', {code:parts[5], uid:parts[3]});
-    } else if (pathname.indexOf('/api/wishes') === 0) {
-      this.navigator._navigation.navigate('Wishes');
-    } else if (pathname.indexOf('/api/create-a-wish') === 0) {
-      this.navigator._navigation.navigate('CreateWish');
+    if (!url) {
+      console.log('no url on launch');
+    } else {
+      console.log("parsing url", this.navigator._navigation);
+      const route = url.replace(/.*?:\/\//g, '');
+      const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
+      console.log('load', url, route, pathname);
+      if (pathname.indexOf('/api/users/') === 0) {
+        var parts = pathname.split('/');
+        this.navigator._navigation.navigate('VerifyUser', {code:parts[5], uid:parts[3]});
+      } else if (pathname.indexOf('/api/wishes') === 0) {
+        this.navigator._navigation.navigate('Wishes');
+      } else if (pathname.indexOf('/api/create-a-wish') === 0) {
+        this.navigator._navigation.navigate('CreateWish');
+      }
     }
   }
 
   componentDidUpdate(prevProps) {
     if (!prevProps.auth.me && this.props.auth.me) {
+      console.log('first login');
       this.setState({starting:false}, e => {
         if (this.props.auth.me.isVerified === true) {
           this.navigator._navigation.navigate('HomeScreen');
@@ -121,7 +129,10 @@ class App extends React.Component {
         this.notif.checkPermission(this.handlePerm.bind(this));
       }
     } else if (!prevProps.auth.signUpError && this.props.auth.signUpError && this.props.auth.signUpError.indexOf('your password') > -1) {
-      this.setState({starting:false}, e => this.navigator._navigation.navigate('Visitor')); // directly to signin and populate email / password
+      console.log('init with signUpError', this.props.auth);
+      this.setState({starting:false}, e => this.navigator._navigation.navigate('SignIn')); // directly to signin and populate email / password
+    } else {
+      console.log('unknown update', this.props.auth);
     }
   }
 
@@ -199,25 +210,3 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: colors.WHITE,
-    justifyContent: 'center',
-    fontFamily:'Poppins-Regular'
-  },
-  loading: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width:'100%',
-    height:'100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex:999999
-  }
-});
