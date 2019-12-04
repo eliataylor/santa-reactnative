@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { NavigationActions, navigation } from 'react-navigation';
 import { Linking, Alert, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
@@ -29,11 +30,11 @@ class App extends React.Component {
       console.log('checking token', this.tokens);
       this.props.checkToken(this.tokens);
     } else {
-      this.props.checkToken();
+      this.props.checkToken(false);
       console.log('no tokens found', this.tokens);
     }
 
-    if (this.props.auth.appReady) {     // prevents race condition with return of 'me' from token
+    if (this.props.auth.appReady === true) {     // prevents race condition with return of 'me' from token
       this.applyListeners();
     }
 
@@ -41,17 +42,21 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.auth.appReady === true) {
-      Alert.alert('appReady! was: ' + JSON.stringify(prevProps.auth.appReady));
       if (prevProps.auth.appReady === false) {     // prevents race condition with return of 'me' from token
+        Alert.alert('applyingListeners on update');
         this.applyListeners();
       }
       if (!prevProps.auth.me && this.props.auth.me) {
-        console.log('first login');
+
+        const obj = {};
         if (this.props.auth.me.isVerified === true) {
-          this.navigator._navigation.navigate('HomeScreen');
+          obj.routeName = 'HomeScreen';
         } else {
-          this.navigator._navigation.navigate('VerifyUser');
+          obj.routeName = 'VerifyUser';
+          // obj.params = {code:parts[5], uid:parts[3]};
         }
+        this.navigator._navigation.dispatch(NavigationActions.navigate(obj));
+
         if (this.notif === false) {
           this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
         } else if (this.state.permissions === false) {
@@ -60,7 +65,7 @@ class App extends React.Component {
         }
       } else if (!prevProps.auth.signUpError && this.props.auth.signUpError && this.props.auth.signUpError.indexOf('your password') > -1) {
         console.log('init with signUpError', this.props.auth);
-        this.navigator._navigation.navigate('SignIn'); // directly to signin and populate email / password
+        this.navigator._navigation.dispatch(NavigationActions.navigate({routeName:'SignIn'}));
       } else {
         console.log('unknown update', this.props.auth);
       }
@@ -77,20 +82,20 @@ class App extends React.Component {
       };
       console.log("back button clicked", this.navigator._navState);
       var curScreen = this.navigator._navState.routes[this.navigator._navState.index].key;
+
+      const obj = {};
+
       if (this.props.auth.me) {
-        if (curScreen === 'CreateWish' || curScreen === 'Wishes') {
-          this.navigator._navigation.navigate('HomeScreen');
-        } else {
-          this.navigator._navigation.goBack();
-        }
+          obj.key = "HomeScreen"; // TODO: check if modal is open?
       } else {
         if (curScreen === 'VerifyUser') {
-          this.navigator._navigation.navigate('SignUp');
+          obj.key = "SignIn";
         } else {
-          this.navigator._navigation.navigate('VerifyUser');
+          obj.key = "VerifyUser";
         }
       }
-      return true;
+      const backAction = NavigationActions.back(obj);
+      return this.navigator._navigation.dispatch(backAction);
     });
 
     if (Platform.OS === 'android') {
@@ -122,8 +127,6 @@ class App extends React.Component {
     this.parseUrl(event.url);
   }
 
-  // WARN: docs say use this.navigator.dispatch(NavigationActions.navigate({ routeName: someRouteName }));
-  // but they don't explain NavigationActions
   parseUrl = (url) => {
     if (!url) {
       console.log('no url on launch');
@@ -132,14 +135,20 @@ class App extends React.Component {
       const route = url.replace(/.*?:\/\//g, '');
       const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
       console.log('load', url, route, pathname);
+
+      const obj = {};
+
       if (pathname.indexOf('/api/users/') === 0) {
         var parts = pathname.split('/');
-        this.navigator._navigation.navigate('VerifyUser', {code:parts[5], uid:parts[3]});
+        obj.routeName = 'VerifyUser';
+        obj.params = {code:parts[5], uid:parts[3]};
       } else if (pathname.indexOf('/api/wishes') === 0) {
-        this.navigator._navigation.navigate('Wishes');
+        obj.routeName = 'Wishes';
       } else if (pathname.indexOf('/api/create-a-wish') === 0) {
-        this.navigator._navigation.navigate('CreateWish');
+        obj.routeName = 'CreateWish';
       }
+      const navigateAction = NavigationActions.navigate(obj);
+      this.navigator._navigation.dispatch(navigateAction);
     } else {
       Alert.alert('recalling parseUrl' +  url);
       setTimeout(e => this.parseUrl(url), 500);
@@ -182,7 +191,6 @@ class App extends React.Component {
   }
 
   onNavigationStateChange(prevState, newState, action) {
-    Alert.alert('is this breaking everything?');
     console.log('onNavigationStateChange', prevState, newState, action);
   }
 
@@ -211,13 +219,16 @@ class App extends React.Component {
 }
 
 const mapDispatchToProps = {
-  checkToken: (tokens) => checkToken(tokens)
+  checkToken: (tokens) => checkToken(tokens),
+  navigation: e => navigation(e)
 }
 
-const mapStateToProps = state => ({
-  auth:state.auth,
-  lists:state.lists,
-  entity:state.entity,
-})
+const mapStateToProps = state => {
+  return {
+    auth:state.auth,
+    lists:state.lists,
+    entity:state.entity
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
