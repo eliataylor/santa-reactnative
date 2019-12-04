@@ -12,6 +12,7 @@ const strings = {
   EMAIL_REQUIRED : 'You valid email address is required',
   PASSWORD_REQUIRED : 'An password is required',
   LOCATION_PROMPT: 'Enable Location',
+  LOCATION_TESTING: 'Checking Location',
   OFFER_FULFILL : 'Did you deliver this wish?',
   OFFER_CANCEL : 'Are you sure you want to canceled this wish?',
   FULFILL : 'Fulfill this wish',

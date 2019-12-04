@@ -1,9 +1,15 @@
 keytool -genkeypair -v -keystore santa4homeless.keystore -alias santa4homeless -keyalg RSA -keysize 2048 -validity 10000
 
 
-adb devices
+adb devices -l
 adb -s ce071717d3054a2a027e reverse tcp:8081 tcp:8081
+adb reverse tcp:8081 tcp:8081
 adb shell input keyevent 82
+
+10.0.0.187
+
+sudo lsof -i :8081
+kill -9 34031
 
 $reactNative.AsyncStorage.clear();
 

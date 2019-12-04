@@ -7,6 +7,8 @@ import VerifyUser from "./VerifyUser";
 import logo from "../assets/images/logo.png";
 import colors from "../config/colors";
 import strings from "../config/strings";
+import styles from "../theme";
+
 import API from "../utils/API";
 import { authenticate } from '../redux/authActions';
 
@@ -60,9 +62,19 @@ class SignIn extends React.Component<{}, State> {
 
   resendLink() {
     Keyboard.dismiss();
-    API.Post('/api/loginlink', {email:this.state.email})
+    const email = this.state.email;
+
+    if (email === '') {
+      Alert.alert('Enter your email above', 'then click this again');
+    } else if (email.indexOf('@') < 2) {
+      return Alert.alert('Invalid email');
+    }
+
+    const that = this;
+    API.Post('/api/loginlink', {email:email})
     .then(res => {
       console.log('loginlink', res.data);
+      that.setState({email:''}); // to prevent repeats
       Alert.alert('Check your email', 'and click your login link');
     })
     .catch(err => {
@@ -83,11 +95,12 @@ class SignIn extends React.Component<{}, State> {
     const {email, password, emailHelp, passwordHelp} = this.state;
 
     return (
-      <View
-        style={styles.container}
-        behavior="padding" >
+      <View style={styles.container} >
         { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
-        <Image source={logo} style={styles.logo} />
+        <Image
+          source={logo}
+          style={styles.logo}
+        />
         <View style={styles.form}>
           <FormTextInput
             value={email}
@@ -107,57 +120,29 @@ class SignIn extends React.Component<{}, State> {
             returnKeyType="done"
             error={passwordHelp}
           />
-          <Button
-            label={strings.SIGNIN}
-            onPress={this.handleLoginPress}
-            disabled={email.indexOf("@") < 2 || password.length < 4}
-          />
+          <View style={styles.row}>
+              <Button
+                label={strings.SIGNIN}
+                style={{backgroundColor:colors.LIGHT_GREEN, color:colors.WHITE, width:'33%'}}
+                onPress={this.handleLoginPress}
+              />
+              <Button
+                label={'Forgot Password'}
+                style={{backgroundColor:colors.LIGHT_GREY, color:colors.SOFT_RED, width:'33%'}}
+                onPress={(e) => this.resendLink()}
+              />
+              <Button
+                label={strings.SIGNUP}
+                style={{backgroundColor:colors.LIGHT_GREY, color:colors.SILVER, width:'33%'}}
+                onPress={e => this.props.navigation.navigate('SignUp')}
+              />
+          </View>
         </View>
-        <Button
-          label={'Email me a login link'}
-          style={{backgroundColor:colors.LIGHT_GREY, color:colors.SILVER, marginBottom:10}}
-          onPress={(e) => this.resendLink()}
-          disabled={email.indexOf('@') < 2}
-        />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.WHITE,
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
-  form: {
-    justifyContent: "center",
-    width: "80%"
-  },
-  loading: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width:'100%',
-    height:'100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex:999999
-  },
-  logo: {
-    flex: 1,
-    width: "100%",
-    resizeMode: "contain",
-    alignSelf: "center"
-  },
-  errorMessage: {
-    fontSize: 12,
-    color: 'red',
-  },
-});
 
 
 const mapDispatchToProps = {

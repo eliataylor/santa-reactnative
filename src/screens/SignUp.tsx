@@ -4,9 +4,6 @@ import {
   Text,
   Alert,
   View,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
   TouchableOpacity,
   Image,
   ActivityIndicator,
@@ -15,11 +12,12 @@ import {
 import { connect } from 'react-redux'
 const logo = require('../assets/images/logo.png');
 import strings from "../config/strings";
-import { colors } from '../theme'
+import colors from '../config/colors'
 import { createUser } from '../redux/authActions'
 
-import Input from '../components/FormTextInput'
+import FormTextInput from '../components/FormTextInput'
 import Button from '../components/Button'
+import styles from "../theme";
 
 interface State {
   firstname: string;
@@ -45,7 +43,6 @@ class SignUp extends React.Component<{}, State> {
   }
 
   render() {
-    const { signUpError, nextSteps } = this.props
     return (
       <View
         style={styles.container}
@@ -54,40 +51,47 @@ class SignUp extends React.Component<{}, State> {
         <Image
           source={logo}
           style={styles.logo}
-          resizeMode="contain"
         />
-        <View style={styles.form} behavior="padding">
-          <Input
+        <View style={styles.form} >
+          <FormTextInput
             value={this.state.email}
             placeholder="Email"
             type='email'
             keyboardType='email-address'
             onChangeText={(text) => this.setState({email:text.toLowerCase().trim()})}
           />
-          <Input
+          <FormTextInput
             value={this.state.firstname}
-            placeholder="Optional First Name"
+            placeholder="Optional Name"
             type='firstname'
             onChangeText={(text) => this.setState({firstname:text.trim()})}
           />
-          <Input
-            placeholder="Optional Phone Number"
+          <FormTextInput
+            placeholder="Optional Cellular"
             type='phone_number'
             keyboardType='phone-pad'
             onChangeText={(text) => this.setState({phone:text.trim()})}
           />
-          <Input
+          <FormTextInput
             value={this.state.password}
             placeholder="Optional Password"
             secureTextEntry
             type='password'
             onChangeText={(text) => this.setState({password:text.trim()})}
           />
-          <Button
-            label={strings.SIGNUP}
-            style={{marginBottom:10}}
-            onPress={this.signUp.bind(this)}
-          />
+
+          <View style={styles.row}>
+              <Button
+                label={strings.SIGNIN}
+                style={{backgroundColor:colors.LIGHT_GREY, color:colors.SILVER, width:'50%'}}
+                onPress={e => this.props.navigation.navigate('SignIn')}
+              />
+              <Button
+                label={strings.SIGNUP}
+                style={{backgroundColor:colors.LIGHT_GREEN, color:colors.WHITE, width:'50%'}}
+                onPress={this.signUp.bind(this)}
+              />
+          </View>
         </View>
       </View>
     );
@@ -103,39 +107,3 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.WHITE,
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
-  form: {
-    justifyContent: "center",
-    width: "80%"
-  },  
-  loading: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width:'100%',
-    height:'100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex:999999
-  },
-  logo: {
-    flex: 1,
-    resizeMode: "contain",
-    alignSelf: "center"
-  },
-  errorMessage: {
-    // fontFamily: fonts.base,
-    fontSize: 12,
-    marginTop: 10,
-    color: 'transparent'
-  }
-});

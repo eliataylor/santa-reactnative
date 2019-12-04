@@ -1,16 +1,44 @@
-import * as React from "react";
+import React, {Component} from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, View, Text, Alert } from "react-native";
+import { StyleSheet, View, Text, Alert, Modal, Image, TouchableHighlight } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Button from "./Button";
 import CategoryIcon from "./CategoryIcon";
 import LocationLink from "./LocationLink";
+import Icon from "./Icon";
 import Deadline from "./Deadline";
 import moment from "moment";
 import { createOffer, updateOffer, deleteWish } from '../redux/entityDataReducer';
 
-class WishItem extends React.PureComponent {
+import baseStyles from '../theme';
+const styles = Object.assign(baseStyles, StyleSheet.create({
+  container: {
+    marginTop:5,
+    marginBottom:25,
+    borderColor: colors.SILVER,
+    backgroundColor:colors.WHITE,
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  h1: {
+    fontFamily:'Poppins-Bold',
+    fontSize:18,
+  },
+  body: {
+    fontFamily:'Poppins-Regular',
+    fontSize:14
+  },
+  subheader : {
+    fontSize:22,
+    color:colors.SOFT_RED
+  }
+}));
+
+class WishItem extends Component {
+
+  state = {
+    modalVisible: false,
+  };
 
   startOffer() {
     var that = this;
@@ -68,14 +96,14 @@ class WishItem extends React.PureComponent {
     const { wish, offer } = this.props;
     var cta = null;
     if (offer && offer.state === 'inprogress') {
-      cta = <View style={styles.btnGroup}>
+      cta = <View style={styles.row}>
             <Button label={'Mark Delivered'} style={{backgroundColor:colors.LIGHT_GREEN}}
                     onPress={(e) => this.updateOffer('fulfilled')} />
             <Button label={'Cancel'} style={{backgroundColor:colors.TORCH_RED}}
                     onPress={(e) => this.updateOffer('canceled')} />
             </View>
     } else if (wish.elf._id === this.props.me._id){
-      cta = <View style={styles.btnGroup}>
+      cta = <View style={styles.row}>
               <Button  label={strings.FULFILL} style={{backgroundColor:colors.LIGHT_GREEN}}
               onPress={(e) => this.startOffer()} />
               <Button
@@ -90,46 +118,62 @@ class WishItem extends React.PureComponent {
 
     return (
         <View style={styles.container}>
-          <View style={styles.timeframe}>
+
+          <Modal animationType="slide" visible={this.state.modalVisible === true} >
+              <Button label="Close" onPress={e => this.setState({modalVisible:false}) } />
+             <View>
+               <Text style={styles.subheader}>Wish</Text>
+               <Text style={styles.h1}>{wish.title}</Text>
+               <CategoryIcon id={wish.category} />
+               <Text>{moment(wish.createdAt).format('MMM Do h:mma')}</Text>
+               {(offer && offer.state === 'inprogress') ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} /> : null}
+
+               <Text style={styles.subheader}>Details</Text>
+               <Text style={styles.body}>{wish.body}</Text>
+
+               <Text style={styles.subheader}>Location</Text>
+               <View><LocationLink maptype='staticmap' {...wish.location} /></View>
+               <View><LocationLink maptype='streetview' {...wish.location} /></View>
+               {cta}
+             </View>
+          </Modal>
+
+          <View style={styles.row} >
             <CategoryIcon id={wish.category} />
-            <Text>{moment(wish.createdAt).format('MMM Do h:mma')}</Text>
-            {(offer && offer.state === 'inprogress') ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} /> : null}
+            <Text style={{fontFamily:'Poppins-Medium'}}>Posted {moment(wish.createdAt).format('MMM Do h:mma')}</Text>
+            {(offer && offer.state === 'inprogress') ?
+            <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} /> : null}
           </View>
-          <View style={styles.details}>
-            <View style={styles.left}>
-              <Text style={styles.h1}>{wish.title}</Text>
+          <View style={styles.row}>
+            <View style={styles.col}>
+              <TouchableHighlight onPress={e => this.setState({modalVisible:true}) }>
+                <Text style={styles.h1}>{wish.title}</Text>
+              </TouchableHighlight>
               <Text style={styles.body}>{wish.body}</Text>
-              {cta}
+              <View style={styles.row}>
+                <Icon
+                  onPress={e => this.setState({modalVisible:true})}
+                  label="more info"
+                  icon={require('../assets/images/baseline_info_black_18dp.png')}
+                  />
+
+                {(wish.elf._id === this.props.me._id) ?
+                <Icon
+                  onPress={e => this.setState({modalVisible:true})}
+                  label="delete"
+                  icon={require('../assets/images/baseline_delete_black_18dp.png')}
+                  /> : null}
+              </View>
             </View>
-            <View style={styles.right}><LocationLink {...wish.location} /></View>
+            <View style={styles.col}>
+              <LocationLink maptype='streetview' {...wish.location} />
+            </View>
           </View>
+
         </View>
     );
   }
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-      marginTop:15,
-      marginBottom:0,
-      borderColor: colors.SILVER,
-      borderBottomWidth: StyleSheet.hairlineWidth
-  },
-  btnGroup: {flex: 1, flexDirection: 'row', flexWrap:'wrap', justifyContent:'space-between', alignItems:'center'},
-  timeframe: {flex: 1, flexDirection: 'row', justifyContent:'space-between', alignItems:'center'},
-  details: {width:'100%', height:150, flexDirection:'row', flexWrap:'nowrap', justifyContent:'space-between', alignItems:'flex-start', alignContent:'flex-start'},
-  left: { width:'49%', alignSelf:'flex-start' },
-  right: { width:'49%', alignSelf:'flex-start' },
-  h1: {
-    fontWeight: 'bold',
-    fontSize:18,
-  },
-  body: {
-    fontWeight:'normal',
-    fontSize:14
-  }
-});
 
 const mapDispatchToProps = {
   createOffer: (item) => createOffer(item),

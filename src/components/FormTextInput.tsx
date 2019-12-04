@@ -24,10 +24,10 @@ class FormTextInput extends React.Component<Props> {
   render() {
     const { error, help, style, ...otherProps } = this.props;
     return (
-      <View style={[styles.container, style]}>
+      <View style={[styles.wrap, style]}>
         <TextInput
           ref={this.textInputRef}
-          selectionColor={colors.DODGER_BLUE}
+          selectionColor={colors.SOFT_RED}
           style={[styles.textInput, style]}
           {...otherProps}
         />
@@ -39,15 +39,21 @@ class FormTextInput extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrap: {
     marginBottom: 10,
-    position:'relative'
+    position:'relative',
+    width:'100%',
+    backgroundColor: colors.ALMOST_WHITE,
   },
   textInput: {
-    height: 40,
-    borderColor: colors.SILVER,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 20
+    backgroundColor: colors.WHITE,
+    color:colors.BLACK,
+    fontFamily:'Poppins-ExtraBold',
+    paddingTop:10,
+    paddingBottom:10,
+    paddingLeft:10,
+    borderRadius:8,
+    marginBottom: 20,
   },
   helpText: {
     margin:-18,
