@@ -29,7 +29,7 @@ class HomeScreen extends React.Component<Props, State> {
     }
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {paddingVertical:20, paddingHorizontal:10}]}>
         <Text style={styles.header}>{this.props.me.name.first ? 'Welcome ' + this.props.me.name.first : 'Hello there'}</Text>
         <Text style={styles.subheader}>Pick a role, do good, and earn your blessing</Text>
         <View style={styles.row}>

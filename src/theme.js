@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     justifyContent:'flex-start',
     alignContent:'flex-start',
     alignItems:'flex-start',
+    width:'100%',
     backgroundColor: colors.ALMOST_WHITE,
   },
   loading: {

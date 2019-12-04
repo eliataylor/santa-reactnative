@@ -49,14 +49,10 @@ const styles = StyleSheet.create({
     margin:4,
     padding:3,
     borderRadius: 4,
+    alignContent:'center',
+    alignItems:'center',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: "rgba(000,000,000,0.7)"
-  },
-  icon: {
-    flex: 1,
-    width: "100%",
-    height:"100%",
-    alignSelf: "center"
   },
   sectionHeader: {
     paddingVertical:5,
