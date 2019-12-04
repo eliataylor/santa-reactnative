@@ -13,9 +13,7 @@ import strings from "../config/strings";
 const AppNavigator = createSwitchNavigator({
   SignIn: SignIn,
   SignUp: SignUp,
-  HomeScreen : {
-    screen: HomeScreen
-  },
+  HomeScreen : HomeScreen,
   Wishes: {
     screen: Wishes,
     path:'/wishes',

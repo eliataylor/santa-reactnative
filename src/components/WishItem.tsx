@@ -12,7 +12,7 @@ import moment from "moment";
 import { createOffer, updateOffer, deleteWish } from '../redux/entityDataReducer';
 
 import baseStyles from '../theme';
-const styles = Object.assign(baseStyles, StyleSheet.create({
+const styles = [baseStyles, StyleSheet.create({
   container: {
     marginTop:5,
     marginBottom:25,
@@ -28,11 +28,11 @@ const styles = Object.assign(baseStyles, StyleSheet.create({
     fontFamily:'Poppins-Regular',
     fontSize:14
   },
-  subheader : {
+  listhead : {
     fontSize:22,
     color:colors.SOFT_RED
   }
-}));
+})];
 
 class WishItem extends Component {
 
@@ -122,16 +122,16 @@ class WishItem extends Component {
           <Modal animationType="slide" visible={this.state.modalVisible === true} >
               <Button label="Close" onPress={e => this.setState({modalVisible:false}) } />
              <View>
-               <Text style={styles.subheader}>Wish</Text>
+               <Text style={styles.listhead}>Wish</Text>
                <Text style={styles.h1}>{wish.title}</Text>
                <CategoryIcon id={wish.category} />
                <Text>{moment(wish.createdAt).format('MMM Do h:mma')}</Text>
                {(offer && offer.state === 'inprogress') ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} /> : null}
 
-               <Text style={styles.subheader}>Details</Text>
+               <Text style={styles.listhead}>Details</Text>
                <Text style={styles.body}>{wish.body}</Text>
 
-               <Text style={styles.subheader}>Location</Text>
+               <Text style={styles.listhead}>Location</Text>
                <View><LocationLink maptype='staticmap' {...wish.location} /></View>
                <View><LocationLink maptype='streetview' {...wish.location} /></View>
                {cta}

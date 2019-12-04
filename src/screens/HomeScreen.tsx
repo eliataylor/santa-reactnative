@@ -7,65 +7,7 @@ import { connect } from 'react-redux';
 import VerifyUser from "./VerifyUser";
 const santaIcon = require('../assets/images/santa-panda.png');
 const elfIcon = require('../assets/images/elf-panda.png');
-
-const styles = StyleSheet.create({
-  pageContainer: {
-    alignContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'space-around',
-    padding:10,
-    backgroundColor:colors.ALMOST_WHITE
-  },
-  row : {
-    flex:1, flexDirection:'row', alignItems: 'center', justifyContent:'space-around', width:'100%'
-  },
-  col : {
-    flexDirection:'column', alignItems: 'center', width:'48%', justifyContent:'space-around'
-  },
-  logo : {
-    height:300
-  },
-  roleBtn: {
-    marginRight:10,
-    marginLeft:10,
-    marginBottom:3,
-
-    paddingTop:20,
-    paddingBottom:20,
-
-    backgroundColor:colors.SILVER,
-    borderRadius:10,
-    borderWidth: 1,
-    borderColor: colors.SILVER,
-    width:'100%',
-    fontSize:20,
-  },
-  header : {
-    fontFamily:'Poppins-Bold',
-    textAlign:'center',
-    fontSize:22
-  },
-  subheader : {
-    fontFamily:'Poppins-Medium',
-    textAlign:'center',
-    fontSize:18
-  },
-  prompt : {
-    fontFamily:'Poppins-Regular',
-    fontSize:14,
-    color:colors.ALMOST_WHITE,
-    textAlign:'center'
-  },
-  infoBtn : {
-    borderRadius:30,
-    width:25,
-    height:25,
-    marginTop:0,
-    backgroundColor:colors.LIGHT_GREY,
-    color:colors.WHITE
-  }
-})
+import styles from '../theme';
 
 interface State {
   activeTab:string;
@@ -87,10 +29,9 @@ class HomeScreen extends React.Component<Props, State> {
     }
 
     return (
-      <View style={styles.pageContainer}>
+      <View style={styles.container}>
         <Text style={styles.header}>{this.props.me.name.first ? 'Welcome ' + this.props.me.name.first : 'Hello there'}</Text>
         <Text style={styles.subheader}>Pick a role, do good, and earn your blessing</Text>
-
         <View style={styles.row}>
           <View style={styles.col}>
               <Image source={santaIcon}

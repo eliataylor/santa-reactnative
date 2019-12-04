@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, Text, Linking, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
+import { Linking, Alert, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
 import {checkToken} from './redux/authActions';
@@ -13,31 +13,64 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
     this.notif = false;
-    this.state = {permissions:false, starting:true};
+    this.state = {permissions:false};
     this.backHandler = null;
+    this.navigator = false;
+    this.tokens = API.getLocalTokens();
   }
 
   async componentDidMount() {
     console.log('APP DID MOUNT');
-    //StatusBar.setHidden(true);
     AppState.addEventListener('change', this.handleAppStateChange);
+    this.tokens = await API.getLocalTokens();
 
-    var tokens = await API.getLocalTokens();
-    if (this.props.auth.me) {
-      console.log('already logged in', tokens);
-      this.setState({starting:false}, e => this.navigator._navigation.navigate('HomeScreen'));
+    if (this.tokens) {
+      console.log('checking token', this.tokens);
+      this.props.checkToken(this.tokens);
     } else {
-      if (tokens) {
-        console.log('checking token', tokens);
-        this.props.checkToken();
-      } else {
-        this.setState({starting:false});
-        console.log('no tokens found', tokens);
-      }
+      this.props.checkToken();
+      console.log('no tokens found', this.tokens);
     }
 
+    if (this.props.auth.appReady) {     // prevents race condition with return of 'me' from token
+      this.applyListeners();
+    }
+
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.appReady === true) {
+      Alert.alert('appReady! was: ' + JSON.stringify(prevProps.auth.appReady));
+      if (prevProps.auth.appReady === false) {     // prevents race condition with return of 'me' from token
+        this.applyListeners();
+      }
+      if (!prevProps.auth.me && this.props.auth.me) {
+        console.log('first login');
+        if (this.props.auth.me.isVerified === true) {
+          this.navigator._navigation.navigate('HomeScreen');
+        } else {
+          this.navigator._navigation.navigate('VerifyUser');
+        }
+        if (this.notif === false) {
+          this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+        } else if (this.state.permissions === false) {
+          console.log("componentDidUpdate CHECKING Permissions", this.state.permissions);
+          this.notif.checkPermission(this.handlePerm.bind(this));
+        }
+      } else if (!prevProps.auth.signUpError && this.props.auth.signUpError && this.props.auth.signUpError.indexOf('your password') > -1) {
+        console.log('init with signUpError', this.props.auth);
+        this.navigator._navigation.navigate('SignIn'); // directly to signin and populate email / password
+      } else {
+        console.log('unknown update', this.props.auth);
+      }
+    } else {
+      Alert.alert('not ready. was: ' + JSON.stringify(prevProps.auth.appReady));
+      this.props.checkToken();
+    }
+  }
+
+  applyListeners() {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       if (!this.navigator || !this.navigator._navState) {
         return console.log('no routes yet');
@@ -60,7 +93,6 @@ class App extends React.Component {
       return true;
     });
 
-    // WARN: race condition with return of 'me' from token?
     if (Platform.OS === 'android') {
       Linking.getInitialURL().then(url => {
         this.parseUrl(url);
@@ -70,7 +102,6 @@ class App extends React.Component {
       Linking.addEventListener('url', this.handleOpenURL);
       // this.notif.getApplicationIconBadgeNumber(callback: Function)
     }
-
   }
 
   componentWillUnmount() {
@@ -83,6 +114,7 @@ class App extends React.Component {
   }
 
   handleAppStateChange(appState) {
+    Alert.alert('does this need to be bound?');
     console.log("React handleAppStateChange " + appState);
   }
 
@@ -95,7 +127,7 @@ class App extends React.Component {
   parseUrl = (url) => {
     if (!url) {
       console.log('no url on launch');
-    } else {
+    } else if (this.navigator && this.navigator._navigation) {
       console.log("parsing url", this.navigator._navigation);
       const route = url.replace(/.*?:\/\//g, '');
       const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
@@ -108,31 +140,9 @@ class App extends React.Component {
       } else if (pathname.indexOf('/api/create-a-wish') === 0) {
         this.navigator._navigation.navigate('CreateWish');
       }
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!prevProps.auth.me && this.props.auth.me) {
-      console.log('first login');
-      this.setState({starting:false}, e => {
-        if (this.props.auth.me.isVerified === true) {
-          this.navigator._navigation.navigate('HomeScreen');
-        } else {
-          this.navigator._navigation.navigate('VerifyUser');
-        }
-      });
-
-      if (this.notif === false) {
-        this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
-      } else if (this.state.permissions === false) {
-        console.log("componentDidUpdate CHECKING Permissions", this.state.permissions);
-        this.notif.checkPermission(this.handlePerm.bind(this));
-      }
-    } else if (!prevProps.auth.signUpError && this.props.auth.signUpError && this.props.auth.signUpError.indexOf('your password') > -1) {
-      console.log('init with signUpError', this.props.auth);
-      this.setState({starting:false}, e => this.navigator._navigation.navigate('SignIn')); // directly to signin and populate email / password
     } else {
-      console.log('unknown update', this.props.auth);
+      Alert.alert('recalling parseUrl' +  url);
+      setTimeout(e => this.parseUrl(url), 500);
     }
   }
 
@@ -172,6 +182,7 @@ class App extends React.Component {
   }
 
   onNavigationStateChange(prevState, newState, action) {
+    Alert.alert('is this breaking everything?');
     console.log('onNavigationStateChange', prevState, newState, action);
   }
 
@@ -187,24 +198,24 @@ class App extends React.Component {
         });
       }
     }
-    // TODO: snackbar success responses from server?
-    if (this.state.starting === true) {
-      return (<View style={styles.loading}><ActivityIndicator size="large" color={colors.SOFT_RED} /></View>);
+    if (this.props.auth.appReady === false) {
+      return <View style={styles.loading}><ActivityIndicator size='large' /></View>;
     }
 
+    // TODO: snackbar success responses from server?
     return <NavContainer
         style={styles.root}
-        onNavigationStateChange={this.handleNavigationChange}
-        ref={nav => {this.navigator = nav;}} />;
+        onNavigationStateChange={this.onNavigationStateChange}
+        ref={nav => this.navigator = nav} />;
   }
 }
 
 const mapDispatchToProps = {
-  checkToken: () => checkToken()
+  checkToken: (tokens) => checkToken(tokens)
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth:state.auth,
   lists:state.lists,
   entity:state.entity,
 })

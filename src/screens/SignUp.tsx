@@ -5,8 +5,8 @@ import {
   Alert,
   View,
   TouchableOpacity,
-  Image,
   ActivityIndicator,
+  Image
 } from 'react-native';
 
 import { connect } from 'react-redux'

@@ -22,7 +22,7 @@ class Icon extends React.Component<Props> {
         {...otherProps}>
         <Image
           source={icon}
-          style={{width: 24, height: 24}}
+          style={{width: 24, height: 24, alignSelf:'center'}}
           resizeMode={'contain'}
           onError={(e) => console.log(e.nativeEvent.error) }
           accessibilityLabel={label} />
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
+    alignContent:'stretch'
   }
 });
 
