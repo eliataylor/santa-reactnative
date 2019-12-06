@@ -117,9 +117,6 @@ class CreateWish extends React.Component {
         behavior="padding"
       >
         {(this.props.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large' /></View> : null}
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')}>
-          <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
-        </TouchableOpacity>
         <View style={styles.form}>
           <FormTextInput
             placeholder="Wish Title"

@@ -34,24 +34,30 @@ class HomeScreen extends React.Component<Props, State> {
         <Text style={styles.subheader}>Pick a role, do good, and earn your blessing</Text>
         <View style={styles.row}>
           <View style={styles.col}>
-              <Image source={santaIcon}
-                     style={styles.logo}
-                     resizeMode="contain" />
-              <Button
-                style={{fontSize:22, paddingVertical:10, backgroundColor: this.state.activeTab === 'CreateWish' ? colors.SILVER : colors.SOFT_RED}}
-                label={"Santa"}
-                onPress={this.setTab.bind(this, 'Wishes')} />
-              <Text style={[styles.prompt, this.state.activeTab === 'Wishes' ? {color:colors.DARK_GREY} : {color:colors.ALMOST_WHITE}]}>Choosing the Santa role allows you to view wishes near you and fulfill them.</Text>
+            <Image source={santaIcon}
+                   style={styles.logo}
+                   resizeMode="contain" />
+             <Button
+               style={{fontSize:22, paddingVertical:10, backgroundColor: this.state.activeTab === 'CreateWish' ? colors.SILVER : colors.SOFT_RED}}
+               label={"Santa"}
+               onPress={this.setTab.bind(this, 'Wishes')} />
           </View>
           <View style={styles.col}>
-              <Image source={elfIcon}
-                     style={styles.logo}
-                     resizeMode="contain" />
-              <Button
-              style={{fontSize:22, paddingVertical:10, backgroundColor: this.state.activeTab === 'Wishes' ? colors.SILVER : colors.LIGHT_GREEN}}
-                label={"Elf"}
-                onPress={this.setTab.bind(this, 'CreateWish')} />
-              <Text style={[styles.prompt, this.state.activeTab === 'CreateWish' ? {color:colors.DARK_GREY} : {color:colors.ALMOST_WHITE}]}>Choosing the Elf role allows you to submit a wish request for the homeless.</Text>
+            <Image source={elfIcon}
+                   style={styles.logo}
+                   resizeMode="contain" />
+             <Button
+             style={{fontSize:22, paddingVertical:10, backgroundColor: this.state.activeTab === 'Wishes' ? colors.SILVER : colors.LIGHT_GREEN}}
+               label={"Elf"}
+               onPress={this.setTab.bind(this, 'CreateWish')} />
+          </View>
+        </View>
+        <View style={styles.row}>
+          <View style={styles.col}>
+              <Text style={[styles.prompt, this.state.activeTab === 'Wishes' ? {color:colors.DARK_GREY} : {color:colors.ALMOST_WHITE}]}>allows you to view wishes near you and fulfill them</Text>
+          </View>
+          <View style={styles.col}>
+              <Text style={[styles.prompt, this.state.activeTab === 'CreateWish' ? {color:colors.DARK_GREY} : {color:colors.ALMOST_WHITE}]}>allows you to submit a wish request for the homeless</Text>
           </View>
         </View>
 

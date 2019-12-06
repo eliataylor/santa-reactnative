@@ -218,11 +218,6 @@ class Wishes extends React.Component<{}, State> {
 
     return (
       <ScrollView>
-        <View style={styles.sectionHeader}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')} >
-            <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
-          </TouchableOpacity>
-        </View>
       {
         allSections.length > 0 ?
         <SectionList
