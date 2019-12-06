@@ -65,7 +65,7 @@ class SignIn extends React.Component<{}, State> {
     const email = this.state.email;
 
     if (email === '') {
-      Alert.alert('Enter your email above', 'then click this again');
+      return Alert.alert('Enter your email above', 'then click this again');
     } else if (email.indexOf('@') < 2) {
       return Alert.alert('Invalid email');
     }
@@ -74,8 +74,9 @@ class SignIn extends React.Component<{}, State> {
     API.Post('/api/loginlink', {email:email})
     .then(res => {
       console.log('loginlink', res.data);
-      that.setState({email:''}); // to prevent repeats
-      Alert.alert('Check your email', 'and click your login link');
+      // Alert.alert('Check your email', 'and click your login link');
+      that.props.navigation.navigate('VerifyUser');
+      // that.setState({email:''}); // to prevent repeats
     })
     .catch(err => {
       var msg = API.getErrorMsg(err);

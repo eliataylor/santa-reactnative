@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Image, StyleSheet, SafeAreaView, Text, View, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { withNavigation } from 'react-navigation';
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import colors from "../config/colors";
@@ -120,4 +121,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(VerifyUser)
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(VerifyUser))

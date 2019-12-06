@@ -24,7 +24,10 @@ class HomeScreen extends React.Component<Props, State> {
   };
 
   render() {
-    if (this.props.me.isVerified ===false ) {
+    if (!this.props.me) {
+      return <Text style={styles.subheader}>Loading</Text>;
+    }
+    if (this.props.me.isVerified ===false) {
       return <VerifyUser />;
     }
 

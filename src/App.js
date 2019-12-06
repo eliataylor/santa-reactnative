@@ -4,6 +4,8 @@ import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
 import API from './utils/API';
 import styles from './theme';
+import { Linking } from "react-native";
+import Config from './Config';
 
 class App extends React.Component {
 
@@ -71,9 +73,14 @@ class App extends React.Component {
       }
     }
 
+    //const prefix = Linking.makeUrl('/');
+    //const prefix = 'santafulfills://';
+    const prefix = Config.api.base + '/api';
+    console.log('prefix', prefix);
+
     // TODO: snackbar success responses from server?
     return <NavContainer style={styles.root}
-            uriPrefix={'santafulfills://'}
+            uriPrefix={prefix}
             onNavigationStateChange={this.onNavigationStateChange}
             ref={nav => this.navigator = nav} />;
   }
