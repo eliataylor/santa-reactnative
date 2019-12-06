@@ -112,10 +112,7 @@ class CreateWish extends React.Component {
     }
 
     return (
-      <View
-        style={styles.container}
-        behavior="padding"
-      >
+      <View style={styles.container} behavior="padding" >
         {(this.props.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large' /></View> : null}
         <View style={styles.form}>
           <FormTextInput
@@ -135,21 +132,38 @@ class CreateWish extends React.Component {
             onChangeText={this.onChangeDesc}
             value={this.state.desc}
           />
-          <View style={{  marginBottom: 10, position:'relative'}}>
-            <Picker
-              style={styles.picker}
-              placeholder={{label:'Select a category', value:''}}
-              selectedValue={this.state.category}
-              onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
-              items={catOpts} />
-          </View>
-          <View style={styles.map}>
+          <Picker
+            style={{
+              ...styles.picker,
+              inputAndroid: {
+                backgroundColor:colors.WHITE,
+                color:colors.SILVER,
+                fontFamily:'Poppins-ExtraBold',
+                paddingVertical:10,
+                paddingLeft:10,
+                borderRadius:8,
+                marginBottom:15,
+                fontWeight: 'bold',
+              },
+              placeholder: {
+                backgroundColor:colors.WHITE,
+                color:colors.SILVER,
+                fontFamily:'Poppins-ExtraBold',
+                paddingVertical:10,
+                paddingLeft:10,
+                borderRadius:8,
+                marginBottom:15,
+                fontWeight: 'bold',
+            }}}
+            placeholder={{label:'Select a category', value:'', color:colors.SILVER}}
+            selectedValue={this.state.category}
+            onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
+            items={catOpts} />
+          <View>
             <LocationSelector  onMarkerChange={this.onMarkerChange} onGpsLocation={this.props.updateLocation} />
           </View>
-          <View style={{marginTop:40}}>
-            <Button label={'Create Wish'} onPress={this.submitWish.bind(this)} />
-          </View>
         </View>
+        <Button label={'Create Wish'} onPress={this.submitWish.bind(this)} />
       </View>
     );
   }

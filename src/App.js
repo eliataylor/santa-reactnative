@@ -1,105 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Linking, Alert, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
 import API from './utils/API';
-import NotifService from './utils/NotifService';
 import styles from './theme';
-import colors from "./config/colors";
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.notif = false;
-    this.state = {permissions:false};
-    this.backHandler = null;
     this.navigator = false;
-    this.tokens = API.getLocalTokens();
   }
 
+/*
   componentDidMount() {
     console.log('APP DID MOUNT');
     AppState.addEventListener('change', this.handleAppStateChange);
   }
 
-
-  applyListeners() {
-    const that = this;
-    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (!that.navigator || !that.navigator._navState) {
-        return console.log('no routes yet');
-      };
-      console.log("back button clicked", that.navigator._navState);
-      var curScreen = that.navigator._navState.routes[that.navigator._navState.index].key;
-
-      const obj = {};
-
-      if (that.props.auth.me) {
-          obj.key = "HomeScreen"; // TODO: check if modal is open?
-      } else {
-        if (curScreen === 'VerifyUser') {
-          obj.key = "SignIn";
-        } else {
-          obj.key = "VerifyUser";
-        }
-      }
-      const backAction = NavigationActions.back(obj);
-      return that.navigator._navigation.dispatch(backAction);
-    });
-  }
-
-
   componentWillUnmount() {
     console.log('APP WILLUNMOUNT')
-    /*
     AppState.removeEventListener('change', this.handleAppStateChange);
-    if (Platform.OS !== 'android') {
-      Linking.addEventListener('url', this.handleOpenURL);
-    }
-    this.backHandler.remove();
-    */
   }
 
   handleAppStateChange(appState) {
-    // Alert.alert('does this need to be bound?');
     console.log("React handleAppStateChange " + appState);
   }
-
-/*   handleOpenURL = (event) => {
-    this.parseUrl(event.url);
-  }
-
-  parseUrl = (url) => {
-    if (!url) {
-      console.log('no url on launch');
-    } else if (this.navigator && this.navigator._navigation) {
-      console.log("parsing url: " + url, this.navigator._navigation);
-      const route = url.replace(/.*?:\/\//g, '');
-      const pathname = route.substring(route.indexOf('/')); //  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX
-      console.log('load', url, route, pathname);
-
-      const obj = {};
-
-      if (pathname.indexOf('/api/users/') === 0) {
-        var parts = pathname.split('/');
-        obj.routeName = 'VerifyUser';
-        obj.params = {code:parts[5], uid:parts[3]};
-      } else if (pathname.indexOf('/api/wishes') === 0) {
-        obj.routeName = 'Wishes';
-      } else if (pathname.indexOf('/api/create-a-wish') === 0) {
-        obj.routeName = 'CreateWish';
-      }
-      const navigateAction = NavigationActions.navigate(obj);
-      this.navigator._navigation.dispatch(navigateAction);
-    } else {
-      Alert.alert('recall parseUrl' +  url);
-      // setTimeout(e => this.parseUrl(url), 500);
-    }
-  }
-  */
+*/
 
   onRegister(token) {
     console.log('DEVICE TOKEN REGISTERED', token, this.props.auth.me);
@@ -124,16 +52,6 @@ class App extends React.Component {
       console.log('error logging in: ', msg);
       return err;
     });
-  }
-
-  onNotif(notif) {
-    console.log(notif);
-    // only need in background
-  }
-
-  handlePerm(perms) {
-    this.setState({permissions:perms});
-    console.log("Handling Permissions", perms);
   }
 
   onNavigationStateChange(prevState, newState, action) {

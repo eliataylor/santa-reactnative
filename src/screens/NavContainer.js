@@ -69,6 +69,7 @@ const AppStack = createStackNavigator({
     screen: Wishes,
     path:'/wishes',
     navigationOptions: {
+      title : 'Santa Fulfills',
       headerBackTitle : 'Santa Fulfills',
     }
   },
@@ -76,6 +77,7 @@ const AppStack = createStackNavigator({
     screen: CreateWish,
     path:'/create-a-wish',
     navigationOptions: {
+      title : 'Enter a Wish',
       headerBackTitle : 'Enter a Wish',
     }
   }
