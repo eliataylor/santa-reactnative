@@ -119,17 +119,21 @@ LocationSelector.propTypes = {
 
 const styles = StyleSheet.create({
   mapBox: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    width:width-20,
+    height:height/2
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    flex:1,
+    position:'relative',
+    width:width-20,
+    height:(height/2),
+    marginVertical:10
   },
   help: {
     fontSize:12,
+    width:'100%',
     fontFamily:'Poppins-Medium',
-    color:colors.SILVER,
+    color:colors.BLACK,
     textAlign:'center'
   }
 });

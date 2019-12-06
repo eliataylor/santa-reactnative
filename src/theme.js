@@ -84,13 +84,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'red',
   },
-
   picker: {
     height: 40,
+    color:colors.SILVER,
     backgroundColor: colors.WHITE,
+    fontFamily:'Poppins-ExtraBold',
+    paddingVertical:10,
+    paddingLeft:10,
     borderRadius:8,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 20
+    marginBottom:15,
+    fontWeight: 'bold',
   },
   map: {
     flex:1,
