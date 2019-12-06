@@ -49,11 +49,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.WHITE,
     color:colors.BLACK,
     fontFamily:'Poppins-ExtraBold',
-    paddingTop:10,
-    paddingBottom:10,
+    paddingVertical:10,
     paddingLeft:10,
     borderRadius:8,
-    marginBottom: 20,
+    marginBottom:15,
   },
   helpText: {
     margin:-18,
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     height: 20,
-    color: colors.TORCH_RED
+    color: colors.SOFT_RED
   }
 });
 

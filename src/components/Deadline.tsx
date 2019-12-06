@@ -14,24 +14,27 @@ interface State {
 class Deadline extends React.Component<Props, State> {
 
   readonly state: State = {
-    remaining: '90:00'
+    remaining: '1:30:00'
   };
 
   componentDidMount() {
     const { created, timeout } = this.props;
     var countDownDate = moment(created).add(timeout, 'seconds');
     var that = this;
-    var x = setInterval(function() {
+    this.interval = setInterval(function() {
       var diff = countDownDate.diff(moment());
 
       if (diff <= 0) {
-        clearInterval(x);
+        clearInterval(this.interval);
         that.setState({remaining:'expired'});
       } else {
         that.setState({remaining:moment.utc(diff).format("HH:mm:ss")});
       }
     }, 1000);
+  }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
@@ -43,9 +46,10 @@ class Deadline extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   text: {
-    color: colors.TORCH_RED,
-    textAlign: "center",
-    fontSize:18
+    color: colors.SOFT_RED,
+    fontFamily:'Poppins-Medium',
+    textAlign: "left",
+    fontSize:15
   }
 });
 

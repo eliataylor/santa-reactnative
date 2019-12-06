@@ -4,14 +4,14 @@ const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: colors.ALMOST_WHITE,
-    minHeight:'100vh'
+    backgroundColor: colors.ALMOST_WHITE
+//    ,minHeight:'100vh'
   },
   container: {
     flexDirection:'column',
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.ALMOST_WHITE
+    backgroundColor: colors.ALMOST_WHITE,
   },
   paddedContainer: {
     paddingTop:10,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     fontFamily:'Poppins-ExtraBold',
     textAlign:'center',
     color:colors.BLACK,
-    fontSize:22,
+    fontSize:26,
     width:'100%'
   },
   subheader : {
@@ -70,19 +70,19 @@ const styles = StyleSheet.create({
     width:'100%'
   },
   prompt : {
-    fontFamily:'Poppins-Regular',
+    fontFamily:'Poppins-Medium',
     fontSize:14,
+    marginVertical:4,
     color:colors.ALMOST_WHITE,
     textAlign:'center'
   },
-
+  timestamp : {
+    fontFamily:'Poppins-Medium',
+    fontSize:15
+  },
   errorMessage: {
     fontSize: 12,
     color: 'red',
-  },
-
-  roleBtn : {
-    fontSize:26
   },
 
   picker: {

@@ -175,6 +175,7 @@ class API {
     }
 
     Get (path, config) {
+      console.log('GET ' + path);
         const call = this.requester.get(path, config);
         return call;
     }
@@ -185,7 +186,7 @@ class API {
     }
 
     Put (path, data) {
-        console.log('API', 'Put to "' + path + '"');
+        console.log('PUT' + path, data);
         const call = this.requester.put(path, data);
         return call;
     }

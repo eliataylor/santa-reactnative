@@ -82,7 +82,7 @@ class LocationSelector extends React.Component {
     }
 
     return (
-      <View style={styles.container}>
+      <View style={styles.mapBox}>
         <MapView
           provider={this.props.provider}
           style={styles.map}
@@ -118,7 +118,7 @@ LocationSelector.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mapBox: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',
     alignItems: 'center',
@@ -127,10 +127,10 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   help: {
-    fontSize:10,
-    fontFamily:'Poppins-Light',
+    fontSize:12,
+    fontFamily:'Poppins-Medium',
     color:colors.SILVER,
-    textAlign:'right'
+    textAlign:'center'
   }
 });
 

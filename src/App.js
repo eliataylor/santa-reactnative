@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions, navigation } from 'react-navigation';
+import { NavigationActions, withNavigation } from 'react-navigation';
 import { Linking, Alert, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
@@ -21,10 +21,9 @@ class App extends React.Component {
     this.tokens = API.getLocalTokens();
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     console.log('APP DID MOUNT');
     AppState.addEventListener('change', this.handleAppStateChange);
-    this.tokens = await API.getLocalTokens();
 
     if (this.tokens) {
       console.log('checking token', this.tokens);
@@ -43,10 +42,10 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.auth.appReady === true) {
       if (prevProps.auth.appReady === false) {     // prevents race condition with return of 'me' from token
-        Alert.alert('applyingListeners on update');
         this.applyListeners();
       }
       if (!prevProps.auth.me && this.props.auth.me) {
+        console.log('redirecting for first login');
 
         const obj = {};
         if (this.props.auth.me.isVerified === true) {
@@ -67,11 +66,11 @@ class App extends React.Component {
         console.log('init with signUpError', this.props.auth);
         this.navigator._navigation.dispatch(NavigationActions.navigate({routeName:'SignIn'}));
       } else {
-        console.log('unknown update', this.props.auth);
+        // console.log('unknown update', this.props.auth);
       }
     } else {
       Alert.alert('not ready. was: ' + JSON.stringify(prevProps.auth.appReady));
-      this.props.checkToken();
+      //this.props.checkToken();
     }
   }
 
@@ -119,7 +118,7 @@ class App extends React.Component {
   }
 
   handleAppStateChange(appState) {
-    Alert.alert('does this need to be bound?');
+    // Alert.alert('does this need to be bound?');
     console.log("React handleAppStateChange " + appState);
   }
 
@@ -150,8 +149,8 @@ class App extends React.Component {
       const navigateAction = NavigationActions.navigate(obj);
       this.navigator._navigation.dispatch(navigateAction);
     } else {
-      Alert.alert('recalling parseUrl' +  url);
-      setTimeout(e => this.parseUrl(url), 500);
+      Alert.alert('recall parseUrl' +  url);
+      // setTimeout(e => this.parseUrl(url), 500);
     }
   }
 
@@ -191,11 +190,15 @@ class App extends React.Component {
   }
 
   onNavigationStateChange(prevState, newState, action) {
-    console.log('onNavigationStateChange', prevState, newState, action);
+    //console.log('onNavigationStateChange', prevState, newState, action);
   }
 
   render() {
     var errors = [this.props.auth.signUpError, this.props.auth.logInError, this.props.auth.verifyError, this.props.lists.errors, this.props.entity.errors];
+    const navContainer = <NavContainer style={styles.root}
+            onNavigationStateChange={this.onNavigationStateChange}
+            ref={nav => this.navigator = nav} />;
+
     for(var e in errors) {
       if (errors[e]) {
         Snackbar.show({
@@ -211,10 +214,7 @@ class App extends React.Component {
     }
 
     // TODO: snackbar success responses from server?
-    return <NavContainer
-        style={styles.root}
-        onNavigationStateChange={this.onNavigationStateChange}
-        ref={nav => this.navigator = nav} />;
+    return navContainer;
   }
 }
 
@@ -231,4 +231,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(App));

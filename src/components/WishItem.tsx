@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, View, Text, Alert, Modal, Image, TouchableHighlight } from "react-native";
+import { StyleSheet, View, Text, Alert, Modal, Dimensions, Image, TouchableHighlight, SafeAreaView } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Button from "./Button";
@@ -12,10 +12,13 @@ import moment from "moment";
 import { createOffer, updateOffer, deleteWish } from '../redux/entityDataReducer';
 
 import baseStyles from '../theme';
-const styles = [baseStyles, StyleSheet.create({
+const styles = Object.assign({...baseStyles}, StyleSheet.create({
   container: {
     marginTop:5,
     marginBottom:25,
+    paddingTop:4,
+    paddingBottom:10,
+    paddingHorizontal:10,
     borderColor: colors.SILVER,
     backgroundColor:colors.WHITE,
     borderBottomWidth: StyleSheet.hairlineWidth
@@ -32,7 +35,9 @@ const styles = [baseStyles, StyleSheet.create({
     fontSize:22,
     color:colors.SOFT_RED
   }
-})];
+}));
+
+const { width, height } = Dimensions.get('window');
 
 class WishItem extends Component {
 
@@ -94,58 +99,51 @@ class WishItem extends Component {
 
   render() {
     const { wish, offer } = this.props;
-    var cta = null;
-    if (offer && offer.state === 'inprogress') {
-      cta = <View style={styles.row}>
-            <Button label={'Mark Delivered'} style={{backgroundColor:colors.LIGHT_GREEN}}
-                    onPress={(e) => this.updateOffer('fulfilled')} />
-            <Button label={'Cancel'} style={{backgroundColor:colors.TORCH_RED}}
-                    onPress={(e) => this.updateOffer('canceled')} />
-            </View>
-    } else if (wish.elf._id === this.props.me._id){
-      cta = <View style={styles.row}>
-              <Button  label={strings.FULFILL} style={{backgroundColor:colors.LIGHT_GREEN}}
-              onPress={(e) => this.startOffer()} />
-              <Button
-              label={'Delete'} style={{backgroundColor:colors.TORCH_RED}}
-              onPress={(e) => this.deleteWish()} />
-            </View>
-    } else {
-      cta = <Button
-              label={strings.FULFILL} style={{backgroundColor:colors.LIGHT_GREEN}}
-              onPress={(e) => this.startOffer()} />
-    }
 
     return (
         <View style={styles.container}>
 
           <Modal animationType="slide" visible={this.state.modalVisible === true} >
-              <Button label="Close" onPress={e => this.setState({modalVisible:false}) } />
-             <View>
-               <Text style={styles.listhead}>Wish</Text>
-               <Text style={styles.h1}>{wish.title}</Text>
-               <CategoryIcon id={wish.category} />
+             <View style={styles.paddedContainer}>
+               <Icon
+                 onPress={(e) => { console.log("close modal"); this.setState({modalVisible:false}) } }
+                 icon={require('../assets/images/baseline_undo_black_18dp.png')}
+                 label={'Close'}
+                 tintColor={colors.SOFT_RED}
+                 style={{marginBottom:10}}
+                 />
+               <View style={styles.row}>
+                 <Text style={styles.h1}>{wish.title}</Text>
+                 <CategoryIcon id={wish.category} />
+               </View>
                <Text>{moment(wish.createdAt).format('MMM Do h:mma')}</Text>
                {(offer && offer.state === 'inprogress') ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} /> : null}
 
-               <Text style={styles.listhead}>Details</Text>
-               <Text style={styles.body}>{wish.body}</Text>
+               <Text style={[styles.body, {marginVertical:20}]}>{wish.body}</Text>
 
-               <Text style={styles.listhead}>Location</Text>
-               <View><LocationLink maptype='staticmap' {...wish.location} /></View>
-               <View><LocationLink maptype='streetview' {...wish.location} /></View>
-               {cta}
+               <LocationLink maptype='staticmap' width={width} height={height/4} {...wish.location} />
+
+               {(offer && offer.state === 'inprogress')
+               ?
+                  <View style={[styles.row, {marginTop:10}]}>
+                     <Button label={'Mark Delivered'} onPress={(e) => this.updateOffer('fulfilled')} />
+                     <Button label={'Cancel'} style={{backgroundColor:colors.SOFT_RED}}
+                             onPress={(e) => this.updateOffer('canceled')} />
+                  </View>
+               : (wish.elf._id === this.props.me._id) ?
+                  <View style={[styles.row, {marginTop:10}]}>
+                     <Button  label={strings.FULFILL} onPress={(e) => this.startOffer()} />
+                     <Button label={'Delete'} style={{backgroundColor:colors.SOFT_RED}} onPress={(e) => this.deleteWish()} />
+                  </View>
+               :
+                <View style={[styles.row, {marginTop:10}]}><Button label={strings.FULFILL} onPress={(e) => this.startOffer()} /></View>
+               }
              </View>
           </Modal>
 
-          <View style={styles.row} >
-            <CategoryIcon id={wish.category} />
-            <Text style={{fontFamily:'Poppins-Medium'}}>Posted {moment(wish.createdAt).format('MMM Do h:mma')}</Text>
-            {(offer && offer.state === 'inprogress') ?
-            <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} /> : null}
-          </View>
           <View style={styles.row}>
-            <View style={styles.col}>
+            <View style={[styles.col, {alignItems:'flex-start'}]}>
+              <CategoryIcon id={wish.category} />
               <TouchableHighlight onPress={e => this.setState({modalVisible:true}) }>
                 <Text style={styles.h1}>{wish.title}</Text>
               </TouchableHighlight>
@@ -154,9 +152,9 @@ class WishItem extends Component {
                 <Icon
                   onPress={e => this.setState({modalVisible:true})}
                   label="more info"
+                  tintColor={colors.SOFT_RED}
                   icon={require('../assets/images/baseline_info_black_18dp.png')}
                   />
-
                 {(wish.elf._id === this.props.me._id) ?
                 <Icon
                   onPress={e => this.setState({modalVisible:true})}
@@ -166,7 +164,11 @@ class WishItem extends Component {
               </View>
             </View>
             <View style={styles.col}>
-              <LocationLink maptype='streetview' {...wish.location} />
+              <Text style={styles.timestamp}>Posted {moment(wish.createdAt).format('MMM Do h:mma')}</Text>
+              {(offer && offer.state === 'inprogress')
+              ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} />
+              : null}
+              <LocationLink maptype='staticmap' {...wish.location} />
             </View>
           </View>
 
