@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     opacity: 1
   },
   containerDisabled: {
-    opacity: 0.4,
+    opacity: 0.3,
   },
   text: {
     fontFamily:'Poppins-ExtraBold',

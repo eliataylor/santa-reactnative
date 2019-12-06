@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions, withNavigation } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import { Linking, Alert, Platform, AppState, BackHandler, View, ActivityIndicator } from 'react-native';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
-import {checkToken} from './redux/authActions';
 import API from './utils/API';
 import NotifService from './utils/NotifService';
 import styles from './theme';
@@ -24,67 +23,21 @@ class App extends React.Component {
   componentDidMount() {
     console.log('APP DID MOUNT');
     AppState.addEventListener('change', this.handleAppStateChange);
-
-    if (this.tokens) {
-      console.log('checking token', this.tokens);
-      this.props.checkToken(this.tokens);
-    } else {
-      this.props.checkToken(false);
-      console.log('no tokens found', this.tokens);
-    }
-
-    if (this.props.auth.appReady === true) {     // prevents race condition with return of 'me' from token
-      this.applyListeners();
-    }
-
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.auth.appReady === true) {
-      if (prevProps.auth.appReady === false) {     // prevents race condition with return of 'me' from token
-        this.applyListeners();
-      }
-      if (!prevProps.auth.me && this.props.auth.me) {
-        console.log('redirecting for first login');
-
-        const obj = {};
-        if (this.props.auth.me.isVerified === true) {
-          obj.routeName = 'HomeScreen';
-        } else {
-          obj.routeName = 'VerifyUser';
-          // obj.params = {code:parts[5], uid:parts[3]};
-        }
-        this.navigator._navigation.dispatch(NavigationActions.navigate(obj));
-
-        if (this.notif === false) {
-          this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
-        } else if (this.state.permissions === false) {
-          console.log("componentDidUpdate CHECKING Permissions", this.state.permissions);
-          this.notif.checkPermission(this.handlePerm.bind(this));
-        }
-      } else if (!prevProps.auth.signUpError && this.props.auth.signUpError && this.props.auth.signUpError.indexOf('your password') > -1) {
-        console.log('init with signUpError', this.props.auth);
-        this.navigator._navigation.dispatch(NavigationActions.navigate({routeName:'SignIn'}));
-      } else {
-        // console.log('unknown update', this.props.auth);
-      }
-    } else {
-      Alert.alert('not ready. was: ' + JSON.stringify(prevProps.auth.appReady));
-      //this.props.checkToken();
-    }
-  }
 
   applyListeners() {
+    const that = this;
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (!this.navigator || !this.navigator._navState) {
+      if (!that.navigator || !that.navigator._navState) {
         return console.log('no routes yet');
       };
-      console.log("back button clicked", this.navigator._navState);
-      var curScreen = this.navigator._navState.routes[this.navigator._navState.index].key;
+      console.log("back button clicked", that.navigator._navState);
+      var curScreen = that.navigator._navState.routes[that.navigator._navState.index].key;
 
       const obj = {};
 
-      if (this.props.auth.me) {
+      if (that.props.auth.me) {
           obj.key = "HomeScreen"; // TODO: check if modal is open?
       } else {
         if (curScreen === 'VerifyUser') {
@@ -94,27 +47,20 @@ class App extends React.Component {
         }
       }
       const backAction = NavigationActions.back(obj);
-      return this.navigator._navigation.dispatch(backAction);
+      return that.navigator._navigation.dispatch(backAction);
     });
-
-    if (Platform.OS === 'android') {
-      Linking.getInitialURL().then(url => {
-        this.parseUrl(url);
-      });
-      // this.notif.subscribeToTopic(topic: string)
-    } else {
-      Linking.addEventListener('url', this.handleOpenURL);
-      // this.notif.getApplicationIconBadgeNumber(callback: Function)
-    }
   }
+
 
   componentWillUnmount() {
     console.log('APP WILLUNMOUNT')
+    /*
     AppState.removeEventListener('change', this.handleAppStateChange);
     if (Platform.OS !== 'android') {
       Linking.addEventListener('url', this.handleOpenURL);
     }
     this.backHandler.remove();
+    */
   }
 
   handleAppStateChange(appState) {
@@ -122,7 +68,7 @@ class App extends React.Component {
     console.log("React handleAppStateChange " + appState);
   }
 
-  handleOpenURL = (event) => {
+/*   handleOpenURL = (event) => {
     this.parseUrl(event.url);
   }
 
@@ -130,9 +76,9 @@ class App extends React.Component {
     if (!url) {
       console.log('no url on launch');
     } else if (this.navigator && this.navigator._navigation) {
-      console.log("parsing url", this.navigator._navigation);
+      console.log("parsing url: " + url, this.navigator._navigation);
       const route = url.replace(/.*?:\/\//g, '');
-      const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
+      const pathname = route.substring(route.indexOf('/')); //  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX
       console.log('load', url, route, pathname);
 
       const obj = {};
@@ -153,6 +99,7 @@ class App extends React.Component {
       // setTimeout(e => this.parseUrl(url), 500);
     }
   }
+  */
 
   onRegister(token) {
     console.log('DEVICE TOKEN REGISTERED', token, this.props.auth.me);
@@ -190,14 +137,11 @@ class App extends React.Component {
   }
 
   onNavigationStateChange(prevState, newState, action) {
-    //console.log('onNavigationStateChange', prevState, newState, action);
+    console.log('onNavigationStateChange', prevState, newState, action);
   }
 
   render() {
     var errors = [this.props.auth.signUpError, this.props.auth.logInError, this.props.auth.verifyError, this.props.lists.errors, this.props.entity.errors];
-    const navContainer = <NavContainer style={styles.root}
-            onNavigationStateChange={this.onNavigationStateChange}
-            ref={nav => this.navigator = nav} />;
 
     for(var e in errors) {
       if (errors[e]) {
@@ -209,18 +153,17 @@ class App extends React.Component {
         });
       }
     }
-    if (this.props.auth.appReady === false) {
-      return <View style={styles.loading}><ActivityIndicator size='large' /></View>;
-    }
 
     // TODO: snackbar success responses from server?
-    return navContainer;
+    return <NavContainer style={styles.root}
+            uriPrefix={'santafulfills://'}
+            onNavigationStateChange={this.onNavigationStateChange}
+            ref={nav => this.navigator = nav} />;
   }
 }
 
 const mapDispatchToProps = {
-  checkToken: (tokens) => checkToken(tokens),
-  navigation: e => navigation(e)
+
 }
 
 const mapStateToProps = state => {
@@ -231,4 +174,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(App));
+export default connect(mapStateToProps, mapDispatchToProps)(App);

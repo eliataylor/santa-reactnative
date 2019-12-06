@@ -27,6 +27,7 @@
       android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"
+        android:launchMode="singleTask"
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize">
@@ -34,32 +35,37 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="santafulfills" />
+        </intent-filter>
         <intent-filter android:label="Santa Fulfills" >
-              <action android:name="android.intent.action.VIEW" />
-              <category android:name="android.intent.category.DEFAULT" />
-              <category android:name="android.intent.category.BROWSABLE" />
-              <!-- Accepts URIs that begin with "https://santa-api.herokuapp.com/api -->
-              <data android:scheme="https" android:host="santa-api.herokuapp.com" android:pathPrefix="/api" />
-              <!-- Note that the leading "/" is required for pathPrefix -->
-          </intent-filter>
-          <intent-filter android:label="Santa Fulfills">
-              <action android:name="android.intent.action.VIEW" />
-              <category android:name="android.intent.category.DEFAULT" />
-              <category android:name="android.intent.category.BROWSABLE" />
-              <!-- Accepts URIs that begin with "https://santa-local.herokuapp.com/api -->
-              <data android:scheme="https" android:host="santa-local.herokuapp.com" android:pathPrefix="/api" />
-          </intent-filter>
-          <intent-filter android:label="Santa Fulfills">
-              <action android:name="android.intent.action.VIEW" />
-              <category android:name="android.intent.category.DEFAULT" />
-              <category android:name="android.intent.category.BROWSABLE" />
-              <!-- Accepts URIs that begin with "santa://fulfills -->
-              <data android:scheme="santa" android:host="fulfills" />
-          </intent-filter>
-
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <!-- Accepts URIs that begin with "https://santa-api.herokuapp.com/api -->
+            <data android:scheme="https" android:host="santa-api.herokuapp.com" android:pathPrefix="/api" />
+            <!-- Note that the leading "/" is required for pathPrefix -->
+        </intent-filter>
+        <intent-filter android:label="Santa Fulfills">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <!-- Accepts URIs that begin with "https://santa-local.herokuapp.com/api -->
+            <data android:scheme="https" android:host="santa-local.herokuapp.com" android:pathPrefix="/api" />
+        </intent-filter>
+        <intent-filter android:label="Santa Fulfills">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <!-- Accepts URIs that begin with "santa://fulfills -->
+            <data android:scheme="santa" android:host="fulfills" />
+        </intent-filter>
 
       </activity>
+
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
       <meta-data

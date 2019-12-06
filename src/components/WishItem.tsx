@@ -157,7 +157,7 @@ class WishItem extends Component {
                   />
                 {(wish.elf._id === this.props.me._id) ?
                 <Icon
-                  onPress={e => this.setState({modalVisible:true})}
+                  onPress={(e) => this.deleteWish()} 
                   label="delete"
                   icon={require('../assets/images/baseline_delete_black_18dp.png')}
                   /> : null}
