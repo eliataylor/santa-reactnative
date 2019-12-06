@@ -13,33 +13,15 @@ import CreateWish from './CreateWish';
 import WishDetail from './WishDetail';
 import AuthLoading from './AuthLoading';
 
+import Config from '../Config';
 import { Image } from "react-native";
 
-const AuthStack = createStackNavigator({
-  SignIn: {
-    screen: SignIn,
-    path:'/signin',
-    navigationOptions: {
-      header:null,
-      headerShown:false,
-    }
-  },
-  SignUp: {
-    screen: SignUp,
-    path:'/signup',
-    navigationOptions: {
-      header:null,
-      headerShown:false,
-    }
-  }
-})
-
-
 const navigationConfig = {
-  initialRouteName: 'HomeScreen',
+  initialRouteName: 'SignIn',
   headerMode: 'float',
   defaultNavigationOptions: {
     headerStyle: { backgroundColor:colors.ALMOST_WHITE },
+    cardStyle: { backgroundColor:colors.ALMOST_WHITE },
     headerTitleStyle: { color:colors.SOFT_RED },
     headerBackTitle : 'Go Back',
     headerBackImage: (style) => (<Image
@@ -49,10 +31,31 @@ const navigationConfig = {
   }
 }
 
+const AuthStack = createStackNavigator({
+  SignIn: {
+    screen: SignIn,
+    path:'signin',
+    navigationOptions: {
+      header:null,
+      headerShown:false,
+    }
+  },
+  SignUp: {
+    screen: SignUp,
+    path:'signup',
+    navigationOptions: {
+      header:null,
+      headerShown:false,
+    }
+  }
+}, navigationConfig)
+
+
+navigationConfig.initialRouteName = 'HomeScreen';
 const AppStack = createStackNavigator({
   HomeScreen : {
     screen: HomeScreen,
-    path:'/home',
+    path:'home',
     navigationOptions: {
       header:null,
       headerShown:false,
@@ -60,7 +63,7 @@ const AppStack = createStackNavigator({
   },
   VerifyUser : {
     screen: VerifyUser,
-    path: 'api/users/:uid/verify/:code',
+    path: Config.api.base + '/api/users/:uid/verify/:code',
     navigationOptions: {
       header:null,
       headerShown:false,
@@ -68,7 +71,7 @@ const AppStack = createStackNavigator({
   },
   Wishes: {
     screen: Wishes,
-    path:'/wishes',
+    path:'wishes',
     navigationOptions: {
       title : 'Santa Fulfills',
       headerBackTitle : 'Santa Fulfills',
@@ -76,7 +79,7 @@ const AppStack = createStackNavigator({
   },
   WishDetail: {
     screen: WishDetail,
-    path:'/wishes/:wish',
+    path:'wishes/:wish',
     navigationOptions: (navi) => {
       console.log(navi);
       return {
@@ -87,7 +90,7 @@ const AppStack = createStackNavigator({
   },
   CreateWish: {
     screen: CreateWish,
-    path:'/wishes/add',
+    path:'wishes/add',
     navigationOptions: {
       title : 'Enter a Wish',
       headerBackTitle : 'Enter a Wish',
@@ -95,13 +98,22 @@ const AppStack = createStackNavigator({
   }
 }, navigationConfig);
 
+navigationConfig.initialRouteName = 'AuthLoading';
 export default createAppContainer(
   createSwitchNavigator(
     {
-      AuthLoading: AuthLoading,
+      AuthLoading:{
+        screen: AuthLoading,
+        path: Config.api.base + '/api/users/:uid/verify/:code',
+        navigationOptions: (navi) => {
+          console.log("AUTHLOADING NAVI", navi);
+          return {
+            title : 'Loading...',
+          }
+        }
+      },
       App: AppStack,
       Auth: AuthStack,
-    },
-    {initialRouteName: 'AuthLoading'}
+    },navigationConfig
   )
 );

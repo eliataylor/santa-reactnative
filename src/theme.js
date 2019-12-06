@@ -4,8 +4,8 @@ const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: colors.ALMOST_WHITE
-//    ,minHeight:'100vh'
+    backgroundColor: colors.ALMOST_WHITE,
+    height:'100%',
   },
   container: {
     flexDirection:'column',
