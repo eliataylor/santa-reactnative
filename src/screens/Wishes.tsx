@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, View, Image, SafeAreaView  } from "react-native";
+import { StyleSheet, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, ScrollView, View, Image  } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Button from "../components/Button";
@@ -11,48 +11,39 @@ import Icon from "../components/Icon";
 import {listData} from "../redux/listDataReducer";
 import {updateLocation} from '../redux/authActions';
 import Geolocation from '@react-native-community/geolocation';
+import baseStyles from '../theme';
 
 Geolocation.setRNConfiguration({
   skipPermissionRequests:true,
   authorizationLevel:"whenInUse"
 });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+const styles = Object.assign({...baseStyles}, StyleSheet.create({
   filters : {
-     flex: 1,
-     flexDirection: 'row',
-     justifyContent: 'space-between',
-     alignItems: 'center',
-     backgroundColor:colors.ALMOST_WHITE,
+     backgroundColor:colors.LIGHT_GREY,
      borderBottomWidth: StyleSheet.hairlineWidth,
-     borderBottomColor: "rgba(000,000,000,0.5)",
-     width: '100%',
-     marginTop:0,
-     marginBottom:0,
-     paddingHorizontal:4,
-     paddingBottom:5,
+     borderBottomColor: "rgba(000,000,000,1)",
+     marginBottom:3,
+     paddingHorizontal:6,
+     paddingVertical:4,
   },
-  content : {
-    marginTop:0,
-    paddingLeft:5,
-    paddingRight:12
-  },
-  iconBtn : {
+  gpsBtn : {
     width: 40,
     height: 40,
-    margin:4,
-    padding:3,
+    marginRight:2,
     borderRadius: 4,
-    alignContent:'center',
-    alignItems:'center',
+    justifyContent:'center',
+    alignContent:'stretch',
+    alignItems:'stretch',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: "rgba(000,000,000,0.7)"
+  },
+  radius: {
+    backgroundColor: colors.WHITE,
+    borderRadius:8,
+    marginRight:25,
+    color:colors.BLACK,
+    fontFamily:'Poppins-Medium',
   },
   sectionHeader: {
     paddingVertical:5,
@@ -65,24 +56,7 @@ const styles = StyleSheet.create({
     color:colors.LIGHT_GREEN,
     backgroundColor:colors.LIGHT_GREY,
   },
-  loading : {
-   position: 'absolute',
-   left: 0,
-   right: 0,
-   top: 0,
-   bottom: 0,
-   width:'100%',
-   height:'100%',
-   justifyContent: 'center',
-   alignItems: 'center'
- },
-  picker: {
-    backgroundColor: colors.WHITE,
-    borderRadius:8,
-    color:colors.BLACK,
-    fontFamily:'Poppins-Medium',
-  },
-});
+}));
 
 interface State {
   radius:string;
@@ -182,36 +156,39 @@ class Wishes extends React.Component<{}, State> {
 
       return (
         <View>
-        <Text style={styles.sectionHeader}>{section.title}</Text>
-        <View style={styles.filters}>
-        <View style={styles.iconBtn}>
-          {(this.state.locationHelp === strings.LOCATION_TESTING) ?
-            <ActivityIndicator size='large'/>
-            :
-            <Icon
-              onPress={(e) => this.getCurrentPosition()}
-              icon={require('../assets/images/baseline_my_location_black_18dp.png')}
-              label={this.state.locationHelp}
-              />
-          }
+          <Text style={styles.sectionHeader}>{section.title}</Text>
+          <View style={[styles.row, styles.filters]}>
+            <View style={styles.gpsBtn}>
+              {(this.state.locationHelp === strings.LOCATION_TESTING || this.props.loading === true) ?
+                <ActivityIndicator size='large'/>
+                :
+                <Icon
+                  onPress={(e) => this.getCurrentPosition()}
+                  style={{flex:1}}
+                  icon={require('../assets/images/baseline_my_location_black_18dp.png')}
+                  label={this.state.locationHelp}
+                  />
+              }
+            </View>
+            <Picker
+              value={this.state.radius}
+              style={styles.radius}
+              useNativeAndroidPickerStyle={false}
+              onValueChange={this._radiusChanged}
+              items={radiusOpts} />
+            {Object.entries(this.props.catMap).map( ([i, value]) => {
+              return <CategoryIcon
+                key={value._id}
+                style={{marginRight:5}}
+                disabled={(Object.keys(this.state.categories).length > 0 && typeof this.state.categories[value._id] === 'undefined')}
+                name={value.name} id={value._id}
+                onPress={this.toggleCat.bind(this, value._id)} />;
+              })
+            }
         </View>
-        <Picker
-          value={this.state.radius}
-          style={styles.picker}
-          useNativeAndroidPickerStyle={false}
-          onValueChange={this._radiusChanged}
-          items={radiusOpts} />
-        {Object.entries(this.props.catMap).map( ([i, value]) => {
-          return <CategoryIcon
-            key={value._id}
-            disabled={(Object.keys(this.state.categories).length > 0 && typeof this.state.categories[value._id] === 'undefined')}
-            name={value.name} id={value._id}
-            onPress={this.toggleCat.bind(this, value._id)} />;
-          })
-        }
-      </View></View>)
+      </View>)
     } else {
-      return (<Text style={[styles.sectionHeader, {color:colors.TORCH_RED}]}>{section.title}</Text>);
+      return (<Text style={[styles.sectionHeader, {color:colors.SOFT_RED}]}>{section.title}</Text>);
     }
   }
 
@@ -226,7 +203,7 @@ class Wishes extends React.Component<{}, State> {
   render() {
     if (this.state.lonlat === '') {
       return (<View style={styles.loading}><Button
-        style={{backgroundColor:colors.SOFT_RED}}
+        style={{backgroundColor:colors.SOFT_RED, alignSelf:'center'}}
         label={this.state.locationHelp}
         onPress={(e) => this.getCurrentPosition()} /></View>);
     }
@@ -240,26 +217,25 @@ class Wishes extends React.Component<{}, State> {
     }
 
     return (
-      <KeyboardAvoidingView style={styles.container}>
+      <ScrollView>
         <View style={styles.sectionHeader}>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('HomeScreen')} >
             <Image source={require('../assets/images/baseline_undo_black_18dp.png')}  />
           </TouchableOpacity>
         </View>
-        { (this.props.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
       {
         allSections.length > 0 ?
         <SectionList
-                  sections={allSections}
-                  style={styles.content}
-                  keyExtractor={this._keyExtractor}
-                  renderItem={this._renderItem}
-                  renderSectionHeader={this._renderSectionHead}
-                />
-                :
-                (this.props.loading === false) ? <Text>No results</Text> : null
+          sections={allSections}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+          renderSectionHeader={this._renderSectionHead}
+        />
+        :
+        (this.props.loading === false)
+        ? <View style={styles.loading}><Text>No results</Text></View> : null
       }
-      </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }

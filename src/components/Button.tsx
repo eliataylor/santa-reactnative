@@ -12,15 +12,24 @@ class Button extends React.Component<Props> {
   render() {
     const { disabled, label, onPress, style, ...otherProps } = this.props;
 
-    const containerStyle = [styles.container];
-    if (style) containerStyle.push(style);
-    containerStyle.push( (disabled === true) ? styles.containerDisabled : styles.containerEnabled );
-
-
     const textStyle = [styles.text];
-    if (style && typeof style.color !== 'undefined') {
-      textStyle.push({color:style.color});
+    const containerStyle = [styles.btnWrap];
+    if (style) {
+      containerStyle.push(style);
+      containerStyle.push( (disabled === true) ? styles.containerDisabled : styles.containerEnabled );
+
+      if (typeof style.color !== 'undefined') {
+        textStyle.push({color:style.color});
+      }
+      if (typeof style.fontSize !== 'undefined') {
+        textStyle.push({fontSize:style.fontSize});
+        console.log('adding fontSize: ' + style.fontSize);
+      }
+      if (typeof style.fontFamily !== 'undefined') {
+        textStyle.push({fontFamily:style.fontFamily});
+      }
     }
+
     return (
       <TouchableOpacity
         style={containerStyle}
@@ -35,9 +44,10 @@ class Button extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  btnWrap: {
     alignSelf:'stretch',
     justifyContent:'center',
+    alignContent:'center',
     paddingVertical:8,
     paddingHorizontal:4,
     borderRadius: 4,

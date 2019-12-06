@@ -33,7 +33,7 @@ class CategoryIcon extends React.Component<Props> {
     }
 
     let containerStyle = [
-      styles.container,
+      styles.catWrap,
       (disabled === true) ? styles.containerDisabled : styles.containerEnabled
     ];
 
@@ -53,10 +53,9 @@ class CategoryIcon extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  catWrap: {
     width: 40,
     height: 40,
-    margin:4,
     padding:3,
     borderRadius: 4,
     borderWidth: StyleSheet.hairlineWidth,

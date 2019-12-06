@@ -3,6 +3,7 @@ import {
   Platform,
   Text,
   Alert,
+  ScrollView,
   View,
   TouchableOpacity,
   ActivityIndicator,
@@ -44,9 +45,8 @@ class SignUp extends React.Component<{}, State> {
 
   render() {
     return (
-      <View
-        style={styles.container}
-      >
+      <ScrollView>
+      <View style={styles.container}>
         { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image
           source={logo}
@@ -94,6 +94,7 @@ class SignUp extends React.Component<{}, State> {
           </View>
         </View>
       </View>
+      </ScrollView>
     );
   }
 }

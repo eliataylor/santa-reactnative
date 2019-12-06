@@ -38,7 +38,7 @@ class HomeScreen extends React.Component<Props, State> {
                      style={styles.logo}
                      resizeMode="contain" />
               <Button
-                style={[styles.roleBtn, this.state.activeTab === 'CreateWish' ? {backgroundColor:colors.SILVER} : {backgroundColor:colors.SOFT_RED}]}
+                style={{fontSize:22, paddingVertical:10, backgroundColor: this.state.activeTab === 'CreateWish' ? colors.SILVER : colors.SOFT_RED}}
                 label={"Santa"}
                 onPress={this.setTab.bind(this, 'Wishes')} />
               <Text style={[styles.prompt, this.state.activeTab === 'Wishes' ? {color:colors.DARK_GREY} : {color:colors.ALMOST_WHITE}]}>Choosing the Santa role allows you to view wishes near you and fulfill them.</Text>
@@ -48,17 +48,17 @@ class HomeScreen extends React.Component<Props, State> {
                      style={styles.logo}
                      resizeMode="contain" />
               <Button
-                style={[styles.roleBtn, this.state.activeTab === 'Wishes' ? {backgroundColor:colors.SILVER} : {backgroundColor:colors.LIGHT_GREEN}]}
+              style={{fontSize:22, paddingVertical:10, backgroundColor: this.state.activeTab === 'Wishes' ? colors.SILVER : colors.LIGHT_GREEN}}
                 label={"Elf"}
                 onPress={this.setTab.bind(this, 'CreateWish')} />
               <Text style={[styles.prompt, this.state.activeTab === 'CreateWish' ? {color:colors.DARK_GREY} : {color:colors.ALMOST_WHITE}]}>Choosing the Elf role allows you to submit a wish request for the homeless.</Text>
           </View>
         </View>
 
-        <View>
+        <View style={styles.row}>
           <Button
             label={"Next"}
-            style={{width:'100%', marginTop:10, backgroundColor:colors.DARK_GREY}}
+            style={{flex:1, marginTop:10, backgroundColor:colors.DARK_GREY}}
             disabled={this.state.activeTab === ''}
             onPress={() => {this.props.navigation.navigate(this.state.activeTab)}}
           />

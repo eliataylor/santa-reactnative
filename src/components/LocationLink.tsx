@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Linking, View, TouchableOpacity, Text, Image } from "react-native";
+import { Linking, View, TouchableOpacity, Text, Image } from "react-native";
 import colors from "../config/colors";
 import Config from "../Config";
 
@@ -12,6 +12,7 @@ interface Props {
 }
 
 class LocationLink extends React.Component<Props> {
+
   _onPress = () => {
     const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
     const latLng = `${this.props.geo[1]},${this.props.geo[0]}`;
@@ -35,42 +36,41 @@ class LocationLink extends React.Component<Props> {
     return address.join(' ');
   }
 
-  buildImg = (type) => {
-    var url = 'https://maps.googleapis.com/maps/api/', param = "";
-    if (type === 'streetview') {
-      url += "streetview?size=170x100&fov=120";
-      param = "location";
-    } else {
-      url += "staticmap?zoom=4&size=170x100&maptype=roadmap";
-      param = "center";
-    }
-    var address = this.buildAddress();
-    if (this.props.geo && this.props.geo.length === 2) {
-      url += '&'+param+'='  + this.props.geo[1] + ',' + this.props.geo[0];
-    } else if (address) {
-      url += '&'+param+'=' + encodeURIComponent(address);
-    } else {
-      console.warn("every wish must have a valid location");
-      return ''; // every wish
-    }
-    // url += "&signature=" + Config.api.gMapSignature;
-    return url + "&key="+ Config.api.gMapKey;
-  }
-
   render() {
     const maptype = this.props.maptype || 'staticmap';
+    const width = (this.props.width) ? parseInt(this.props.width, 0) : 170;
+    const height = (this.props.height) ? parseInt(this.props.height, 0) : 100;
     const address = this.buildAddress();
-    const imgUrl = this.buildImg(maptype);
+
+    var imgUrl = 'https://maps.googleapis.com/maps/api/' + maptype + "?size="+width+"x"+height + "&key="+ Config.api.gMapKey;
+    var param = "";
+    if (maptype === 'streetview') {
+      imgUrl += "&fov=120";
+      param = "location";
+    } else {
+      imgUrl += "&zoom=14&maptype=roadmap";
+      param = "center";
+    }
+    if (this.props.geo && this.props.geo.length === 2) {
+      imgUrl += '&'+param+'='  + this.props.geo[1] + ',' + this.props.geo[0];
+      if (maptype === 'staticmap') {
+        imgUrl += "&markers=color:0xBE2625%7C"+this.props.geo[1] + ',' + this.props.geo[0];
+      }
+    } else if (address) {
+      imgUrl += '&'+param+'=' + encodeURIComponent(address);
+    } else {
+      console.warn("every wish must have a valid location");
+      imgUrl = '';
+    }
+
     //console.log(address, imgUrl);
 
     return (
-      <TouchableOpacity onPress={this._onPress}
-        style={styles.container}
-        >
+      <TouchableOpacity onPress={this._onPress} style={{height:height}}>
         {imgUrl.length > 0 ?
           <Image resizeMode={'contain'}
             onError={(e) => console.log(e.nativeEvent.error) }
-            style={styles.image}
+            style={{flex:1, width:width, height:height, resizeMode:'contain', alignSelf: "center"}}
             accessibilityLabel={address}
             source={{uri: imgUrl}}
           />
@@ -81,17 +81,5 @@ class LocationLink extends React.Component<Props> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    height:100,
-  },
-  image : {
-    flex: 1,
-    height:100,
-    resizeMode: "contain",
-    alignSelf: "center"
-  }
-});
 
 export default LocationLink;

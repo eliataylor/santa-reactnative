@@ -150,11 +150,7 @@ class CreateWish extends React.Component {
             <LocationSelector  onMarkerChange={this.onMarkerChange} onGpsLocation={this.props.updateLocation} />
           </View>
           <View style={{marginTop:40}}>
-            <Button
-              style={{backgroundColor:colors.LIGHT_GREEN}}
-              label={'Create Wish'}
-              onPress={this.submitWish.bind(this)}
-            />
+            <Button label={'Create Wish'} onPress={this.submitWish.bind(this)} />
           </View>
         </View>
       </View>

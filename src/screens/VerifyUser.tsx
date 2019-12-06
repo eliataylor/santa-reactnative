@@ -7,7 +7,9 @@ import strings from "../config/strings";
 import { connect } from 'react-redux';
 import API from '../utils/API';
 import { checkVerificationCode } from '../redux/authActions';
+import styles from '../theme';
 const logo = require("../assets/images/logo.png");
+
 
 interface State {
   verificationCode: string;
@@ -56,7 +58,7 @@ class VerifyUser extends React.Component<{}, State> {
 
   resendLink() {
     if (!this.props.auth.me) {
-      console.log('enter your email where to send the link'); // TODO: snackbar
+      Alert.alert('Enter your email where to send the link');
       return this.props.navigation.navigate('SignIn');
     }
     API.Post('/api/loginlink', {email:this.props.auth.me.email})
@@ -76,20 +78,16 @@ class VerifyUser extends React.Component<{}, State> {
     const {verificationCode, verificationHelp} = this.state;
 
     return (
-      <SafeAreaView
-        style={styles.pageContainer}
-        behavior="padding" >
+      <View style={[styles.container, {height:'100%', paddingVertical:20}]} >
         { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
-        <Image source={logo}
-               style={styles.logo}
-               resizeMode="contain" />
 
-        <View>
-          <Text style={styles.header} >Enter the verification code</Text>
-          <Text style={styles.header} >sent to your email</Text>
-        </View>
+        <Image source={logo} style={[styles.logo, {height:250}]} resizeMode="contain" />
 
         <View style={styles.form}>
+          <View style={{width:'100%'}}>
+            <Text style={styles.header} >Enter the verification code</Text>
+            <Text style={styles.header} >sent to your email</Text>
+          </View>
           <FormTextInput
             value={verificationCode}
             autoCorrect={false}
@@ -97,7 +95,6 @@ class VerifyUser extends React.Component<{}, State> {
             placeholder={strings.VERIFICATION_HELP}
             error={verificationHelp}
           />
-
           <Button
             label={strings.SUBMIT}
             onPress={(e) => this.checkCode()}
@@ -105,50 +102,14 @@ class VerifyUser extends React.Component<{}, State> {
           />
         </View>
 
-        <TouchableOpacity onPress={(e) => this.resendLink()}  >
+        <TouchableOpacity onPress={(e) => this.resendLink()} style={{marginTop:40}} >
           <Text>Resend Link</Text>
         </TouchableOpacity>
 
-      </SafeAreaView>
+      </View>
     );
   }
 }
-
-
-const styles = StyleSheet.create({
-  pageContainer: {
-    flex:1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding:10,
-    height:'100%'
-  },
-  loading: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width:'100%',
-    height:'100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex:999999
-  },
-  logo: {
-    width: "100%",
-    maxHeight:150,
-    resizeMode: "contain",
-  },
-  form: {
-    paddingHorizontal:30
-  },
-  header : {
-    fontWeight:'bold',
-    textAlign:'center',
-    fontSize:20
-  }
-})
 
 
 const mapDispatchToProps = {

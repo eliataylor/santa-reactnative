@@ -7,6 +7,9 @@ adb reverse tcp:8081 tcp:8081
 adb shell input keyevent 82
 
 10.0.0.187
+http://192.168.0.12:8081/index.bundle?platform=android&dev=true&minify=false
+
+http://localhost:8081/debugger-ui/
 
 sudo lsof -i :8081
 kill -9 34031
