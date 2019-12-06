@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import NavContainer from './screens/NavContainer';
 import Snackbar from 'react-native-snackbar';
 import API from './utils/API';

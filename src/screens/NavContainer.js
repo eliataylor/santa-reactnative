@@ -10,6 +10,7 @@ import VerifyUser from './VerifyUser';
 import HomeScreen from './HomeScreen';
 import Wishes from './Wishes';
 import CreateWish from './CreateWish';
+import WishDetail from './WishDetail';
 import AuthLoading from './AuthLoading';
 
 import { Image } from "react-native";
@@ -73,9 +74,20 @@ const AppStack = createStackNavigator({
       headerBackTitle : 'Santa Fulfills',
     }
   },
+  WishDetail: {
+    screen: WishDetail,
+    path:'/wishes/:wish',
+    navigationOptions: (navi) => {
+      console.log(navi);
+      return {
+        title : 'Wish Details',
+        headerBackTitle : 'Wish Details',
+      }
+    }
+  },
   CreateWish: {
     screen: CreateWish,
-    path:'/create-a-wish',
+    path:'/wishes/add',
     navigationOptions: {
       title : 'Enter a Wish',
       headerBackTitle : 'Enter a Wish',

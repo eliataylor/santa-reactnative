@@ -1,14 +1,13 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
-import { withNavigation } from 'react-navigation';
 import { StyleSheet, View, Text, Alert, Modal, Dimensions, Image, TouchableHighlight, SafeAreaView } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
-import Button from "./Button";
-import CategoryIcon from "./CategoryIcon";
-import LocationLink from "./LocationLink";
-import Icon from "./Icon";
-import Deadline from "./Deadline";
+import Button from "../components/Button";
+import CategoryIcon from "../components/CategoryIcon";
+import LocationLink from "../components/LocationLink";
+import Icon from "../components/Icon";
+import Deadline from "../components/Deadline";
 import moment from "moment";
 import { createOffer, updateOffer, deleteWish } from '../redux/entityDataReducer';
 
@@ -40,11 +39,11 @@ const styles = Object.assign({...baseStyles}, StyleSheet.create({
 
 const { width, height } = Dimensions.get('window');
 
-class WishItem extends Component {
+class WishDetail extends Component {
 
   startOffer() {
     var that = this;
-    const {wish} = this.props;
+    const {wish} = this.props.navigation.state.params;
     Alert.alert(
       strings.FULFILL,
       strings.FULFILL_PROMPT,
@@ -61,7 +60,7 @@ class WishItem extends Component {
 
   deleteWish() {
     var that = this;
-    const {wish} = this.props;
+    const {wish} = this.props.navigation.state.params;
     Alert.alert(
       'Delete',
       'Are you sure you want to delete this wish?',
@@ -78,7 +77,7 @@ class WishItem extends Component {
 
   updateOffer(verb) {
     var that = this;
-    const {offer} = this.props;
+    const {offer} = this.props.navigation.state.params;
     var prompt = (verb === 'fulfilled') ? strings.OFFER_FULFILL : strings.OFFER_CANCEL
     Alert.alert(
       prompt,
@@ -94,47 +93,43 @@ class WishItem extends Component {
     );
   }
 
-  openWish() {
-    this.props.navigation.navigate('WishDetail', {wish:this.props.wish, offer:this.props.offer});
+  componentDidUpdate(prevProps) {
+    if (!prevProps.entity || !prevProps.entity.lastsucces || prevProps.entity.lastsucces < this.props.entity.lastsucces) {
+      this.props.navigation.navigate('Wishes');
+    }
   }
 
   render() {
-    const { wish, offer } = this.props;
+    const { wish, offer } = this.props.navigation.state.params;
 
     return (
         <View style={styles.container}>
+               <View style={styles.row}>
+                 <Text style={styles.h1}>{wish.title}</Text>
+                 <CategoryIcon id={wish.category} />
+               </View>
+               <Text>{moment(wish.createdAt).format('MMM Do h:mma')}</Text>
+               {(offer && offer.state === 'inprogress') ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} /> : null}
 
-          <View style={styles.row}>
-            <View style={[styles.col, {alignItems:'flex-start'}]}>
-              <CategoryIcon id={wish.category} />
-              <TouchableHighlight onPress={e => this.openWish() }>
-                <Text style={styles.h1}>{wish.title}</Text>
-              </TouchableHighlight>
-              <Text style={styles.body}>{wish.body}</Text>
-              <View style={styles.row}>
-                <Icon
-                  onPress={e => this.openWish()}
-                  label="more info"
-                  tintColor={colors.SOFT_RED}
-                  icon={require('../assets/images/baseline_info_black_18dp.png')}
-                  />
-                {(wish.elf._id === this.props.me._id) ?
-                <Icon
-                  onPress={(e) => this.deleteWish()}
-                  label="delete"
-                  icon={require('../assets/images/baseline_delete_black_18dp.png')}
-                  /> : null}
-              </View>
-            </View>
-            <View style={styles.col}>
-              <Text style={styles.timestamp}>Posted {moment(wish.createdAt).format('MMM Do h:mma')}</Text>
-              {(offer && offer.state === 'inprogress')
-              ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} />
-              : null}
-              <LocationLink maptype='staticmap' {...wish.location} />
-            </View>
-          </View>
+               <Text style={[styles.body, {marginVertical:20}]}>{wish.body}</Text>
 
+               <LocationLink maptype='staticmap' width={width} height={height/4} {...wish.location} />
+
+               {(offer && offer.state === 'inprogress')
+               ?
+                  <View style={[styles.row, {marginTop:10}]}>
+                     <Button label={'Mark Delivered'} onPress={(e) => this.updateOffer('fulfilled')} />
+                     <Button label={'Cancel'} style={{backgroundColor:colors.SOFT_RED}}
+                             onPress={(e) => this.updateOffer('canceled')} />
+                  </View>
+               : (wish.elf._id === this.props.me._id) ?
+                  <View style={[styles.row, {marginTop:10}]}>
+                     <Button  label={strings.FULFILL} onPress={(e) => this.startOffer()} />
+                     <Button label={'Delete'} style={{backgroundColor:colors.SOFT_RED}} onPress={(e) => this.deleteWish()} />
+                  </View>
+               :
+                <View style={[styles.row, {marginTop:10}]}><Button label={strings.FULFILL} onPress={(e) => this.startOffer()} /></View>
+               }
         </View>
     );
   }
@@ -150,4 +145,4 @@ const mapStateToProps = state => ({
   me: state.auth.me
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(WishItem))
+export default connect(mapStateToProps, mapDispatchToProps)(WishDetail)

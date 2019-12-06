@@ -31,12 +31,6 @@ export function logOut() {
   }
 }
 
-function appReady() {
-  return {
-    type: APP_READY
-  }
-}
-
 function logInStart() {
   return {
     type: LOGIN_STARTED
@@ -195,18 +189,13 @@ export function authenticate(credentials) {
 
 export function checkToken(token) {
   return (dispatch) => {
-    if (!token) {
-      return dispatch(appReady()); // first time visits can just start
-    }
     API.Get('/api/users/me') // TODO: send through new axios instance without oauth interceptors
     .then(res => {
-      dispatch(appReady());
       return dispatch(logInSuccess(res.data));
     })
     .catch (err => {
       var msg = API.getErrorMsg(err);
       console.log('error logging in: ', msg)
-      dispatch(appReady());
       dispatch(logInFailure(msg))
       return err;
     })
