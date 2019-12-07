@@ -203,20 +203,24 @@ export function checkToken(token) {
 }
 
 // updates isVerified
-export function checkVerificationCode(code, uid) {
+export function checkVerificationCode(code, uid, email) {
   return (dispatch, getState) => {
 
     dispatch(verifyStart());
 
+    const data = {};
     const state = getState();
-    if (!uid) {
-      uid = state.auth.me._id;
-    }
-    if (!uid) {
-      console.log('missing uid', state)
+    if (uid) {
+      data.uid = uid;
+    } else if (state.auth.me && state.auth.me._id) {
+      data.uid = state.auth.me._id;
+    } else if (email) {
+      data.email;
+    } else {
+      return dispatch(verifyFailure('missing email or user id'));
     }
 
-    API.Get('/api/verify/'+uid+'/' + code)
+    API.Post('/api/verify/'+code, data)
       .then(res => {
         console.log("VERIFIED", res.data);
         if (typeof res.data.me !== 'undefined') {

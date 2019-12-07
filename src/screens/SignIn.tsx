@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { Image, Linking, Platform, StyleSheet, KeyboardAvoidingView, Keyboard, Alert, View, ActivityIndicator } from "react-native";
+import { Image, Dimensions, StyleSheet, KeyboardAvoidingView, Keyboard, Alert, View, ActivityIndicator } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import VerifyUser from "./VerifyUser";
@@ -11,6 +11,8 @@ import styles from "../theme";
 
 import API from "../utils/API";
 import { authenticate } from '../redux/authActions';
+
+const { width, height } = Dimensions.get('window');
 
 interface State {
   email: string;
@@ -75,7 +77,7 @@ class SignIn extends React.Component<{}, State> {
     .then(res => {
       console.log('loginlink', res.data);
       // Alert.alert('Check your email', 'and click your login link');
-      that.props.navigation.navigate('VerifyUser');
+      that.props.navigation.navigate('VerifyUser', {email:email});
       // that.setState({email:''}); // to prevent repeats
     })
     .catch(err => {
@@ -96,7 +98,8 @@ class SignIn extends React.Component<{}, State> {
     const {email, password, emailHelp, passwordHelp} = this.state;
 
     return (
-      <View style={styles.container} >
+      <KeyboardAvoidingView>
+      <View style={{styles.container, {height:height}]} >
         { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image
           source={logo}
@@ -140,6 +143,7 @@ class SignIn extends React.Component<{}, State> {
           </View>
         </View>
       </View>
+      </KeyboardAvoidingView>
     );
   }
 }

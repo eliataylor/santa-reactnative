@@ -45,7 +45,7 @@ class SignUp extends React.Component<{}, State> {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={{height:height, backgroundColor:colors.ALMOST_WHITE}}>
       <View style={styles.container}>
         { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image

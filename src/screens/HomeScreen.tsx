@@ -1,13 +1,15 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import colors from '../config/colors';
 import Button from '../components/Button';
 import FormTextInput from "../components/FormTextInput";
 import { connect } from 'react-redux';
 import VerifyUser from "./VerifyUser";
+import styles from '../theme';
 const santaIcon = require('../assets/images/santa-panda.png');
 const elfIcon = require('../assets/images/elf-panda.png');
-import styles from '../theme';
+
+const { width, height } = Dimensions.get('window');
 
 interface State {
   activeTab:string;
@@ -27,12 +29,12 @@ class HomeScreen extends React.Component<Props, State> {
     if (!this.props.me) {
       return <Text style={styles.subheader}>Loading</Text>;
     }
-    if (this.props.me.isVerified ===false) {
+    if (this.props.me.isVerified !== true) {
       return <VerifyUser />;
     }
 
     return (
-      <View style={[styles.container, {paddingVertical:20, paddingHorizontal:10}]}>
+      <View style={[styles.container, {height:height-40, paddingTop:20, paddingHorizontal:10}]}>
         <Text style={styles.header}>{this.props.me.name.first ? 'Welcome ' + this.props.me.name.first : 'Hello there'}</Text>
         <Text style={styles.subheader}>Pick a role, do good, and earn your blessing</Text>
         <View style={styles.row}>
@@ -67,7 +69,7 @@ class HomeScreen extends React.Component<Props, State> {
         <View style={styles.row}>
           <Button
             label={"Next"}
-            style={{flex:1, marginTop:10, backgroundColor:colors.DARK_GREY}}
+            style={{flex:1, backgroundColor:colors.DARK_GREY}}
             disabled={this.state.activeTab === ''}
             onPress={() => {this.props.navigation.navigate(this.state.activeTab)}}
           />

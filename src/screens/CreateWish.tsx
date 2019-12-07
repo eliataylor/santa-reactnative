@@ -4,8 +4,9 @@ import {
   Text,
   Alert,
   View,
-  KeyboardAvoidingView,
   TextInput,
+  Dimensions,
+  ScrollView,
   TouchableOpacity,
   Image,
   ActivityIndicator,
@@ -20,8 +21,9 @@ import Picker from "react-native-picker-select";
 import Button from '../components/Button'
 import FormTextInput from '../components/FormTextInput'
 import LocationSelector from '../components/LocationSelector';
-
 import styles from '../theme';
+
+const { width, height } = Dimensions.get('window');
 
 interface State {
   title: string;
@@ -112,7 +114,8 @@ class CreateWish extends React.Component {
     }
 
     return (
-      <View style={styles.container} behavior="padding" >
+      <ScrollView>
+      <View style={styles.container} >
         {(this.props.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large' /></View> : null}
         <View style={styles.form}>
           <FormTextInput
@@ -165,6 +168,7 @@ class CreateWish extends React.Component {
         </View>
         <Button label={'Create Wish'} onPress={this.submitWish.bind(this)} />
       </View>
+      </ScrollView>
     );
   }
 }
