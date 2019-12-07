@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, StyleSheet, SafeAreaView, Text, View, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { Image, StyleSheet, KeyboardAvoidingView, Text, View, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { withNavigation } from 'react-navigation';
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
@@ -33,21 +33,20 @@ class VerifyUser extends React.Component<{}, State> {
         this.setState({verificationHelp:strings.VERIFICATION_REQUIRED});
         return false;
     }
-    var uid = null;
     if (this.props.navigation && this.props.navigation.state.params) {
-      uid = this.props.navigation.state.params.uid;
+      const { email } = this.props.navigation.state.params;
+      return this.props.checkVerificationCode(this.state.verificationCode, null, email);
+    } else {
+      Alert.alert("You actually have to click the link for now");
     }
-    return this.props.checkVerificationCode(this.state.verificationCode, uid);
   };
 
   componentDidMount() {
-    if (this.state.verificationCode === '') {
-      if (this.props.navigation && this.props.navigation.state.params) {
-        const { code, uid } = this.props.navigation.state.params;
-        console.log('test code from link', this.props.navigation.state.params);
-        this.props.checkVerificationCode(code, uid);
-        this.setState({verificationCode:code});
-      }
+    if (this.props.navigation && this.props.navigation.state.params) {
+      const { code, uid } = this.props.navigation.state.params;
+      this.setState({verificationCode:code});
+      console.log('test code from link', this.props.navigation.state.params);
+      this.props.checkVerificationCode(code, uid, null);
     }
   }
 
@@ -58,11 +57,19 @@ class VerifyUser extends React.Component<{}, State> {
   }
 
   resendLink() {
-    if (!this.props.auth.me) {
+    var email = false;
+    if (this.props.auth && this.props.auth.me) {
+      email = this.props.auth.me.email;
+    } else if (this.props.navigation && this.props.navigation.state.params) {
+      email = this.props.navigation.state.params.email;
+    }
+
+    if (!email) {
       Alert.alert('Enter your email where to send the link');
       return this.props.navigation.navigate('SignIn');
     }
-    API.Post('/api/loginlink', {email:this.props.auth.me.email})
+
+    API.Post('/api/loginlink', {email:email})
     .then(res => {
       console.log('loginlink', res.data);
       Alert.alert('Check your email', 'and click your login link');
@@ -79,16 +86,20 @@ class VerifyUser extends React.Component<{}, State> {
     const {verificationCode, verificationHelp} = this.state;
 
     return (
+      <KeyboardAvoidingView>
       <View style={[styles.container, {height:'100%', paddingVertical:20}]} >
-        { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
 
         <Image source={logo} style={[styles.logo, {height:250}]} resizeMode="contain" />
 
         <View style={styles.form}>
-          <View style={{width:'100%'}}>
-            <Text style={styles.header} >Enter the verification code</Text>
-            <Text style={styles.header} >sent to your email</Text>
-          </View>
+          { (this.props.auth.loading === true) ?
+            <View style={styles.loading}><ActivityIndicator size='large'/></View>
+            :
+            <View style={{width:'100%'}}>
+              <Text style={styles.header} >Enter the verification code</Text>
+              <Text style={styles.header} >sent to your email</Text>
+            </View>
+          }
           <FormTextInput
             value={verificationCode}
             autoCorrect={false}
@@ -108,13 +119,14 @@ class VerifyUser extends React.Component<{}, State> {
         </TouchableOpacity>
 
       </View>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 
 const mapDispatchToProps = {
-  checkVerificationCode: (code, uid) => checkVerificationCode(code, uid)
+  checkVerificationCode: (code, uid, email) => checkVerificationCode(code, uid, email)
 }
 
 const mapStateToProps = state => ({

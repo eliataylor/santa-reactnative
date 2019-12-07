@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, View, Text, Alert, Modal, Dimensions, Image, TouchableHighlight, SafeAreaView } from "react-native";
+import { StyleSheet, View, Text, Alert, Dimensions, Image, ScrollView } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Button from "../components/Button";
@@ -10,19 +10,10 @@ import Icon from "../components/Icon";
 import Deadline from "../components/Deadline";
 import moment from "moment";
 import { createOffer, updateOffer, deleteWish } from '../redux/entityDataReducer';
-
 import baseStyles from '../theme';
+
+
 const styles = Object.assign({...baseStyles}, StyleSheet.create({
-  container: {
-    marginTop:5,
-    marginBottom:25,
-    paddingTop:4,
-    paddingBottom:10,
-    paddingHorizontal:10,
-    borderColor: colors.SILVER,
-    backgroundColor:colors.WHITE,
-    borderBottomWidth: StyleSheet.hairlineWidth
-  },
   h1: {
     fontFamily:'Poppins-Bold',
     fontSize:18,
@@ -103,7 +94,9 @@ class WishDetail extends Component {
     const { wish, offer } = this.props.navigation.state.params;
 
     return (
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <ScrollView style={{height:height}}>
+        <View style={styles.paddedContainer}>
                <View style={styles.row}>
                  <Text style={styles.h1}>{wish.title}</Text>
                  <CategoryIcon id={wish.category} />
@@ -113,7 +106,7 @@ class WishDetail extends Component {
 
                <Text style={[styles.body, {marginVertical:20}]}>{wish.body}</Text>
 
-               <LocationLink maptype='staticmap' width={width} height={height/4} {...wish.location} />
+               <LocationLink maptype='staticmap' width={width} height={height/3} {...wish.location} />
 
                {(offer && offer.state === 'inprogress')
                ?
@@ -130,6 +123,8 @@ class WishDetail extends Component {
                :
                 <View style={[styles.row, {marginTop:10}]}><Button label={strings.FULFILL} onPress={(e) => this.startOffer()} /></View>
                }
+        </View>
+        </ScrollView>
         </View>
     );
   }
