@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions,
   Image
 } from 'react-native';
 
@@ -19,6 +20,8 @@ import { createUser } from '../redux/authActions'
 import FormTextInput from '../components/FormTextInput'
 import Button from '../components/Button'
 import styles from "../theme";
+
+const { width, height } = Dimensions.get('window');
 
 interface State {
   firstname: string;

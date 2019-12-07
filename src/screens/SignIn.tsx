@@ -98,8 +98,8 @@ class SignIn extends React.Component<{}, State> {
     const {email, password, emailHelp, passwordHelp} = this.state;
 
     return (
-      <KeyboardAvoidingView>
-      <View style={{styles.container, {height:height}]} >
+      <View style={{height:height, backgroundColor:colors.ALMOST_WHITE}} >
+      <View style={styles.container} >
         { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image
           source={logo}
@@ -143,7 +143,7 @@ class SignIn extends React.Component<{}, State> {
           </View>
         </View>
       </View>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

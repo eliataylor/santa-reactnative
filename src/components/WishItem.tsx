@@ -106,11 +106,13 @@ class WishItem extends Component {
 
           <View style={styles.row}>
             <View style={[styles.col, {alignItems:'flex-start'}]}>
-              <CategoryIcon id={wish.category} />
+              <CategoryIcon id={wish.category} onPress={e => this.props.toggleCat(wish.category)} />
               <TouchableHighlight onPress={e => this.openWish() }>
                 <Text style={styles.h1}>{wish.title}</Text>
               </TouchableHighlight>
-              <Text style={styles.body}>{wish.body}</Text>
+              <TouchableHighlight onPress={e => this.openWish() }>
+                <Text style={styles.body}>{wish.body}</Text>
+              </TouchableHighlight>
               <View style={styles.row}>
                 <Icon
                   onPress={e => this.openWish()}
