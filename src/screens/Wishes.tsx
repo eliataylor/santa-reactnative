@@ -226,17 +226,23 @@ class Wishes extends React.Component<{}, State> {
 
     return (
       <ScrollView>
-      {
-        allSections.length > 0 ?
+      {allSections.length > 0 ?
         <SectionList
           sections={allSections}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
           renderSectionHeader={this._renderSectionHead}
-        />
-        :
-        (this.props.loading === false)
-        ? <View style={styles.loading}><Text>No results</Text></View> : null
+        /> : null
+      }
+
+      {(this.props.loading === true) ?
+          <View style={styles.loading}><ActivityIndicator size='large'/></View>
+         : (!this.props.wishes.results || this.props.wishes.results.length === 0)
+         ? <View style={styles.paddedContainer}>
+            <Text style={styles.errorMessage}>No wishes within your range</Text>
+            <Text style={styles.errorMessage}>Please change your radius and/or filters above</Text>
+          </View>
+        : null
       }
       </ScrollView>
     );
