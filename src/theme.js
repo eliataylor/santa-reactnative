@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 12,
     color: 'red',
+    fontFamily:'Poppins-ExtraBold',
   },
   picker: {
     height: 40,
