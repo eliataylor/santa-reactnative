@@ -67,7 +67,7 @@ interface State {
 class Wishes extends React.Component<{}, State> {
 
   readonly state: State = {
-    radius:25000,
+    radius:24000,
     lonlat:'',
     categories:{},
     locationHelp:strings.LOCATION_PROMPT
@@ -147,9 +147,17 @@ class Wishes extends React.Component<{}, State> {
 
       var radiusOpts = [{label: '.5 mile', value: 500}], i = 1;
 
-      while(i < 50){
+      while(i < 6) {
         radiusOpts.push({label:i + ' miles', value:(i * 1000)});
         i++;
+      };
+      while(i < 24) {
+        radiusOpts.push({label:i + ' miles', value:(i * 1000)});
+        i += 2;
+      };
+      while(i < 50) {
+        radiusOpts.push({label:i + ' miles', value:(i * 1000)});
+        i += 5;
       };
 
       radiusOpts.push({label:'Anywhere', value:'anywhere'});
@@ -195,9 +203,9 @@ class Wishes extends React.Component<{}, State> {
   _renderItem = ({item}) => {
       if (typeof item.wish != 'undefined') {
         const { wish, ...offer } = item;
-        return (<WishItem offer={offer} wish={wish} />)
+        return (<WishItem offer={offer} wish={wish} toggleCat={this.toggleCat} />)
       }
-      return (<WishItem wish={item} />)
+      return (<WishItem wish={item} toggleCat={this.toggleCat} />)
   };
 
   render() {

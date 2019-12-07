@@ -13,7 +13,6 @@ import CreateWish from './CreateWish';
 import WishDetail from './WishDetail';
 import AuthLoading from './AuthLoading';
 
-import Config from '../Config';
 import { Image } from "react-native";
 
 const navigationConfig = {
@@ -63,10 +62,10 @@ const AppStack = createStackNavigator({
   },
   VerifyUser : {
     screen: VerifyUser,
-    path: Config.api.base + '/api/users/:uid/verify/:code',
+    path: 'users/:uid/verify/:code',
     navigationOptions: {
-      header:null,
-      headerShown:false,
+      title : 'Account Verification',
+      headerBackTitle : 'Account Verification',
     }
   },
   Wishes: {
@@ -104,13 +103,7 @@ export default createAppContainer(
     {
       AuthLoading:{
         screen: AuthLoading,
-        path: Config.api.base + '/api/users/:uid/verify/:code',
-        navigationOptions: (navi) => {
-          console.log("AUTHLOADING NAVI", navi);
-          return {
-            title : 'Loading...',
-          }
-        }
+        path: 'users/:uid/verify/:code'
       },
       App: AppStack,
       Auth: AuthStack,

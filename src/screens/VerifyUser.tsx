@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, StyleSheet, KeyboardAvoidingView, Text, View, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { Image, StyleSheet, ScrollView, Dimensions, Text, View, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { withNavigation } from 'react-navigation';
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
@@ -10,6 +10,7 @@ import API from '../utils/API';
 import { checkVerificationCode } from '../redux/authActions';
 import styles from '../theme';
 const logo = require("../assets/images/logo.png");
+const { height } = Dimensions.get('window');
 
 
 interface State {
@@ -42,11 +43,16 @@ class VerifyUser extends React.Component<{}, State> {
   };
 
   componentDidMount() {
+    if (this.props.auth.me && this.props.auth.me.isVerified === true) {
+      this.props.navigation.navigate('HomeScreen'); // reopened from link after already logged in
+    }
     if (this.props.navigation && this.props.navigation.state.params) {
-      const { code, uid } = this.props.navigation.state.params;
-      this.setState({verificationCode:code});
-      console.log('test code from link', this.props.navigation.state.params);
-      this.props.checkVerificationCode(code, uid, null);
+      const { code, uid, email } = this.props.navigation.state.params;
+      if (code && (uid || email)) {
+        this.setState({verificationCode:code});
+        console.log('test code from link', this.props.navigation.state.params);
+        this.props.checkVerificationCode(code, uid, null);
+      }
     }
   }
 
@@ -86,8 +92,8 @@ class VerifyUser extends React.Component<{}, State> {
     const {verificationCode, verificationHelp} = this.state;
 
     return (
-      <KeyboardAvoidingView>
-      <View style={[styles.container, {height:'100%', paddingVertical:20}]} >
+      <ScrollView style={{height:height, backgroundColor:colors.ALMOST_WHITE}}>
+      <View style={[styles.container]} >
 
         <Image source={logo} style={[styles.logo, {height:250}]} resizeMode="contain" />
 
@@ -119,7 +125,7 @@ class VerifyUser extends React.Component<{}, State> {
         </TouchableOpacity>
 
       </View>
-      </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }

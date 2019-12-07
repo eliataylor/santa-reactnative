@@ -55,9 +55,9 @@ class App extends React.Component {
     });
   }
 
-  onNavigationStateChange(prevState, newState, action) {
+/*  onNavigationStateChange(prevState, newState, action) {
     console.log('onNavigationStateChange', prevState, newState, action);
-  }
+  } */
 
   render() {
     var errors = [this.props.auth.signUpError, this.props.auth.logInError, this.props.auth.verifyError, this.props.lists.errors, this.props.entity.errors];
@@ -81,7 +81,7 @@ class App extends React.Component {
     // TODO: snackbar success responses from server?
     return <NavContainer style={styles.root}
             uriPrefix={prefix}
-            onNavigationStateChange={this.onNavigationStateChange}
+//            onNavigationStateChange={this.onNavigationStateChange}
             ref={nav => this.navigator = nav} />;
   }
 }
