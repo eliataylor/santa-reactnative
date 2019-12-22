@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { Image, Dimensions, StyleSheet, KeyboardAvoidingView, Keyboard, Alert, View, ActivityIndicator } from "react-native";
+import { Image, Dimensions, StyleSheet, ScrollView, Keyboard, Alert, View, ActivityIndicator } from "react-native";
 import Button from "../components/Button";
 import FormTextInput from "../components/FormTextInput";
 import VerifyUser from "./VerifyUser";
@@ -62,6 +62,14 @@ class SignIn extends React.Component<{}, State> {
     }
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.me && this.props.auth.me.isVerified === true) {
+      this.props.navigation.navigate('HomeScreen');
+    } else if (this.props.auth.me && this.props.auth.me.isVerified === false) {
+      this.props.navigation.navigate('VerifyUser');
+    }
+  }
+
   resendLink() {
     Keyboard.dismiss();
     const email = this.state.email;
@@ -98,9 +106,8 @@ class SignIn extends React.Component<{}, State> {
     const {email, password, emailHelp, passwordHelp} = this.state;
 
     return (
-      <View style={{height:height, backgroundColor:colors.ALMOST_WHITE}} >
+      <ScrollView style={{height:height, backgroundColor:colors.ALMOST_WHITE}} >
       <View style={styles.container} >
-        { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
         <Image
           source={logo}
           style={styles.logo}
@@ -124,6 +131,7 @@ class SignIn extends React.Component<{}, State> {
             returnKeyType="done"
             error={passwordHelp}
           />
+          { (this.props.auth.loading === true) ? <View style={styles.loading}><ActivityIndicator size='large'/></View> : null }
           <View style={styles.row}>
               <Button
                 label={strings.SIGNIN}
@@ -143,7 +151,7 @@ class SignIn extends React.Component<{}, State> {
           </View>
         </View>
       </View>
-      </View>
+      </ScrollView>
     );
   }
 }

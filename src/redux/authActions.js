@@ -170,7 +170,7 @@ export function authenticate(credentials) {
       } else {
         let me = res.data.me;
         let token = res.data.token;
-        AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
+        return AsyncStorage.setItem(Config.api.tokName, JSON.stringify(token),  storage => {
             dispatch(logInSuccess(res.data))
             return res;
         });

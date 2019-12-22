@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from 'react-redux';
 import { StyleSheet, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, ScrollView, View, Image  } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Button from "../components/Button";
@@ -67,18 +68,23 @@ interface State {
 class Wishes extends React.Component<{}, State> {
 
   readonly state: State = {
-    radius:24000,
+    radius:10000,
     lonlat:'',
     categories:{},
     locationHelp:strings.LOCATION_PROMPT
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("WISHES DID MOUNT");
     if (Platform.OS === 'ios') {
       Geolocation.requestAuthorization();
     }
     this.refresh();
+
+    const radius = await AsyncStorage.getItem('wishRadius');
+    if (radius) {
+      this.setState({radius:radius});
+    }
   }
 
   componentWillUnmount() {
@@ -118,6 +124,7 @@ class Wishes extends React.Component<{}, State> {
 
   _radiusChanged = (itemValue, itemIndex) => {
     var that = this;
+    AsyncStorage.setItem('wishRadius', itemValue);
     this.setState({ radius: itemValue }, function(){
       that.refresh();
     });

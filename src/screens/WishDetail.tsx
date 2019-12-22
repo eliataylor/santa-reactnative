@@ -99,6 +99,7 @@ class WishDetail extends Component {
         <View style={styles.paddedContainer}>
                <View style={styles.row}>
                  <Text style={styles.h1}>{wish.title}</Text>
+                 <Text style={styles.h2}>for {wish.recipient}</Text>
                  <CategoryIcon id={wish.category} />
                </View>
                <Text>{moment(wish.createdAt).format('MMM Do h:mma')}</Text>

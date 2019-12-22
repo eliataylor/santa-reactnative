@@ -10,7 +10,7 @@ import VerifyUser from './VerifyUser';
 import HomeScreen from './HomeScreen';
 import Wishes from './Wishes';
 import CreateWish from './CreateWish';
-import WishDetail from './WishDetail';
+// import WishDetail from './WishDetail';
 import AuthLoading from './AuthLoading';
 
 import { Image } from "react-native";
@@ -76,7 +76,7 @@ const AppStack = createStackNavigator({
       headerBackTitle : 'Santa Fulfills',
     }
   },
-  WishDetail: {
+  /* WishDetail: {
     screen: WishDetail,
     path:'wishes/:wish',
     navigationOptions: (navi) => {
@@ -86,7 +86,7 @@ const AppStack = createStackNavigator({
         headerBackTitle : 'Wish Details',
       }
     }
-  },
+  }, */
   CreateWish: {
     screen: CreateWish,
     path:'wishes/add',
