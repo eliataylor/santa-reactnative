@@ -46,6 +46,14 @@ class SignUp extends React.Component<{}, State> {
     this.props.createUser(firstname, password, email, phone)
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.me && this.props.auth.me.isVerified === true) {
+      this.props.navigation.navigate('HomeScreen');
+    } else if (this.props.auth.me && this.props.auth.me.isVerified === false) {
+      this.props.navigation.navigate('VerifyUser');
+    }
+  }
+
   render() {
     return (
       <ScrollView style={{height:height, backgroundColor:colors.ALMOST_WHITE}}>

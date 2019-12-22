@@ -29,6 +29,7 @@ interface State {
   title: string;
   desc: string;
   category: string;
+  recipient: string;
   encampment: string;
   lonlat:string;
 }
@@ -39,6 +40,7 @@ class CreateWish extends React.Component {
     title: '',
     desc: '',
     category: '',
+    recipient: '',
     encampment: '',
     lonlat: ''
   };
@@ -51,21 +53,28 @@ class CreateWish extends React.Component {
   onChangeTitle = (value: string) => {
     this.setState({title: value})
   }
+  onChangeRecipient = (value: string) => {
+    this.setState({recipient: value})
+  }
   onChangeDesc = (value: string) => {
     this.setState({desc: value})
   }
 
   submitWish() {
     if (this.state.title.length < 3) {
-      return Alert.alert('Error', 'You must provide a title');
+      return Alert.alert('Error', 'You must provide a valid title');
+    }
+    if (this.state.recipient.length < 1) {
+      return Alert.alert('Error', 'You must provide the name of the recipient');
     }
     if (this.state.category.length < 3) {
-      return Alert.alert('Error', 'You must provide a category');
+      return Alert.alert('Error', 'You must provide a valid category');
     }
     if (this.state.lonlat.length > 3) {
       var item = {
         title:this.state.title,
         body:this.state.desc,
+        recipient:this.state.recipient,
         category:this.state.category,
         lonlat:this.state.lonlat
       };
@@ -99,7 +108,7 @@ class CreateWish extends React.Component {
     if (!prevProps.entity.errors && prevProps.entity.apiData.title === this.state.title && this.state.title != '') { // WARN: a safe assumption, but not ideal key
       console.log("componentDidUpdate1", prevProps.entity, this.state);
       this.props.navigation.navigate('Wishes');
-      this.setState({title: '',desc: '',category: '',encampment: '',lonlat: '',}); // reset form
+      this.setState({title: '',desc: '',category: '', recipient: '', encampment: '',lonlat: '',}); // reset form
     }
   }
 
@@ -125,6 +134,15 @@ class CreateWish extends React.Component {
             autoCorrect={true}
             onChangeText={this.onChangeTitle}
             value={this.state.title}
+            keyboardType='default'
+          />
+          <FormTextInput
+            placeholder="Name of recipient"
+            type='text'
+            returnKeyType='next'
+            autoCorrect={false}
+            onChangeText={this.onChangeRecipient}
+            value={this.state.recipient}
             keyboardType='default'
           />
           <FormTextInput

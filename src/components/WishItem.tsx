@@ -7,7 +7,6 @@ import strings from "../config/strings";
 import Button from "./Button";
 import CategoryIcon from "./CategoryIcon";
 import LocationLink from "./LocationLink";
-import Icon from "./Icon";
 import Deadline from "./Deadline";
 import moment from "moment";
 import { createOffer, updateOffer, deleteWish } from '../redux/entityDataReducer';
@@ -27,6 +26,14 @@ const styles = Object.assign({...baseStyles}, StyleSheet.create({
   h1: {
     fontFamily:'Poppins-Bold',
     fontSize:18,
+  },
+  h2: {
+    fontFamily:'Poppins-Bold',
+    fontSize:16,
+  },
+  em: {
+    fontFamily:'Poppins-BoldItalic',
+    fontStyle:'italic'
   },
   body: {
     fontFamily:'Poppins-Regular',
@@ -94,9 +101,9 @@ class WishItem extends Component {
     );
   }
 
-  openWish() {
+/*  openWish() {
     this.props.navigation.navigate('WishDetail', {wish:this.props.wish, offer:this.props.offer});
-  }
+  } */
 
   render() {
     const { wish, offer } = this.props;
@@ -107,26 +114,28 @@ class WishItem extends Component {
           <View style={styles.row}>
             <View style={[styles.col, {alignItems:'flex-start'}]}>
               <CategoryIcon id={wish.category} onPress={e => this.props.toggleCat(wish.category)} />
-              <TouchableHighlight onPress={e => this.openWish() }>
-                <Text style={styles.h1}>{wish.title}</Text>
-              </TouchableHighlight>
-              <TouchableHighlight onPress={e => this.openWish() }>
-                <Text style={styles.body}>{wish.body}</Text>
-              </TouchableHighlight>
-              <View style={styles.row}>
-                <Icon
-                  onPress={e => this.openWish()}
-                  label="more info"
-                  tintColor={colors.SOFT_RED}
-                  icon={require('../assets/images/baseline_info_black_18dp.png')}
-                  />
-                {(wish.elf._id === this.props.me._id) ?
-                <Icon
-                  onPress={(e) => this.deleteWish()}
-                  label="delete"
-                  icon={require('../assets/images/baseline_delete_black_18dp.png')}
-                  /> : null}
-              </View>
+              <Text style={styles.h1}>{wish.title}</Text>
+              <Text style={styles.h2}>for <Text style={styles.em}>{wish.recipient}</Text></Text>
+              <Text style={styles.body}>{wish.body}</Text>
+              {(offer && offer.state === 'inprogress')
+              ?
+                 <View style={styles.row}>
+                    <Button label={strings.DELIVERED} onPress={(e) => this.updateOffer('fulfilled')}
+                            style={{paddingVertical:2}}/>
+                    <Button label={strings.CANCEL} onPress={(e) => this.updateOffer('canceled')}
+                            style={{backgroundColor:colors.SOFT_RED, paddingVertical:2}} />
+                 </View>
+              : (wish.elf._id === this.props.me._id) ?
+                 <View style={styles.row}>
+                    <Button  label={strings.FULFILL} onPress={(e) => this.startOffer()}
+                      style={{paddingVertical:2}}/>
+                    <Button  label={strings.DELETE} onPress={(e) => this.deleteWish()}
+                      style={{backgroundColor:colors.SOFT_RED, paddingVertical:2}}/>
+                 </View>
+              :
+               <View style={styles.row}><Button label={strings.FULFILL} onPress={(e) => this.startOffer()}
+                      style={{paddingVertical:2}}/></View>
+              }
             </View>
             <View style={styles.col}>
               <Text style={styles.timestamp}>Posted {moment(wish.createdAt).format('MMM Do h:mma')}</Text>

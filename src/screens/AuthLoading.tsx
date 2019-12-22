@@ -70,7 +70,7 @@ class AuthLoading extends React.Component {
   // Render any loading content that you like here
   render() {
     return (
-      <View>
+      <View style={styles.loading}>
         <ActivityIndicator color={colors.SOFT_RED} />
         <StatusBar barStyle="default" />
       </View>
