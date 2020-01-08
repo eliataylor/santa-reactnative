@@ -1,4 +1,4 @@
-package com.reactsanta;
+package com.santafulfills.react;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
