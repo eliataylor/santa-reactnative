@@ -1,4 +1,4 @@
-package com.reactsanta;
+package com.santafulfills.react;
 
 import android.app.Application;
 import android.util.Log;
