@@ -4,12 +4,12 @@ const Config = {
         //base: 'https://santa-api.herokuapp.com',
         base: 'http://santa-local.herokuapp.com:3000',
         timeout: 0, // Milliseconds
-        base64d:'c2FudGFDbGllbnQ6c2FudGFTZWNyZXQ=',
+        base64d:process.env.OAUTH_BASE64,
         tokName : '@santaToken',
-        gMapKey:'AIzaSyBKeuqrNHwRk8tCw7weyDLJqME7qZURIHw'
+        gMapKey:process.env.GMAP_KEY,
     },
     android : {
-      senderId : '629412147035'
+      senderId : process.env.ANDROID_SENDER_ID
     }
 };
 
