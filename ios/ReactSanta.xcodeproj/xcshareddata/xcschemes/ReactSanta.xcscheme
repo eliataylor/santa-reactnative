@@ -102,7 +102,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "PRODUCT_BUNDLE_IDENTIFIER"
-            value = "com.taylormade.santa"
+            value = "com.santafulfills.react"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable

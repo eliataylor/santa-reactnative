@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.santafulfills.react"
+        applicationId "com.santafulfills.santa"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
