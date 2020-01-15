@@ -1,9 +1,9 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'ReactSanta' do
+target 'FunGiving' do
   rn_maps_path = '../node_modules/react-native-maps'
-  # Pods for ReactSanta
+  # Pods for FunGiving
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
@@ -18,7 +18,7 @@ target 'ReactSanta' do
   pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
   pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
   pod 'React-RCTWebSocket', :path => '../node_modules/react-native/Libraries/WebSocket'
-  
+
   pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
   pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
@@ -36,20 +36,10 @@ target 'ReactSanta' do
   pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
 
 
-  target 'ReactSantaTests' do
+  target 'FunGivingTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
   use_native_modules!
-end
-
-target 'ReactSanta-tvOS' do
-  # Pods for ReactSanta-tvOS
-
-  target 'ReactSanta-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
 end

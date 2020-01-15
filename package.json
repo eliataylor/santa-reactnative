@@ -1,5 +1,5 @@
 {
-  "name": "Santa4Homeless",
+  "name": "FunGiving",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "run-android": "react-native run-android --verbose",
     "test": "jest",
     "lint": "eslint .",
-    "build:ios": "react-native bundle --entry-file='index.ios.js' --bundle-output='./ios/ReactSanta/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/ReactSanta/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "postinstall": "npx jetify"
   },
   "dependencies": {
