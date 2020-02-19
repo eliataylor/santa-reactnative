@@ -32,13 +32,11 @@ class SignIn extends React.Component<{}, State> {
   };
 
   handleEmailChange = (email: string) => {
-    email = email.toLowerCase().trim();
-    this.setState({ email: email });
+    this.setState({ email: email.trim() });  // toLowerCase() throws odd error: https://github.com/facebook/react-native/issues/11068
   };
 
   handlePasswordChange = (password: string) => {
-    password = password.trim();
-    this.setState({ password: password });
+    this.setState({ password: password.trim() });
   };
 
   // When the "next" button is pressed, focus the password input
@@ -57,7 +55,7 @@ class SignIn extends React.Component<{}, State> {
       Keyboard.dismiss();
       var data = {grant_type:'password', password:this.state.password};
       if (this.state.phone) data.phone = this.state.phone;
-      else data.email = this.state.email;  // either work on front end (backend still doesn't send sms verification codes though)
+      else data.email = this.state.email.toLowerCase();  // either work on front end (backend still doesn't send sms verification codes though)
       this.props.authenticate(data);
     }
   };
@@ -81,11 +79,14 @@ class SignIn extends React.Component<{}, State> {
     }
 
     const that = this;
-    API.Post('/api/loginlink', {email:email})
+    API.Post('/api/loginlink', {email:email.toLowerCase()})
     .then(res => {
       console.log('loginlink', res.data);
-      // Alert.alert('Check your email', 'and click your login link');
-      that.props.navigation.navigate('VerifyUser', {email:email});
+      if (res.data.error) {
+        Alert.alert(res.data.error);
+      } else {
+        that.props.navigation.navigate('VerifyUser', {email:email});
+      }
       // that.setState({email:''}); // to prevent repeats
     })
     .catch(err => {

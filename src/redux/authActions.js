@@ -122,7 +122,7 @@ export function createUser(username, password, email, phone) {
     if (username) me['name.first'] = username;
     if (password) me.password = password;
     if (phone) me.phone = phone;
-    if (email) me.email = email;
+    if (email) me.email = email.toLowerCase();
 
     return API.Post('/api/users/register', me)
     .then(res => {
@@ -215,7 +215,7 @@ export function checkVerificationCode(code, uid, email) {
     } else if (state.auth.me && state.auth.me._id) {
       data.uid = state.auth.me._id;
     } else if (email) {
-      data.email;
+      data.email = email.toLowerCase();
     } else {
       return dispatch(verifyFailure('missing email or user id'));
     }
