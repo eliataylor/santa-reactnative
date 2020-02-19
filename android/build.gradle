@@ -20,16 +20,23 @@ buildscript {
         minSdkVersion = 16
         compileSdkVersion = 28
         targetSdkVersion = 28
+<<<<<<< ours
         supportLibVersion = "28.0.0"
         googlePlayServicesVersion = "+"
         firebaseVersion = "+"
+=======
+>>>>>>> theirs
     }
     repositories {
         google()
         jcenter()
     }
     dependencies {
+<<<<<<< ours
         classpath('com.android.tools.build:gradle:3.4.2')
+=======
+        classpath("com.android.tools.build:gradle:3.4.2")
+>>>>>>> theirs
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -50,5 +57,6 @@ allprojects {
 
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }

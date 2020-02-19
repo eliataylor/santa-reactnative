@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.santafulfills.react">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.bethesanta.react">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

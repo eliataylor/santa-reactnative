@@ -1,4 +1,4 @@
-package com.santafulfills.react;
+package org.bethesanta.react;
 
 import android.app.Application;
 import android.util.Log;
