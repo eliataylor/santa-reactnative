@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 40,
-    color:colors.SILVER,
+    width:'100%',
     backgroundColor: colors.WHITE,
     fontFamily:'Poppins-ExtraBold',
     paddingVertical:10,

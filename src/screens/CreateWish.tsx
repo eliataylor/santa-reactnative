@@ -153,30 +153,21 @@ class CreateWish extends React.Component {
             onChangeText={this.onChangeDesc}
             value={this.state.desc}
           />
+
           <Picker
             style={{
               ...styles.picker,
               inputAndroid: {
                 backgroundColor:colors.WHITE,
-                color:colors.SILVER,
+                width:'100%',
                 fontFamily:'Poppins-ExtraBold',
                 paddingVertical:10,
                 paddingLeft:10,
                 borderRadius:8,
                 marginBottom:15,
-                fontWeight: 'bold',
-              },
-              placeholder: {
-                backgroundColor:colors.WHITE,
-                color:colors.SILVER,
-                fontFamily:'Poppins-ExtraBold',
-                paddingVertical:10,
-                paddingLeft:10,
-                borderRadius:8,
-                marginBottom:15,
-                fontWeight: 'bold',
-            }}}
-            placeholder={{label:'Select a category', value:'', color:colors.SILVER}}
+              }}}
+            useNativeAndroidPickerStyle={false}
+            placeholder={{label:'Select a category', value:''}}
             selectedValue={this.state.category}
             onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
             items={catOpts} />
