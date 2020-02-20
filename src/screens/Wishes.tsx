@@ -124,7 +124,10 @@ class Wishes extends React.Component<{}, State> {
 
   _radiusChanged = (itemValue, itemIndex) => {
     var that = this;
-    AsyncStorage.setItem('wishRadius', itemValue);
+    if (typeof itemValue !== 'string') {
+      console.log("RADIUS NOT STRING?"+ itemValue + ' is ' + typeof itemValue);
+    }
+    AsyncStorage.setItem('wishRadius', itemValue.toString());
     this.setState({ radius: itemValue }, function(){
       that.refresh();
     });

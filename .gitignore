@@ -4,6 +4,9 @@
 
 private-notes.txt
 
+# API vars not for repo
+src/Config.js
+
 # Xcode
 #
 build/
