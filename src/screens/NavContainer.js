@@ -22,7 +22,10 @@ const navigationConfig = {
     headerStyle: { backgroundColor:colors.ALMOST_WHITE },
     cardStyle: { backgroundColor:colors.ALMOST_WHITE },
     headerTitleStyle: { color:colors.SOFT_RED },
-    headerBackTitle : 'Go Back',
+    headerBackTitleStyle: {
+         color:colors.SOFT_RED
+    },
+//    headerBackTitle : 'Back',
     headerBackImage: (style) => (<Image
           style={{tintColor:colors.SOFT_RED}}
           accessibilityLabel={'Go Back'}
@@ -65,7 +68,7 @@ const AppStack = createStackNavigator({
     path: 'users/:uid/verify/:code',
     navigationOptions: {
       title : 'Account Verification',
-      headerBackTitle : 'Account Verification',
+      // headerBackTitle : 'Account Verification',
     }
   },
   Wishes: {
@@ -73,7 +76,7 @@ const AppStack = createStackNavigator({
     path:'wishes',
     navigationOptions: {
       title : 'Santa Fulfills',
-      headerBackTitle : 'Santa Fulfills',
+      // headerBackTitle : 'Santa Fulfills',
     }
   },
   /* WishDetail: {
@@ -92,7 +95,7 @@ const AppStack = createStackNavigator({
     path:'wishes/add',
     navigationOptions: {
       title : 'Enter a Wish',
-      headerBackTitle : 'Enter a Wish',
+      // headerBackTitle : 'Enter a Wish',
     }
   }
 }, navigationConfig);

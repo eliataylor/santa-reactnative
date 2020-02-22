@@ -21,9 +21,9 @@
 {
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"ReactSanta"
+                                                   moduleName:@"FunGiving"
                                             initialProperties:nil];
-  [GMSServices provideAPIKey:@"AIzaSyBKeuqrNHwRk8tCw7weyDLJqME7qZURIHw"];
+  [GMSServices provideAPIKey:@"AIzaSyCj0vuh7-TbZCPwuiMJJ2VCGJSX58pWXa4"];
 
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 

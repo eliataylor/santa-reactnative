@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00C43F561E9A4720BFBA716F /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61B209BE977840E790A3DE98 /* Poppins-Regular.ttf */; };
-		00E356F31AD99517003FC87E /* ReactSantaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ReactSantaTests.m */; };
 		04FDD79185244D8D99A6B529 /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0CBD2E5F2EB546B387814E82 /* Poppins-ExtraBold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
@@ -17,7 +16,7 @@
 		1C6BBAF7E79445BC91D4A004 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5EBCE53B927946698A0A1361 /* Poppins-BlackItalic.ttf */; };
 		2313246A537E412889B81BDC /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20E8EBCFA0DA433FB9764C2E /* Poppins-ExtraLightItalic.ttf */; };
 		34704284053F4C0C9BCF568E /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBCA7B988D11427FA6DF2FB2 /* Poppins-SemiBoldItalic.ttf */; };
-		3C26B00EF231D77B5C85B232 /* libPods-FunGivingTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD6A25708A6BD6C559586321 /* libPods-FunGivingTests.a */; };
+		4132AF37BFFB07C817A0210A /* libPods-FunGiving.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EFF767A2D430A5C512C4BC /* libPods-FunGiving.a */; };
 		64A3231D836B4FB3A992575A /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D2EC6DB234C842B9A02011FF /* Poppins-LightItalic.ttf */; };
 		7414B86191DE40499349F418 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93BDB902BFE0462DBD5B6FB6 /* Poppins-Black.ttf */; };
 		75F2F4827D9A42B28F991A01 /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D5E79F85EBF428CAAC90DF1 /* Poppins-ExtraBoldItalic.ttf */; };
@@ -30,114 +29,81 @@
 		CE0FDBAA23CF7E9B0099495D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0FDBA923CF7E9B0099495D /* Images.xcassets */; };
 		D57D127F40AC4A01AD43BEF5 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2654231E06204BFE8024EDA8 /* Poppins-BoldItalic.ttf */; };
 		FBA0A36C077241D89CE355C4 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07E17947F12342B582B338EA /* Poppins-MediumItalic.ttf */; };
-		FC5B59FD6F3BC7CB93137790 /* libPods-FunGiving.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C83880B73979118A3570AF33 /* libPods-FunGiving.a */; };
 		FDC6899EB4184DE3AF5DF985 /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B2BA6D2BE674FD896FF306E /* Poppins-ExtraLight.ttf */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = ReactSanta;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* FunGivingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FunGivingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* ReactSantaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactSantaTests.m; sourceTree = "<group>"; };
-		015E356A3A52FAAD4B558B5F /* Pods-ReactSantaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSantaTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactSantaTests/Pods-ReactSantaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* FunGivingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FunGivingTests.m; sourceTree = "<group>"; };
 		07AA46DBCAD140FE8E9B3792 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		07E17947F12342B582B338EA /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		09412C32E2884C86AB03AC56 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		0CBD2E5F2EB546B387814E82 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
 		122A91AE360C438CB5D55F77 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* FunGiving.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FunGiving.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ReactSanta/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ReactSanta/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = FunGiving/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = FunGiving/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactSanta/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ReactSanta/main.m; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FunGiving/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FunGiving/main.m; sourceTree = "<group>"; };
 		1ED9CD5627F845A48D2274EE /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		20E8EBCFA0DA433FB9764C2E /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		24B06A134FC742E2AFD9AB50 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		259892BB1A8F43CAA1C77ED8 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		2654231E06204BFE8024EDA8 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
-		26A382CC10861E83762E9D11 /* Pods-FunGivingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunGivingTests.release.xcconfig"; path = "Target Support Files/Pods-FunGivingTests/Pods-FunGivingTests.release.xcconfig"; sourceTree = "<group>"; };
-		2F09CAA52B060036B016019F /* Pods-ReactSanta-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSanta-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ReactSanta-tvOSTests/Pods-ReactSanta-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		34A6AC796B4B49C69BBF938F /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		3FBC66A172E5345009A52F86 /* Pods-ReactSanta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSanta.release.xcconfig"; path = "Target Support Files/Pods-ReactSanta/Pods-ReactSanta.release.xcconfig"; sourceTree = "<group>"; };
+		40EFF767A2D430A5C512C4BC /* libPods-FunGiving.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FunGiving.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B01E82B7DB202C61E7A3BC6 /* Pods-FunGiving.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunGiving.release.xcconfig"; path = "Target Support Files/Pods-FunGiving/Pods-FunGiving.release.xcconfig"; sourceTree = "<group>"; };
 		4C051383F9A844AD828C9E79 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		4DAEF94FBB0346F0B7C38DBE /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
-		5AD8331D4FEF1A7627E4C1A3 /* Pods-ReactSanta-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSanta-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactSanta-tvOSTests/Pods-ReactSanta-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5EBCE53B927946698A0A1361 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		61B209BE977840E790A3DE98 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		624B112CB133489780305F03 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		69CA1AD8BCB444C7A6BF443D /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		6B2BA6D2BE674FD896FF306E /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
-		6C7C7318F421CE2B79DB9F1D /* Pods-FunGivingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunGivingTests.debug.xcconfig"; path = "Target Support Files/Pods-FunGivingTests/Pods-FunGivingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6D5E79F85EBF428CAAC90DF1 /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		6E05E68F9A754CEC8547F0DC /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		7D9518797CE94F949463BE54 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		89AF3FA1E8C6739E87BD1BD8 /* Pods-FunGiving.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunGiving.debug.xcconfig"; path = "Target Support Files/Pods-FunGiving/Pods-FunGiving.debug.xcconfig"; sourceTree = "<group>"; };
-		92DAD89AA1BB06F13D7A7A4B /* Pods-ReactSanta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSanta.debug.xcconfig"; path = "Target Support Files/Pods-ReactSanta/Pods-ReactSanta.debug.xcconfig"; sourceTree = "<group>"; };
 		93BDB902BFE0462DBD5B6FB6 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		957E45C654034B1BBF98E23D /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		9A7C3AC4E2A145A18447B4D1 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		9B4FC3A6E0C6238F36816643 /* Pods-FunGiving.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunGiving.release.xcconfig"; path = "Target Support Files/Pods-FunGiving/Pods-FunGiving.release.xcconfig"; sourceTree = "<group>"; };
-		9E5C2198334C0238EC816A4C /* libPods-ReactSanta-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactSanta-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A66708C8929C89A339877562 /* libPods-ReactSanta-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactSanta-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6F0038C78544601BF4A560E /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		A8CAC96F4DC84068B5973E97 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
+		B1C00C7845651B38EF327548 /* Pods-FunGiving.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FunGiving.debug.xcconfig"; path = "Target Support Files/Pods-FunGiving/Pods-FunGiving.debug.xcconfig"; sourceTree = "<group>"; };
 		B9CCED7664F2492FA924E493 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		BA9A0E971791450280FF61F3 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
-		C6DF3E4C975D200B52A56A85 /* Pods-ReactSanta-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSanta-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ReactSanta-tvOS/Pods-ReactSanta-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C83388D322CA45B590F23461 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		C83880B73979118A3570AF33 /* libPods-FunGiving.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FunGiving.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0FDBA923CF7E9B0099495D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FunGiving/Images.xcassets; sourceTree = "<group>"; };
-		CE2CA5BA230FF8300054C65E /* ReactSanta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ReactSanta.entitlements; path = ReactSanta/ReactSanta.entitlements; sourceTree = "<group>"; };
-		D27D09325C6C11D207D07224 /* Pods-ReactSanta-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSanta-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ReactSanta-tvOS/Pods-ReactSanta-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		CE2CA5BA230FF8300054C65E /* FunGiving.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FunGiving.entitlements; path = FunGiving/FunGiving.entitlements; sourceTree = "<group>"; };
 		D2EC6DB234C842B9A02011FF /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		D6C7C44840D84A148025D18F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
-		DD6A25708A6BD6C559586321 /* libPods-FunGivingTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FunGivingTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3491D71EDAE44CF873482A7 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		E8DABABE03074A42870F5747 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F529435DB05A382935B98DA2 /* Pods-ReactSantaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactSantaTests.release.xcconfig"; path = "Target Support Files/Pods-ReactSantaTests/Pods-ReactSantaTests.release.xcconfig"; sourceTree = "<group>"; };
 		FBCA7B988D11427FA6DF2FB2 /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		00E356EB1AD99517003FC87E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3C26B00EF231D77B5C85B232 /* libPods-FunGivingTests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC5B59FD6F3BC7CB93137790 /* libPods-FunGiving.a in Frameworks */,
+				4132AF37BFFB07C817A0210A /* libPods-FunGiving.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* ReactSantaTests */ = {
+		00E356EF1AD99517003FC87E /* FunGivingTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* ReactSantaTests.m */,
+				00E356F21AD99517003FC87E /* FunGivingTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = ReactSantaTests;
+			path = FunGivingTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -164,18 +130,8 @@
 		2913B1E8F25F0DA3D6EDA93F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				92DAD89AA1BB06F13D7A7A4B /* Pods-ReactSanta.debug.xcconfig */,
-				3FBC66A172E5345009A52F86 /* Pods-ReactSanta.release.xcconfig */,
-				C6DF3E4C975D200B52A56A85 /* Pods-ReactSanta-tvOS.debug.xcconfig */,
-				D27D09325C6C11D207D07224 /* Pods-ReactSanta-tvOS.release.xcconfig */,
-				5AD8331D4FEF1A7627E4C1A3 /* Pods-ReactSanta-tvOSTests.debug.xcconfig */,
-				2F09CAA52B060036B016019F /* Pods-ReactSanta-tvOSTests.release.xcconfig */,
-				015E356A3A52FAAD4B558B5F /* Pods-ReactSantaTests.debug.xcconfig */,
-				F529435DB05A382935B98DA2 /* Pods-ReactSantaTests.release.xcconfig */,
-				89AF3FA1E8C6739E87BD1BD8 /* Pods-FunGiving.debug.xcconfig */,
-				9B4FC3A6E0C6238F36816643 /* Pods-FunGiving.release.xcconfig */,
-				6C7C7318F421CE2B79DB9F1D /* Pods-FunGivingTests.debug.xcconfig */,
-				26A382CC10861E83762E9D11 /* Pods-FunGivingTests.release.xcconfig */,
+				B1C00C7845651B38EF327548 /* Pods-FunGiving.debug.xcconfig */,
+				4B01E82B7DB202C61E7A3BC6 /* Pods-FunGiving.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -185,10 +141,7 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				9E5C2198334C0238EC816A4C /* libPods-ReactSanta-tvOS.a */,
-				A66708C8929C89A339877562 /* libPods-ReactSanta-tvOSTests.a */,
-				C83880B73979118A3570AF33 /* libPods-FunGiving.a */,
-				DD6A25708A6BD6C559586321 /* libPods-FunGivingTests.a */,
+				40EFF767A2D430A5C512C4BC /* libPods-FunGiving.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -203,10 +156,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				CE2CA5BA230FF8300054C65E /* ReactSanta.entitlements */,
+				CE2CA5BA230FF8300054C65E /* FunGiving.entitlements */,
 				13B07FAE1A68108700A75B9A /* Fun Giving */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* ReactSantaTests */,
+				00E356EF1AD99517003FC87E /* FunGivingTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				2913B1E8F25F0DA3D6EDA93F /* Pods */,
@@ -222,7 +175,6 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* FunGiving.app */,
-				00E356EE1AD99517003FC87E /* FunGivingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -279,43 +231,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* FunGivingTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "FunGivingTests" */;
-			buildPhases = (
-				A9E380C54B3250DF362B0F1C /* [CP] Check Pods Manifest.lock */,
-				00E356EA1AD99517003FC87E /* Sources */,
-				00E356EB1AD99517003FC87E /* Frameworks */,
-				00E356EC1AD99517003FC87E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				00E356F51AD99517003FC87E /* PBXTargetDependency */,
-			);
-			name = FunGivingTests;
-			productName = ReactSantaTests;
-			productReference = 00E356EE1AD99517003FC87E /* FunGivingTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		13B07F861A680F5B00A75B9A /* FunGiving */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "FunGiving" */;
 			buildPhases = (
-				549BE77A3EA5051FBB0DCA10 /* [CP] Check Pods Manifest.lock */,
+				EA716BFC41C2745735F30769 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				A40E7C86DE377238EF918A95 /* [CP] Copy Pods Resources */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
+				42BDBECB7E7177D48F7CA688 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = FunGiving;
-			productName = ReactSanta;
+			productName = FunGiving;
 			productReference = 13B07F961A680F5B00A75B9A /* FunGiving.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -328,12 +261,7 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Eli A Taylor";
 				TargetAttributes = {
-					00E356ED1AD99517003FC87E = {
-						CreatedOnToolsVersion = 6.2;
-						TestTargetID = 13B07F861A680F5B00A75B9A;
-					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = Z6J6D87CY6;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -359,19 +287,11 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* FunGiving */,
-				00E356ED1AD99517003FC87E /* FunGivingTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		00E356EC1AD99517003FC87E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -416,29 +336,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		549BE77A3EA5051FBB0DCA10 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FunGiving-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A40E7C86DE377238EF918A95 /* [CP] Copy Pods Resources */ = {
+		42BDBECB7E7177D48F7CA688 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -456,7 +354,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FunGiving/Pods-FunGiving-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A9E380C54B3250DF362B0F1C /* [CP] Check Pods Manifest.lock */ = {
+		EA716BFC41C2745735F30769 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -471,7 +369,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FunGivingTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-FunGiving-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -500,14 +398,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		00E356EA1AD99517003FC87E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				00E356F31AD99517003FC87E /* ReactSantaTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		13B07F871A680F5B00A75B9A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -519,14 +409,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* FunGiving */;
-			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
@@ -534,70 +416,22 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = ReactSanta;
+			path = FunGiving;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		00E356F61AD99517003FC87E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C7C7318F421CE2B79DB9F1D /* Pods-FunGivingTests.debug.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ReactSantaTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-					"$(inherited)",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.bethesanta.react.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FunGiving.app/FunGiving";
-			};
-			name = Debug;
-		};
-		00E356F71AD99517003FC87E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 26A382CC10861E83762E9D11 /* Pods-FunGivingTests.release.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				COPY_PHASE_STRIP = NO;
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ReactSantaTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-					"$(inherited)",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.bethesanta.react.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FunGiving.app/FunGiving";
-			};
-			name = Release;
-		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89AF3FA1E8C6739E87BD1BD8 /* Pods-FunGiving.debug.xcconfig */;
+			baseConfigurationReference = B1C00C7845651B38EF327548 /* Pods-FunGiving.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = ReactSanta/ReactSanta.entitlements;
 				CURRENT_PROJECT_VERSION = 1.0;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = Z6J6D87CY6;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ReactSanta/Info.plist;
+				INFOPLIST_FILE = FunGiving/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -613,14 +447,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B4FC3A6E0C6238F36816643 /* Pods-FunGiving.release.xcconfig */;
+			baseConfigurationReference = 4B01E82B7DB202C61E7A3BC6 /* Pods-FunGiving.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = ReactSanta/ReactSanta.entitlements;
 				CURRENT_PROJECT_VERSION = 1.0;
-				DEVELOPMENT_TEAM = Z6J6D87CY6;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = ReactSanta/Info.plist;
+				INFOPLIST_FILE = FunGiving/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -738,15 +571,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "FunGivingTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				00E356F61AD99517003FC87E /* Debug */,
-				00E356F71AD99517003FC87E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "FunGiving" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
