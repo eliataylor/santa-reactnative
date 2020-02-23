@@ -47,12 +47,18 @@
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" android:host="santa-api.herokuapp.com" android:pathPrefix="/api" />
         </intent-filter>
-          <intent-filter android:label="FunGiving" >
+        <intent-filter android:label="FunGiving" >
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <data android:scheme="https" android:host="www.fungiving.net" android:pathPrefix="/api" />
+        </intent-filter>
+        <intent-filter android:label="FunGiving" >
               <action android:name="android.intent.action.VIEW" />
               <category android:name="android.intent.category.DEFAULT" />
               <category android:name="android.intent.category.BROWSABLE" />
               <data android:scheme="https" android:host="fungiving.net" android:pathPrefix="/api" />
-          </intent-filter>
+        </intent-filter>
         <intent-filter android:label="FunGiving">
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />

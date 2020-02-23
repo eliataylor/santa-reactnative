@@ -76,6 +76,7 @@
 		C83388D322CA45B590F23461 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		CE0FDBA923CF7E9B0099495D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FunGiving/Images.xcassets; sourceTree = "<group>"; };
 		CE2CA5BA230FF8300054C65E /* FunGiving.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FunGiving.entitlements; path = FunGiving/FunGiving.entitlements; sourceTree = "<group>"; };
+		CEBF46EB240233DC002A3FCB /* FunGivingDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FunGivingDebug.entitlements; path = FunGiving/FunGivingDebug.entitlements; sourceTree = "<group>"; };
 		D2EC6DB234C842B9A02011FF /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		D6C7C44840D84A148025D18F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		E3491D71EDAE44CF873482A7 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -156,6 +157,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CEBF46EB240233DC002A3FCB /* FunGivingDebug.entitlements */,
 				CE2CA5BA230FF8300054C65E /* FunGiving.entitlements */,
 				13B07FAE1A68108700A75B9A /* Fun Giving */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -262,6 +264,7 @@
 				ORGANIZATIONNAME = "Eli A Taylor";
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 4E7BA47MN7;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -427,9 +430,10 @@
 			baseConfigurationReference = B1C00C7845651B38EF327548 /* Pods-FunGiving.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FunGiving/FunGivingDebug.entitlements;
 				CURRENT_PROJECT_VERSION = 1.0;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4E7BA47MN7;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = FunGiving/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
