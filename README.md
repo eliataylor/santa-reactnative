@@ -1,12 +1,11 @@
 ### Bringing the community together to fulfill the wishes of the homeless
 
-This app is intended to bring the community together to fulfill the wishes of the homeless people on the streets. There are two users of the app namely The Santa and The Elf. The elf is any person walking on the street who has sometime to have a conversation with the homeless and enter their wish into the app. They enter the wish details including the location of the person and carry on in their lives. On submitting the wish, all the users that have the app will get notified as long as it matches their selected mile radius. The person who accepts to fulfill the wish then takes the role of Santa and walks to the location in the request thus fulfilling the wish.
+This app is intended to bring the community together through fulfilling the wishes of our homeless community members. Within the app, there are two users: The Santa and The Elf.
 
+The Elf is any person walking on the street who has sometime to have a conversation with the homeless and enter their wish into the app. They enter the wish details including the location of the person. On submitting the wish, all nearby users get notified. The person who accepts to fulfill the wish takes the role of Santa and walks to the location in the request to deliver the requested wish.
 
 - Terms & Conditions: https://www.fungiving.net/terms
 - Privacy Policy: https://www.fungiving.net/terms
-
-
 
 ### To Build:
 - `yarn install`
