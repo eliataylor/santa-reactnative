@@ -9,12 +9,12 @@ var notice = {
   autoCancel: true, // (optional) default: true
   largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
   smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
-  bigText: "My big text that will be shown when notification is expanded", // (optional) default: "message" prop
-  subText: "This is a subText", // (optional) default: none
+  bigText: "Fungiving bigText", // (optional) default: "message" prop
+  subText: "Fungiving subText", // (optional) default: none
   color: "red", // (optional) default: system default
   vibrate: true, // (optional) default: true
   vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
-  tag: 'santa_fulfills', // (optional) add tag to message
+  tag: 'fungiving', // (optional) add tag to message
   // group: "group", // (optional) add group to message
   ongoing: false, // (optional) set whether this is an "ongoing" notification
 

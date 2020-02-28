@@ -113,7 +113,7 @@ class CreateWish extends React.Component {
   }
 
   render() {
-    const { signUpError, nextSteps } = this.props
+    const { signUpError } = this.props
 
     const catOpts = [];
     if (this.props.auth.categories) {

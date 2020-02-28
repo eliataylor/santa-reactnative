@@ -7,6 +7,7 @@ const colors = {
   SILVER: "#BEBEBE",
   DARK_GREY:"#202020",
   LIGHT_GREY:"rgba(247,247,247,1.0)",
+  MID_GREY:"rgba(121,121,121,1.0)",
 };
 
 export default colors;

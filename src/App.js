@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import NavContainer from './screens/NavContainer';
+import NotifService from './utils/NotifService';
 import Snackbar from 'react-native-snackbar';
 import API from './utils/API';
 import styles from './theme';
@@ -12,25 +13,53 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.navigator = false;
+    this.onRegister = this.onRegister.bind(this);
+    this.onNotification = this.onNotification.bind(this);
+    this.notifService = new NotifService(this.onRegister, this.onNotification);
   }
 
 /*
   componentDidMount() {
-    console.log('APP DID MOUNT');
-    AppState.addEventListener('change', this.handleAppStateChange);
+    this.notifService = new NotifService(this.onRegister, this.onNotification);
   }
 
   componentWillUnmount() {
     console.log('APP WILLUNMOUNT')
     AppState.removeEventListener('change', this.handleAppStateChange);
   }
-
   handleAppStateChange(appState) {
     console.log("React handleAppStateChange " + appState);
   }
 */
 
+  componentDidUpdate(prevProps, prevState) {
+    var errors = {};
+
+    errors[this.props.auth.signUpError] = prevProps.auth.signUpError;
+    errors[this.props.auth.logInError] = prevProps.auth.logInError;
+    errors[this.props.auth.verifyError] = prevProps.auth.verifyError;
+    errors[this.props.lists.errors] = prevProps.lists.errors;
+    errors[this.props.entity.errors] = prevProps.entity.errors;
+
+    for(var e in errors) {
+      if (e === errors[e] || typeof e !== 'string' || e === 'null' || e === 'undefined' || e === 'false') {
+        continue;
+      }
+      Snackbar.show({
+        title : e,
+        duration : Snackbar.LENGTH_LONG,
+        backgroundColor	: 'red',
+        color : 'white'
+      });
+    }
+
+    /* if (prevProps.auth.me === false && this.props.auth.me) {
+      this.notifService = new NotifService(this.onRegister, this.onNotification);
+    } */
+  }
+
   onRegister(token) {
+    if (!this.props.auth.me) return false;
     console.log('DEVICE TOKEN REGISTERED', token, this.props.auth.me);
     if (this.props.auth.me.devices) {
       try {
@@ -40,7 +69,7 @@ class App extends React.Component {
         devices = {};
       }
       if (typeof devices[token.token] === 'string') {
-        return console.log('device is already saved on server');
+        return console.log('device is already saved on server: ', devices);
       }
     }
     API.Put('/api/users/'+this.props.auth.me._id+'/devicetoken', token)
@@ -55,24 +84,20 @@ class App extends React.Component {
     });
   }
 
+  onNotification(notification) {
+      console.log("NOTIFICATION OPENED", notification);
+      // TODO: parse notification and send to proper Screen
+      /* {"collapse_key": "org.bethesanta.react", "finish": [Function finish], "foreground": true, "google.delivered_priority": "normal", "google.message_id": "0:1582920592626927%48acde5a48acde5a", "google.original_priority": "normal", "google.sent_time": 1582920592609, "google.ttl": 2416371, "id": "1385619521",
+      "message": "Insulin medication", "msgcnt": "2", "notification": {"badge": "2", "body": "Insulin medication", "sound": "ping", "title": "Someone has a wish near you"},
+      "sender": "Santa", "sound": "ping.aiff", "title": "Someone has a wish near you", "userInteraction": false} */
+  }
+
+
 /*  onNavigationStateChange(prevState, newState, action) {
     console.log('onNavigationStateChange', prevState, newState, action);
   } */
 
   render() {
-    var errors = [this.props.auth.signUpError, this.props.auth.logInError, this.props.auth.verifyError, this.props.lists.errors, this.props.entity.errors];
-
-    for(var e in errors) {
-      if (errors[e]) {
-        Snackbar.show({
-          title : errors[e],
-          duration : (e === 0) ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG,
-          backgroundColor	: 'red',
-          color : 'white'
-        });
-      }
-    }
-
     //const prefix = Linking.makeUrl('/');
     //const prefix = 'santafulfills://';
     const prefix = Config.api.base + '/api';
@@ -86,9 +111,9 @@ class App extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-
-}
+/* const mapDispatchToProps = {
+  clearAuthErrors: () => clearAuthErrors()
+} */
 
 const mapStateToProps = state => {
   return {
@@ -98,4 +123,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, null)(App);

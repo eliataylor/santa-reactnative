@@ -92,26 +92,11 @@ function verifyFailure(err) {
   }
 }
 
-function nextStepStart() {
+function clearAuthErrors() {
   return {
-    type: NEXT_STEP_STARTED
+    type: CLEAR_ERRORS
   }
 }
-
-function nextStepSuccess(action) {
-  return {
-    type: NEXT_STEP_SUCCESS,
-    action
-  }
-}
-
-function nextStepFailure(err) {
-  return {
-    type: NEXT_STEP_FAILURE,
-    error: err
-  }
-}
-
 
 /** Actual functions **/
 export function createUser(username, password, email, phone) {

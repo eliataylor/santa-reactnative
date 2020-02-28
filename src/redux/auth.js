@@ -11,9 +11,7 @@ export const VERIFY_STARTED = 'VERIFY_STARTED'
 export const VERIFY_SUCCESS = 'VERIFY_SUCCESS' // an opportunity for the client to route what's next
 export const VERIFY_FAILURE = 'VERIFY_FAILURE'
 
-export const NEXT_STEP_STARTED = 'NEXT_STEP_STARTED'
-export const NEXT_STEP_SUCCESS = 'NEXT_STEP_SUCCESS' // an opportunity for the server to tell the client what to do next
-export const NEXT_STEP_FAILURE = 'NEXT_STEP_FAILURE'
+export const CLEAR_ERRORS = 'CLEAR_ERRORS'
 
 export const LOG_OUT = 'LOG_OUT' // generally async anyway (client kills token, doesn't need callback for revoking on server)
 
@@ -25,8 +23,6 @@ const initialState = {
   signUpError: false,
   verifyError: false,
   logInError: false,
-
-  nextSteps: []
 }
 
 export default (state = initialState, action) => {
@@ -60,9 +56,6 @@ export default (state = initialState, action) => {
       newState.me = action.payload.me; // from registration
       newState.categories = action.payload.categories;
       newState.me.offers = action.payload.offers;
-      if (newState.me.isVerified === false) {
-        // newState.nextSteps.push(VERIFY_STARTED); consider using this instead of componentDidUpdate to redirect
-      }
       return newState;
     case SIGNUP_FAILURE:
       newState.loading = false;
@@ -80,20 +73,11 @@ export default (state = initialState, action) => {
       newState.loading = false;
       newState.verifyError = action.error;
       return newState;
-    case NEXT_STEP_STARTED:
-      newState.loading = true;
+    case CLEAR_ERRORS:
       newState.logInError = false;
+      newState.signUpError = false;
+      newState.verifyError = false;
       return newState;
-    case NEXT_STEP_SUCCESS:
-      newState.loading = false;
-      newState.logInError = false;
-      newState.me = action.user;
-      return newState;
-    case NEXT_STEP_FAILURE:
-      newState.loading = false;
-      newState.logInError = action.error;
-      return newState;
-
     case LOG_OUT:
       return {
         ...initialState,
