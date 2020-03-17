@@ -5,6 +5,7 @@ import {
   Linking,
   ActivityIndicator,
   AsyncStorage,
+  Alert,
   StatusBar,
   StyleSheet,
   View,
@@ -31,6 +32,7 @@ class AuthLoading extends React.Component {
           console.log('LOADING INIT URL ' + pathname);
           if (pathname.indexOf('/api/users/') === 0) {
             var parts = pathname.split('/');
+            console.log(parts);
             return this.props.navigation.navigate('VerifyUser', {code:parts[5], uid:parts[3]});
           } else if (pathname.indexOf('/api/wishes') === 0) {
             return this.props.navigation.navigate('Wishes');
@@ -39,7 +41,7 @@ class AuthLoading extends React.Component {
           }
         }
         return false;
-     }).catch(err => console.error('An error occurred', err));
+     }).catch(err => Alert.alert('Autologin Error', err));
 
     this.tokens = await API.getLocalTokens();
     if (this.tokens) {
