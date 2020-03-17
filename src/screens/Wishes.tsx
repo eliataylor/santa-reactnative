@@ -191,6 +191,9 @@ class Wishes extends React.Component<{}, State> {
             <Picker
               value={this.state.radius}
               style={styles.radius}
+              textInputProps={{
+                style:styles.radius
+              }}
               useNativeAndroidPickerStyle={false}
               onValueChange={this._radiusChanged}
               items={radiusOpts} />

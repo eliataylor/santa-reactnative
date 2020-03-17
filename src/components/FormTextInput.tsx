@@ -29,6 +29,8 @@ class FormTextInput extends React.Component<Props> {
           ref={this.textInputRef}
           selectionColor={colors.SOFT_RED}
           style={[styles.textInput, style]}
+          placeholderTextColor={colors.SILVER}
+          placeholderStyle={{ color:colors.SILVER }}
           {...otherProps}
         />
         {(help && help !== '') ? <Text style={styles.helpText}>{help}</Text> : null}

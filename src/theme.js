@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     height: 40,
     width:'100%',
     backgroundColor: colors.WHITE,
+    color:colors.SILVER,
     fontFamily:'Poppins-ExtraBold',
     paddingVertical:10,
     paddingLeft:10,

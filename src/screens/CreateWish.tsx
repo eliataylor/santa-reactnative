@@ -4,7 +4,6 @@ import {
   Text,
   Alert,
   View,
-  TextInput,
   Dimensions,
   ScrollView,
   TouchableOpacity,
@@ -153,11 +152,10 @@ class CreateWish extends React.Component {
             onChangeText={this.onChangeDesc}
             value={this.state.desc}
           />
-
           <Picker
             style={{
               ...styles.picker,
-              inputAndroid: {
+                inputAndroid: {
                 backgroundColor:colors.WHITE,
                 width:'100%',
                 fontFamily:'Poppins-ExtraBold',
@@ -166,6 +164,9 @@ class CreateWish extends React.Component {
                 borderRadius:8,
                 marginBottom:15,
               }}}
+            textInputProps={{
+              style:styles.picker
+            }}
             useNativeAndroidPickerStyle={false}
             placeholder={{label:'Select a category', value:''}}
             selectedValue={this.state.category}
