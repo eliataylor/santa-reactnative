@@ -12,7 +12,7 @@ export const VERIFY_SUCCESS = 'VERIFY_SUCCESS' // an opportunity for the client 
 export const VERIFY_FAILURE = 'VERIFY_FAILURE'
 
 export const CLEAR_ERRORS = 'CLEAR_ERRORS'
-
+export const DEVICE_TOKEN = 'DEVICE_TOKEN'
 export const LOG_OUT = 'LOG_OUT' // generally async anyway (client kills token, doesn't need callback for revoking on server)
 
 // default authentication object
@@ -77,6 +77,9 @@ export default (state = initialState, action) => {
       newState.logInError = false;
       newState.signUpError = false;
       newState.verifyError = false;
+      return newState;
+    case DEVICE_TOKEN:
+      newState.deviceToken = action.token;
       return newState;
     case LOG_OUT:
       return {

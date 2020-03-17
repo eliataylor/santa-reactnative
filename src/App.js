@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import NavContainer from './screens/NavContainer';
+import {setDeviceToken} from './redux/authActions';
 import NotifService from './utils/NotifService';
 import Snackbar from 'react-native-snackbar';
 import API from './utils/API';
@@ -18,11 +19,10 @@ class App extends React.Component {
     this.notifService = new NotifService(this.onRegister, this.onNotification);
   }
 
-/*
+  /*
   componentDidMount() {
     this.notifService = new NotifService(this.onRegister, this.onNotification);
   }
-
   componentWillUnmount() {
     console.log('APP WILLUNMOUNT')
     AppState.removeEventListener('change', this.handleAppStateChange);
@@ -30,7 +30,7 @@ class App extends React.Component {
   handleAppStateChange(appState) {
     console.log("React handleAppStateChange " + appState);
   }
-*/
+  */
 
   componentDidUpdate(prevProps, prevState) {
     var errors = {};
@@ -53,43 +53,31 @@ class App extends React.Component {
       });
     }
 
-    /* if (prevProps.auth.me === false && this.props.auth.me) {
-      this.notifService = new NotifService(this.onRegister, this.onNotification);
-    } */
+    if (prevProps.auth.me === false && this.props.auth.me) {
+      if (this.props.auth.deviceToken) {
+        this.props.setDeviceToken(this.props.auth.me._id, this.props.auth.deviceToken);
+      }
+    } else if (!prevProps.auth.deviceToken && this.props.auth.deviceToken) {
+      this.props.setDeviceToken(this.props.auth.me._id, this.props.auth.deviceToken);
+    }
   }
 
   onRegister(token) {
-    if (!this.props.auth.me) return false;
-    console.log('DEVICE TOKEN REGISTERED', token, this.props.auth.me);
-    if (this.props.auth.me.devices) {
-      try {
-        var devices = (this.props.auth.me.devices) ? JSON.parse(this.props.auth.me.devices) : {};
-      } catch(e) {
-        console.log('bad devices for json', this.props.auth.me.devices);
-        devices = {};
-      }
-      if (typeof devices[token.token] === 'string') {
-        return console.log('device is already saved on server: ', devices);
-      }
+    if (!this.props.auth.me) {
+      this.props.setDeviceToken(false, token);
+    } else {
+      this.props.setDeviceToken(this.props.auth.me._id, token);
     }
-    API.Put('/api/users/'+this.props.auth.me._id+'/devicetoken', token)
-    .then(res => {
-      console.log('stored device token', res.data);
-      return res.data;
-    })
-    .catch(err => {
-      var msg = API.getErrorMsg(err);
-      console.log('error logging in: ', msg);
-      return err;
-    });
   }
 
   onNotification(notification) {
       console.log("NOTIFICATION OPENED", notification);
       // TODO: parse notification and send to proper Screen
-      /* {"collapse_key": "org.bethesanta.react", "finish": [Function finish], "foreground": true, "google.delivered_priority": "normal", "google.message_id": "0:1582920592626927%48acde5a48acde5a", "google.original_priority": "normal", "google.sent_time": 1582920592609, "google.ttl": 2416371, "id": "1385619521",
+      /*
+      {"collapse_key": "org.bethesanta.react", "finish": [Function finish], "foreground": true, "google.delivered_priority": "normal", "google.message_id": "0:1582920592626927%48acde5a48acde5a", "google.original_priority": "normal", "google.sent_time": 1582920592609, "google.ttl": 2416371, "id": "1385619521",
       "message": "Insulin medication", "msgcnt": "2", "notification": {"badge": "2", "body": "Insulin medication", "sound": "ping", "title": "Someone has a wish near you"},
-      "sender": "Santa", "sound": "ping.aiff", "title": "Someone has a wish near you", "userInteraction": false} */
+      "sender": "Santa", "sound": "ping.aiff", "title": "Someone has a wish near you", "userInteraction": false}
+      */
   }
 
 
@@ -111,9 +99,9 @@ class App extends React.Component {
   }
 }
 
-/* const mapDispatchToProps = {
-  clearAuthErrors: () => clearAuthErrors()
-} */
+const mapDispatchToProps = {
+  setDeviceToken: (uid, token) => setDeviceToken(uid, token)
+}
 
 const mapStateToProps = state => {
   return {
@@ -123,4 +111,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

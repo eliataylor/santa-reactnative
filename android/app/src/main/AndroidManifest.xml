@@ -35,12 +35,6 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="santafulfills" />
-        </intent-filter>
         <intent-filter android:label="FunGiving" >
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
@@ -66,21 +60,13 @@
             <!-- Accepts URIs that begin with "https://santa-local.herokuapp.com/api -->
             <data android:scheme="https" android:host="santa-local.herokuapp.com" android:pathPrefix="/api" />
         </intent-filter>
-        <intent-filter android:label="FunGiving">
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <!-- Accepts URIs that begin with "santa://fulfills -->
-            <data android:scheme="santa" android:host="fulfills" />
-        </intent-filter>
-
       </activity>
 
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
     <meta-data  android:name="com.google.android.geo.API_KEY" android:value="${googleMapApiKey}"/>
     <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name" android:value="FunGiving"/>
-    <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description" android:value="Help fulfill wishes for the homeless in your community"/>
+    <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description" android:value="Help fulfill wishes for the homeless of your community"/>
     <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"  android:resource="@android:color/white"/>
 
     <!-- < Only if you're using GCM or localNotificationSchedule() > -->

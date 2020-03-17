@@ -17,10 +17,7 @@ import {
   VERIFY_SUCCESS,
   VERIFY_FAILURE,
 
-  NEXT_STEP_STARTED, // will hold verification
-  NEXT_STEP_SUCCESS,
-  NEXT_STEP_FAILURE,
-
+  DEVICE_TOKEN,
   LOG_OUT
 
 } from './auth'
@@ -71,7 +68,6 @@ function signUpFailure(err) {
   }
 }
 
-
 function verifyStart() {
   return {
     type: VERIFY_STARTED
@@ -95,6 +91,43 @@ function verifyFailure(err) {
 function clearAuthErrors() {
   return {
     type: CLEAR_ERRORS
+  }
+}
+
+function storeDeviceToken(token) {
+  return {
+    type : DEVICE_TOKEN,
+    token: token
+  }
+}
+
+export function setDeviceToken(uid, token) {
+  return (dispatch) => {
+    dispatch(storeDeviceToken(token));
+    if (!uid) return false;
+
+    /* if (state.auth.me.devices) {
+      try {
+        var devices = (state.auth.me.devices) ? JSON.parse(state.auth.me.devices) : {};
+      } catch(e) {
+        console.log('bad devices for json', state.auth.me.devices);
+        devices = {};
+      }
+      if (typeof devices[token.token] === 'string') {
+        return console.log('device is already saved on server: ', devices);
+      }
+    } */
+
+    return API.Put('/api/users/'+uid+'/devicetoken', token)
+    .then(res => {
+      console.log('stored device token', res.data);
+      return res.data;
+    })
+    .catch(err => {
+      var msg = API.getErrorMsg(err);
+      console.log('Push Notification config error: ', msg);
+      return err;
+    });
   }
 }
 

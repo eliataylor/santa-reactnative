@@ -95,6 +95,10 @@ export default class NotifService {
     PushNotification.localNotificationSchedule(obj);
   }
 
+  registrationError(e) {
+    console.log(e);
+  }
+
   requestPermissions() {
     return PushNotificationsHandler.requestPermissions();
   }
