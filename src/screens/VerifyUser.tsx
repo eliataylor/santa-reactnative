@@ -12,7 +12,6 @@ import styles from '../theme';
 const logo = require("../assets/images/logo.png");
 const { height } = Dimensions.get('window');
 
-
 interface State {
   verificationCode: string;
   verificationHelp: string;
@@ -31,8 +30,8 @@ class VerifyUser extends React.Component<{}, State> {
 
   checkCode = () => {
     if (this.state.verificationCode.length < 8) {
-        this.setState({verificationHelp:strings.VERIFICATION_REQUIRED});
-        return false;
+      this.setState({verificationHelp:strings.VERIFICATION_REQUIRED});
+      return false;
     }
     if (this.props.navigation && this.props.navigation.state.params) {
       const { email } = this.props.navigation.state.params;
@@ -45,8 +44,7 @@ class VerifyUser extends React.Component<{}, State> {
   componentDidMount() {
     if (this.props.auth.me && this.props.auth.me.isVerified === true) {
       this.props.navigation.navigate('HomeScreen'); // reopened from link after already logged in
-    }
-    if (this.props.navigation && this.props.navigation.state.params) {
+    } else if (this.props.navigation && this.props.navigation.state.params) {
       const { code, uid, email } = this.props.navigation.state.params;
       if (code && (uid || email)) {
         this.setState({verificationCode:code});
@@ -59,6 +57,15 @@ class VerifyUser extends React.Component<{}, State> {
   componentDidUpdate(prevProps) {
     if (this.props.auth.me && this.props.auth.me.isVerified === true) {
       this.props.navigation.navigate('HomeScreen');
+    } else if (this.props.navigation && this.props.navigation.state.params) {
+      const { code, uid, email } = this.props.navigation.state.params;
+      if (code && (uid || email)) {
+        if (!prevProps.navigation || !prevProps.navigation.state.params || code !== prevProps.navigation.state.params.code) {
+          this.setState({verificationCode:code});
+          console.log('test code from link', this.props.navigation.state.params);
+          this.props.checkVerificationCode(code, uid, null);
+        }
+      }
     }
   }
 

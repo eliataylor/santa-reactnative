@@ -3,6 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>aps-environment</key>
-	<string>development</string>
+	<string>production</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:fungiving.net</string>
+		<string>applinks:www.fungiving.net</string>
+		<string>applinks:*.fungiving.net</string>
+	</array>
 </dict>
 </plist>

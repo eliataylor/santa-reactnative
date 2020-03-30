@@ -1,0 +1,11 @@
+{
+  "Simulator Target Bundle": "org.bethesanta.react",
+  "aps": {
+    "alert": {
+      "title": "Push on the simulator",
+      "subtitle": "So cool...",
+      "body": "This notification is going to show up in the simulator!",
+      "wish_ids" : ["5d34eabfbba83628da3b0aa7","5d37392a6f2961c28764b8e4","5d37396c6f2961c28764b8e5"],
+    }
+  }
+}

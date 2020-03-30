@@ -6,6 +6,7 @@ import FormTextInput from "../components/FormTextInput";
 import { connect } from 'react-redux';
 import VerifyUser from "./VerifyUser";
 import styles from '../theme';
+import AsyncStorage from '@react-native-community/async-storage';
 const santaIcon = require('../assets/images/santa-panda.png');
 const elfIcon = require('../assets/images/elf-panda.png');
 
@@ -74,6 +75,7 @@ class HomeScreen extends React.Component<Props, State> {
             onPress={() => {this.props.navigation.navigate(this.state.activeTab)}}
           />
         </View>
+        
       </View>
     );
   }

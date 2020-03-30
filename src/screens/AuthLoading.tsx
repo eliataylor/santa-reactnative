@@ -30,13 +30,13 @@ class AuthLoading extends React.Component {
           const route = url.replace(/.*?:\/\//g, '');
           const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
           console.log('LOADING INIT URL ' + pathname);
-          if (pathname.indexOf('/api/users/') === 0) {
+          if (pathname.indexOf('/users/') === 0) {
             var parts = pathname.split('/');
             console.log(parts);
-            return this.props.navigation.navigate('VerifyUser', {code:parts[5], uid:parts[3]});
-          } else if (pathname.indexOf('/api/wishes') === 0) {
+            return this.props.navigation.navigate('VerifyUser', {code:parts[4], uid:parts[2]});
+          } else if (pathname.indexOf('/wishes') === 0) {
             return this.props.navigation.navigate('Wishes');
-          } else if (pathname.indexOf('/api/create-a-wish') === 0) {
+          } else if (pathname.indexOf('/create-a-wish') === 0) {
             return this.props.navigation.navigate('CreateWish');
           }
         }

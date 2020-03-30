@@ -79,7 +79,8 @@ const AppStack = createStackNavigator({
       // headerBackTitle : 'Santa Fulfills',
     }
   },
-  /* WishDetail: {
+  /* ,
+  WishDetail: { // only via notifications
     screen: WishDetail,
     path:'wishes/:wish',
     navigationOptions: (navi) => {

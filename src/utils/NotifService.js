@@ -40,10 +40,11 @@ export default class NotifService {
   }
 
   configure(onRegister, onNotification) {
+    // console.log('configured NotifService')
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: onRegister, //this._onRegister.bind(this),
-
+      onError:this.registrationError,
       // (required) Called when a remote or local notification is opened or received
       onNotification: onNotification, //this._onNotification,
 

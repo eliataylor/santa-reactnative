@@ -20,3 +20,6 @@ xcrun simctl openurl booted https://www.fungiving.net/api/users/5d34ddb3bba83628
 # server
 heroku logs -n 200
 heroku logs --tail
+
+# push notifications to ios
+xcrun simctl push booted test_push.apns

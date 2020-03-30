@@ -103,6 +103,7 @@ function storeDeviceToken(token) {
 
 export function setDeviceToken(uid, token) {
   return (dispatch) => {
+    console.log('setDeviceToken: ' + uid + ' token' + token)
     dispatch(storeDeviceToken(token));
     if (!uid) return false;
 

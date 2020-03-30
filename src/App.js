@@ -6,7 +6,7 @@ import NotifService from './utils/NotifService';
 import Snackbar from 'react-native-snackbar';
 import API from './utils/API';
 import styles from './theme';
-import { Linking } from "react-native";
+import { Linking, Alert } from "react-native";
 import Config from './Config';
 
 class App extends React.Component {
@@ -17,16 +17,40 @@ class App extends React.Component {
     this.onRegister = this.onRegister.bind(this);
     this.onNotification = this.onNotification.bind(this);
     this.notifService = new NotifService(this.onRegister, this.onNotification);
+    this.handleDeepLink = this.handleDeepLink.bind(this);
+  }
+
+  componentDidMount() {
+    // this.notifService = new NotifService(this.onRegister, this.onNotification);
+    Linking.addEventListener('url', this.handleDeepLink);
+  }
+
+  componentWillUnmount() {
+    console.log('App WILLUNMOUNT')
+    Linking.removeEventListener('url', this.handleDeepLink);
+    // AppState.removeEventListener('change', this.handleAppStateChange);
+  }
+
+  handleDeepLink(appState) {
+    console.log("React App handleDeepLink ", appState);
+    if (typeof appState === 'string') appState = {url:appState}; // restructures from getInitialURL();
+    if (typeof appState.url !== 'undefined') {
+       const route = appState.url.replace(/.*?:\/\//g, '');
+       const pathname = route.substring(route.indexOf('/')); /*  santa-local.herokuapp.com:3000/users/ZZZ/verify/XXX  */
+       console.log('LOADING INIT URL ' + pathname);
+       if (pathname.indexOf('/users/') === 0) {
+         var parts = pathname.split('/');
+         console.log(parts);
+         return this.navigator._navigation.navigate('VerifyUser', {code:parts[4], uid:parts[2]});
+       } else if (pathname.indexOf('/wishes') === 0) {
+         return this.navigator._navigation.navigate('Wishes');
+       } else if (pathname.indexOf('/create-a-wish') === 0) {
+         return this.navigator._navigation.navigate('CreateWish');
+       }
+    }
   }
 
   /*
-  componentDidMount() {
-    this.notifService = new NotifService(this.onRegister, this.onNotification);
-  }
-  componentWillUnmount() {
-    console.log('APP WILLUNMOUNT')
-    AppState.removeEventListener('change', this.handleAppStateChange);
-  }
   handleAppStateChange(appState) {
     console.log("React handleAppStateChange " + appState);
   }
@@ -63,6 +87,7 @@ class App extends React.Component {
   }
 
   onRegister(token) {
+    console.log("ONREGISTERED!", token);
     if (!this.props.auth.me) {
       this.props.setDeviceToken(false, token);
     } else {
@@ -72,29 +97,32 @@ class App extends React.Component {
 
   onNotification(notification) {
       console.log("NOTIFICATION OPENED", notification);
-      // TODO: parse notification and send to proper Screen
+      // TODO: parse notification for single wish ID
       /*
       {"collapse_key": "org.bethesanta.react", "finish": [Function finish], "foreground": true, "google.delivered_priority": "normal", "google.message_id": "0:1582920592626927%48acde5a48acde5a", "google.original_priority": "normal", "google.sent_time": 1582920592609, "google.ttl": 2416371, "id": "1385619521",
       "message": "Insulin medication", "msgcnt": "2", "notification": {"badge": "2", "body": "Insulin medication", "sound": "ping", "title": "Someone has a wish near you"},
       "sender": "Santa", "sound": "ping.aiff", "title": "Someone has a wish near you", "userInteraction": false}
+      if (typeof notification.alert === 'object' && typoef typeof notification.alert.wish_ids === 'object' && notification.alert.wish_ids.length > 0) {
+          return this.navigator._navigation.navigate('WishDetail');
+      }
       */
+      
+      return this.navigator._navigation.navigate('Wishes');
   }
 
 
-/*  onNavigationStateChange(prevState, newState, action) {
+  /* onNavigationStateChange(prevState, newState, action) {
     console.log('onNavigationStateChange', prevState, newState, action);
   } */
 
   render() {
-    //const prefix = Linking.makeUrl('/');
-    //const prefix = 'santafulfills://';
-    const prefix = Config.api.base + '/api';
+    const prefix = Config.api.base;
     console.log('prefix', prefix);
 
     // TODO: snackbar success responses from server?
     return <NavContainer style={styles.root}
             uriPrefix={prefix}
-//            onNavigationStateChange={this.onNavigationStateChange}
+            // onNavigationStateChange={this.onNavigationStateChange}
             ref={nav => this.navigator = nav} />;
   }
 }

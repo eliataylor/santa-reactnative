@@ -27,6 +27,7 @@
 		B66DC1A9072A434B9F5911CC /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24B06A134FC742E2AFD9AB50 /* Poppins-Medium.ttf */; };
 		C596702CD111489DA8758B21 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8CAC96F4DC84068B5973E97 /* Poppins-Italic.ttf */; };
 		CE0FDBAA23CF7E9B0099495D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0FDBA923CF7E9B0099495D /* Images.xcassets */; };
+		CEE1DB45243291DD00CABAD5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEE1DB44243291DD00CABAD5 /* GoogleService-Info.plist */; };
 		D57D127F40AC4A01AD43BEF5 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2654231E06204BFE8024EDA8 /* Poppins-BoldItalic.ttf */; };
 		FBA0A36C077241D89CE355C4 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07E17947F12342B582B338EA /* Poppins-MediumItalic.ttf */; };
 		FDC6899EB4184DE3AF5DF985 /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B2BA6D2BE674FD896FF306E /* Poppins-ExtraLight.ttf */; };
@@ -77,6 +78,7 @@
 		CE0FDBA923CF7E9B0099495D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FunGiving/Images.xcassets; sourceTree = "<group>"; };
 		CE2CA5BA230FF8300054C65E /* FunGiving.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FunGiving.entitlements; path = FunGiving/FunGiving.entitlements; sourceTree = "<group>"; };
 		CEBF46EB240233DC002A3FCB /* FunGivingDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = FunGivingDebug.entitlements; path = FunGiving/FunGivingDebug.entitlements; sourceTree = "<group>"; };
+		CEE1DB44243291DD00CABAD5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D2EC6DB234C842B9A02011FF /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		D6C7C44840D84A148025D18F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		E3491D71EDAE44CF873482A7 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CEE1DB44243291DD00CABAD5 /* GoogleService-Info.plist */,
 				CEBF46EB240233DC002A3FCB /* FunGivingDebug.entitlements */,
 				CE2CA5BA230FF8300054C65E /* FunGiving.entitlements */,
 				13B07FAE1A68108700A75B9A /* Fun Giving */,
@@ -261,10 +264,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1020;
-				ORGANIZATIONNAME = "Eli A Taylor";
+				ORGANIZATIONNAME = "Neha Kotecha";
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = Z6J6D87CY6;
+						LastSwiftMigration = 1140;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -319,6 +323,7 @@
 				34704284053F4C0C9BCF568E /* Poppins-SemiBoldItalic.ttf in Resources */,
 				9E42D07FDAAD408A8E05792C /* Poppins-Thin.ttf in Resources */,
 				AF0D9B82A6E0424FBE25A44B /* Poppins-ThinItalic.ttf in Resources */,
+				CEE1DB45243291DD00CABAD5 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,15 +435,16 @@
 			baseConfigurationReference = B1C00C7845651B38EF327548 /* Pods-FunGiving.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FunGiving/FunGivingDebug.entitlements;
-				CURRENT_PROJECT_VERSION = 1.5;
+				CURRENT_PROJECT_VERSION = 1.8;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = Z6J6D87CY6;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = FunGiving/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -446,6 +452,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.bethesanta.react;
 				PRODUCT_NAME = FunGiving;
+				SWIFT_OBJC_BRIDGING_HEADER = "FunGiving-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -456,14 +465,15 @@
 			baseConfigurationReference = 4B01E82B7DB202C61E7A3BC6 /* Pods-FunGiving.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = FunGiving/FunGiving.entitlements;
-				CURRENT_PROJECT_VERSION = 1.5;
+				CURRENT_PROJECT_VERSION = 1.8;
 				DEVELOPMENT_TEAM = Z6J6D87CY6;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = FunGiving/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -471,6 +481,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.bethesanta.react;
 				PRODUCT_NAME = FunGiving;
+				SWIFT_OBJC_BRIDGING_HEADER = "FunGiving-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
