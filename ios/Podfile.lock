@@ -327,25 +327,25 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
     - ReactCommon/jscallinvoker (= 0.61.5)
-  - RNCAsyncStorage (1.9.0):
+  - RNCAsyncStorage (1.8.1):
     - React
   - RNCPushNotificationIOS (1.1.1):
     - React
-  - RNFBApp (6.4.0):
+  - RNFBApp (6.7.1):
     - Firebase/Core (~> 6.13.0)
     - React
-  - RNFBMessaging (6.4.0):
+  - RNFBMessaging (6.7.1):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Messaging (~> 6.13.0)
     - React
     - RNFBApp
-  - RNGestureHandler (1.6.1):
+  - RNGestureHandler (1.5.2):
     - React
-  - RNReanimated (1.8.0):
+  - RNReanimated (1.4.0):
     - React
-  - RNScreens (2.5.0):
+  - RNScreens (2.0.0-alpha.17):
     - React
-  - RNSnackbar (2.2.0):
+  - RNSnackbar (2.0.3):
     - React
   - Yoga (1.14.0)
 
@@ -534,14 +534,14 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  RNCAsyncStorage: b16697280b08bab4b5f2f67f752d93d13a52e9ed
+  RNCAsyncStorage: 00bdf63f7f1e0f11d3323533dba4f222e58bf092
   RNCPushNotificationIOS: a38f0b8c4f6f5226cd1d8eeb21ab5670f4a09892
-  RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
-  RNFBMessaging: 805710731a2b616030514f6f416e8787de521f41
-  RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
-  RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
-  RNScreens: ac02d0e4529f08ced69f5580d416f968a6ec3a1d
-  RNSnackbar: 2924764545b779c3dd130f875cd481d4162a6f3b
+  RNFBApp: 7b539bb25520fa73d6a240f5c6ea569e27683645
+  RNFBMessaging: c55142d3b2d34d706bf12bd5eef9ef35254c2df1
+  RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
+  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
+  RNScreens: f5e2ff7ccde2a1bfcf2a48c6fd07fdcf1fd95223
+  RNSnackbar: c715ac2f40520e2482fe5d4d4ef5036ab3194a26
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: 2e5042a274a22e513427a632f0a2629035b7e3c3

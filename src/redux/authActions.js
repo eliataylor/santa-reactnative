@@ -1,6 +1,7 @@
 import API from '../utils/API';
 import Config from '../Config';
 import AsyncStorage from '@react-native-community/async-storage';
+import {Platform} from 'react-native';
 
 import {
   // events
@@ -103,7 +104,7 @@ function storeDeviceToken(token) {
 
 export function setDeviceToken(uid, token) {
   return (dispatch) => {
-    console.log('setDeviceToken: ' + uid + ' token' + token)
+    console.log('setDeviceToken: ' + uid + ' token: ' + token)
     dispatch(storeDeviceToken(token));
     if (!uid) return false;
 
@@ -118,8 +119,9 @@ export function setDeviceToken(uid, token) {
         return console.log('device is already saved on server: ', devices);
       }
     } */
+    var data = {token:token, os:Platform.OS};
 
-    return API.Put('/api/users/'+uid+'/devicetoken', token)
+    return API.Put('/api/users/'+uid+'/devicetoken', data)
     .then(res => {
       console.log('stored device token', res.data);
       return res.data;

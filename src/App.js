@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import NavContainer from './screens/NavContainer';
 import {setDeviceToken} from './redux/authActions';
-import NotifService from './utils/NotifService';
+//import NotifService from './utils/NotifService';
 import Snackbar from 'react-native-snackbar';
 import API from './utils/API';
 import styles from './theme';
@@ -14,8 +14,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.navigator = false;
-    // this.onRegister = this.onRegister.bind(this);
-    // this.onNotification = this.onNotification.bind(this);
+    this.onRegister = this.onRegister.bind(this);
+    this.onNotification = this.onNotification.bind(this);
     // this.notifService = new NotifService(this.onRegister, this.onNotification);
     this.handleDeepLink = this.handleDeepLink.bind(this);
     this.registerDeviceForRemoteMessages();
