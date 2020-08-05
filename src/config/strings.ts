@@ -7,6 +7,7 @@ const strings = {
   SUBMIT: "Submit",
   OFFERS_SECTION : "My active offers",
   WISHES_SECTION : "Nearby Wishes",
+  LOCATION_LABEL : "Location",
   PASSWORD_PLACEHOLDER : "Password",
   EMAIL_PLACEHOLDER : "Email",
   EMAIL_REQUIRED : 'You valid email address is required',

@@ -69,6 +69,8 @@ class App extends React.Component {
   messageListener = async () => {
     messaging().onNotificationOpenedApp(notification => {
       this.onNotification(notification.data);
+      // TODO: check if specific wish was pressed and redirect there.
+      return this.navigator._navigation.navigate('Wishes');
       console.log(notification.data);
     });
 

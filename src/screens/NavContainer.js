@@ -75,7 +75,7 @@ const AppStack = createStackNavigator({
     screen: Wishes,
     path:'wishes',
     navigationOptions: {
-      title : 'Santa Fulfills',
+      title : strings.WISHES_SECTION,
       // headerBackTitle : 'Santa Fulfills',
     }
   },

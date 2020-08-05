@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from 'react-redux';
-import { StyleSheet, SectionList, Text, TouchableHighlight, Platform, TouchableOpacity, ActivityIndicator, ScrollView, View, Image  } from "react-native";
+import { StyleSheet, SectionList, Text, Platform, ActivityIndicator, ScrollView, View  } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import colors from "../config/colors";
 import strings from "../config/strings";
@@ -153,7 +153,7 @@ class Wishes extends React.Component<{}, State> {
   }
 
   _renderSectionHead = ({section}) => {
-    if (section.title === 'Nearby Wishes') {
+    if (section.title === strings.LOCATION_LABEL) {
 
       var radiusOpts = [{label: '.5 mile', value: 500}], i = 1;
 
@@ -194,6 +194,7 @@ class Wishes extends React.Component<{}, State> {
               textInputProps={{
                 style:styles.radius
               }}
+              placeholder={{label: 'Select a radius', value: ''}}
               useNativeAndroidPickerStyle={false}
               onValueChange={this._radiusChanged}
               items={radiusOpts} />
@@ -234,7 +235,7 @@ class Wishes extends React.Component<{}, State> {
       allSections.push({title: strings.OFFERS_SECTION, data: this.props.offers});
     }
     if (this.props.wishes && this.props.wishes.results) {
-      allSections.push({title: strings.WISHES_SECTION, data: this.props.wishes.results});
+      allSections.push({title: strings.LOCATION_LABEL, data: this.props.wishes.results});
     }
 
     return (

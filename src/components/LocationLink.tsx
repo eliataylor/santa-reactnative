@@ -66,7 +66,7 @@ class LocationLink extends React.Component<Props> {
     console.log(address, imgUrl);
 
     return (
-      <TouchableOpacity onPress={this._onPress} style={{height:height}}>
+      <TouchableOpacity onPress={this._onPress} style={{height:height, width:'100%'}}>
         {imgUrl.length > 0 ?
           <Image resizeMode={'contain'}
             onError={(e) => console.log(e.nativeEvent.error) }

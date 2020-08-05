@@ -6,6 +6,7 @@
       "subtitle": "So cool...",
       "body": "This notification is going to show up in the simulator!",
       "wish_ids" : ["5d34eabfbba83628da3b0aa7","5d37392a6f2961c28764b8e4","5d37396c6f2961c28764b8e5"],
+      "wish_id" : "5d34eabfbba83628da3b0aa7",
     }
   }
 }

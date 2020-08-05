@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
   row : {
     flexDirection:'row', alignItems: 'center', justifyContent:'space-between', width:'100%',
   },
+  line : {
+    flexDirection:'row', alignItems: 'center', justifyContent:'flex-start', width:'100%',
+  },
   col : {
     flexDirection:'column', alignItems: 'center', width:'48%', justifyContent:'flex-start',
   },
@@ -78,7 +81,8 @@ const styles = StyleSheet.create({
   },
   timestamp : {
     fontFamily:'Poppins-Medium',
-    fontSize:15
+    fontSize:15,
+    marginTop:-2
   },
   errorMessage: {
     fontSize: 12,

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import { StyleSheet, View, Text, Alert, Modal, Dimensions, Image, TouchableHighlight, SafeAreaView } from "react-native";
+import { StyleSheet, View, Text, Alert, Dimensions } from "react-native";
 import colors from "../config/colors";
 import strings from "../config/strings";
 import Button from "./Button";
@@ -25,7 +25,7 @@ const styles = Object.assign({...baseStyles}, StyleSheet.create({
   },
   h1: {
     fontFamily:'Poppins-Bold',
-    fontSize:18,
+    fontSize:18
   },
   h2: {
     fontFamily:'Poppins-Bold',
@@ -37,7 +37,8 @@ const styles = Object.assign({...baseStyles}, StyleSheet.create({
   },
   body: {
     fontFamily:'Poppins-Regular',
-    fontSize:14
+    fontSize:14,
+    marginTop:5
   },
   listhead : {
     fontSize:22,
@@ -45,7 +46,7 @@ const styles = Object.assign({...baseStyles}, StyleSheet.create({
   }
 }));
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 class WishItem extends Component {
 
@@ -111,39 +112,43 @@ class WishItem extends Component {
     return (
         <View style={styles.container}>
 
-          <View style={styles.row}>
-            <View style={[styles.col, {alignItems:'flex-start'}]}>
+          <View>
+            <View style={styles.line}>
               <CategoryIcon id={wish.category} onPress={e => this.props.toggleCat(wish.category)} />
-              <Text style={styles.h1}>{wish.title}</Text>
+              <View style={{marginLeft:5}}>
+                <Text style={styles.h1}>{wish.title}</Text>
+                <Text style={styles.timestamp}>Posted {moment(wish.createdAt).format('MMM Do h:mma')}</Text>
+                {(offer && offer.state === 'inprogress')
+                    ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} />
+                    : null}
+              </View>
+            </View>
+            <View style={{marginVertical:10}}>
+              <LocationLink maptype='staticmap' {...wish.location} width={width - 20} />
+            </View>
+            <View style={styles.row}>
               <Text style={styles.h2}>for <Text style={styles.em}>{wish.recipient}</Text></Text>
-              <Text style={styles.body}>{wish.body}</Text>
               {(offer && offer.state === 'inprogress')
               ?
-                 <View style={styles.row}>
+                 <View style={styles.line}>
                     <Button label={strings.DELIVERED} onPress={(e) => this.updateOffer('fulfilled')}
                             style={{paddingVertical:2}}/>
                     <Button label={strings.CANCEL} onPress={(e) => this.updateOffer('canceled')}
                             style={{backgroundColor:colors.SOFT_RED, paddingVertical:2}} />
                  </View>
               : (wish.elf._id === this.props.me._id) ?
-                 <View style={styles.row}>
+                 <View style={styles.line}>
                     <Button  label={strings.FULFILL} onPress={(e) => this.startOffer()}
                       style={{paddingVertical:2}}/>
                     <Button  label={strings.DELETE} onPress={(e) => this.deleteWish()}
                       style={{backgroundColor:colors.SOFT_RED, paddingVertical:2}}/>
                  </View>
               :
-               <View style={styles.row}><Button label={strings.FULFILL} onPress={(e) => this.startOffer()}
-                      style={{paddingVertical:2}}/></View>
+               <Button label={strings.FULFILL} onPress={(e) => this.startOffer()}
+                      style={{paddingVertical:2}}/>
               }
             </View>
-            <View style={styles.col}>
-              <Text style={styles.timestamp}>Posted {moment(wish.createdAt).format('MMM Do h:mma')}</Text>
-              {(offer && offer.state === 'inprogress')
-              ? <Deadline created={offer.createdAt} timeout={offer.timeout || 5400} />
-              : null}
-              <LocationLink maptype='staticmap' {...wish.location} />
-            </View>
+            <Text style={styles.body}>{wish.body}</Text>
           </View>
 
         </View>
