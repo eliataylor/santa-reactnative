@@ -46,7 +46,7 @@ const styles = Object.assign({...baseStyles}, StyleSheet.create({
   }
 }));
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 class WishItem extends Component {
 
@@ -124,7 +124,7 @@ class WishItem extends Component {
               </View>
             </View>
             <View style={{marginVertical:10}}>
-              <LocationLink maptype='staticmap' {...wish.location} width={width - 20} />
+              <LocationLink maptype='staticmap' {...wish.location} width={width - 20} height={height/3} />
             </View>
             <View style={styles.row}>
               <Text style={styles.h2}>for <Text style={styles.em}>{wish.recipient}</Text></Text>

@@ -36,8 +36,10 @@ class VerifyUser extends React.Component<{}, State> {
     if (this.props.navigation && this.props.navigation.state.params) {
       const { email } = this.props.navigation.state.params;
       return this.props.checkVerificationCode(this.state.verificationCode, null, email);
-    } else {
-      Alert.alert("You actually have to click the link for now");
+    } else if (this.state.verificationCode.indexOf('https://') === 0) {
+      const parts = this.state.verificationCode.split('/');
+      this.setState({verificationCode:parts[6]});
+      this.props.checkVerificationCode(parts[6], parts[4], null);
     }
   };
 
