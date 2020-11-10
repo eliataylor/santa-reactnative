@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Linking, View, TouchableOpacity, Text, Image } from "react-native";
-import colors from "../config/colors";
+import { Linking, TouchableOpacity, Text, Image, Platform } from "react-native";
 import Config from "../Config";
 
 interface Props {
@@ -42,7 +41,7 @@ class LocationLink extends React.Component<Props> {
     const height = (this.props.height) ? parseInt(this.props.height, 0) : 100;
     const address = this.buildAddress();
 
-    var imgUrl = 'https://maps.googleapis.com/maps/api/' + maptype + "?size="+width+"x"+height + "&key="+ Config.api.gMapKey;
+    var imgUrl = 'https://maps.googleapis.com/maps/api/' + maptype + "?size="+width+"x"+height + "&key="+ Config.google.key;
     var param = "";
     if (maptype === 'streetview') {
       imgUrl += "&fov=120";

@@ -31,7 +31,7 @@ class AuthLoading extends React.Component {
           const pathname = route.substring(
             route.indexOf('/'),
           ); /*  santa-local.herokuapp.com:3000/api/users/ZZZ/verify/XXX  */
-          console.log('LOADING INIT URL ' + pathname);
+          console.log('LOADING INIT URL _bootstrapAsync' + pathname);
           if (pathname.indexOf('/users/') === 0) {
             var parts = pathname.split('/');
             console.log(parts);

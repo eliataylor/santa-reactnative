@@ -5,11 +5,13 @@
   "scripts": {
     "start-cli": "node node_modules/react-native/local-cli/cli.js start",
     "start": "react-native start --verbose",
-    "run-ios": "react-native run-ios",
-    "run-android": "react-native run-android --verbose",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android --verbose",
     "test": "jest",
     "lint": "eslint .",
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/FunGiving/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
+    "clean": "rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/metro-* && watchman watch-del-all && cd android && ./gradlew clean && cd ../ios && xcodebuild  -sdk \"${TARGET_SDK}\" -xcconfig \"${CONFIG_FILE_PATH}\"  -configuration Debug clean && cd ..",
+    "super-clean": "yarn run clean && rm -rf node_modules && rm -f package-lock.json && rm -f yarn.lock && yarn install && npx pod-install",
     "postinstall": "npx jetify"
   },
   "dependencies": {
@@ -20,8 +22,8 @@
     "@react-native-firebase/messaging": "^6.4.0",
     "axios": "^0.19.0",
     "moment": "^2.24.0",
-    "react": "16.9.0",
-    "react-native": "0.61.5",
+    "react": "16.13.1",
+    "react-native": "0.63.3",
     "react-native-gesture-handler": "^1.5.2",
     "react-native-maps": "^0.25.0",
     "react-native-picker-select": "^6.3.3",

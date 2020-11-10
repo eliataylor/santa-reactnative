@@ -2,9 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import NavContainer from './screens/NavContainer';
 import {setDeviceToken} from './redux/authActions';
-//import NotifService from './utils/NotifService';
+// import NotifService from './utils/NotifService';
 import Snackbar from 'react-native-snackbar';
-import API from './utils/API';
+// import API from './utils/API';
 import styles from './theme';
 import {Linking, Alert} from 'react-native';
 import Config from './Config';
@@ -101,7 +101,7 @@ class App extends React.Component {
       const pathname = route.substring(
         route.indexOf('/'),
       ); /*  santa-local.herokuapp.com:3000/users/ZZZ/verify/XXX  */
-      console.log('LOADING INIT URL ' + pathname);
+      console.log('LOADING INIT URL handleDeepLink ' + pathname);
       if (pathname.indexOf('/users/') === 0) {
         var parts = pathname.split('/');
         console.log(parts);
@@ -145,8 +145,7 @@ class App extends React.Component {
       Snackbar.show({
         title: e,
         duration: Snackbar.LENGTH_LONG,
-        backgroundColor: 'red',
-        color: 'white',
+        backgroundColor: 'red'
       });
     }
 

@@ -111,7 +111,7 @@ class WishDetail extends Component {
 
                {(offer && offer.state === 'inprogress')
                ?
-                  <View style={[styles.row, {marginTop:10}]}>
+                  <View style={[styles.row, {marginTop:10, textAlign:'right'}]}>
                      <Button label={'Mark Delivered'} onPress={(e) => this.updateOffer('fulfilled')} />
                      <Button label={'Cancel'} style={{backgroundColor:colors.SOFT_RED}}
                              onPress={(e) => this.updateOffer('canceled')} />

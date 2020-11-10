@@ -130,14 +130,14 @@ class WishItem extends Component {
               <Text style={styles.h2}>for <Text style={styles.em}>{wish.recipient}</Text></Text>
               {(offer && offer.state === 'inprogress')
               ?
-                 <View style={styles.line}>
+                <View style={styles.line}>
                     <Button label={strings.DELIVERED} onPress={(e) => this.updateOffer('fulfilled')}
-                            style={{paddingVertical:2}}/>
+                            style={{paddingVertical:2, marginHorizontal:15}}/>
                     <Button label={strings.CANCEL} onPress={(e) => this.updateOffer('canceled')}
                             style={{backgroundColor:colors.SOFT_RED, paddingVertical:2}} />
                  </View>
               : (wish.elf._id === this.props.me._id) ?
-                 <View style={styles.line}>
+                <View style={styles.line}>
                     <Button  label={strings.FULFILL} onPress={(e) => this.startOffer()}
                       style={{paddingVertical:2}}/>
                     <Button  label={strings.DELETE} onPress={(e) => this.deleteWish()}

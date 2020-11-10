@@ -79,6 +79,8 @@
 	<string>We require your location to verify you are near the wish your viewing or adding</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to verify your proximity to your Wishes</string>
+	<key>NSMainNibFile</key>
+	<string>LaunchScreen</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Poppins-Black.ttf</string>
