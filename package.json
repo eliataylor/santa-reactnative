@@ -21,7 +21,7 @@
     "@react-native-firebase/app": "^6.4.0",
     "@react-native-firebase/messaging": "^6.4.0",
     "axios": "^0.19.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-gesture-handler": "^1.5.2",
